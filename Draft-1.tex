@@ -109,7 +109,7 @@ Multiplication can also be calculated by defining the function \textbf{M}:
 \end{aligned}
 \end{gather*}
 
-    Church also defines boolean logic and operations used for them:
+    Church defines functions to operate boolean logic - firstly representing True and False:
     
 \begin{equation*}
 \begin{aligned}
@@ -118,6 +118,20 @@ Multiplication can also be calculated by defining the function \textbf{M}:
 \bm{\mathrm{F}} &= \lambda ab.b
 \end{aligned}
 \end{equation*}
-Note that for these functions which each takes two arguments, \textbf{T} outputs the first while \textbf{F} outputs the second. 
+These functions each take two arguments - the \textbf{T} function returns the first, while the \textbf{F} function returns the second. Functions representing boolean operations can also be defined:
+\begin{gather*}
+\begin{aligned}
+\vee &= \lambda xy.x\bm{\mathrm{T}}y\\
+\wedge &= \lambda xy.xy\bm{\mathrm{F}}\\
+\lnot &= \lambda x.x\bm{\mathrm{FT}}
+\end{aligned}
+\end{gather*}
+From these operations, the xor operation can be found
+\begin{gather*}
+\begin{aligned}
+\oplus = \lambda xy.\wedge (\vee xy)(\lnot (\wedge xy))
+\oplus = \lambda xy.x(\lnot y)y
+\end{aligned}
+\end{gather*}
 \end{document}
 
