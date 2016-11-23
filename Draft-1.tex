@@ -123,14 +123,38 @@ These functions each take two arguments - the \textbf{T} function returns the fi
 \begin{aligned}
 \vee &= \lambda xy.x\bm{\mathrm{T}}y\\
 \wedge &= \lambda xy.xy\bm{\mathrm{F}}\\
-\lnot &= \lambda x.x\bm{\mathrm{FT}}
+\lnot &= \lambda x.x\bm{\mathrm{FT}} \\
+\veebar &= \lambda xy.x(\lnot y)y
 \end{aligned}
 \end{gather*}
-From these operations, the xor operation can be found
+The derivation of such operations is not difficult to understand if one considers the truth tables for each operation, remembering that T selects the first and F selects the second argument.
+\newpage
+With the fundamental boolean system of our computational system in place, we must next construct conditionals. The first, and simplest, of these will check if a number is equal to zero:
+\begin{equation*}
+\bm{\mathrm{Z}} = \lambda x.x\bm{\mathrm{F\lnot F}}
+\end{equation*}
+To understand this somewhat less than trivial concept, remember that \textbf{F} applied to any single argument yields the identity function $\lambda x.x$, and that \textbf{0} applied to any two arguments yields only the second:
+\begin{equation*}
+\bm{0}ab = (\lambda sz.z)ab = b
+\end{equation*}
+From this, it easier to see how the function works. Firstly with \textbf{0}:
 \begin{gather*}
 \begin{aligned}
-\oplus = \lambda xy.\wedge (\vee xy)(\lnot (\wedge xy))
-\oplus = \lambda xy.x(\lnot y)y
+\bm{\mathrm{Z0}} &= (\lambda x.x\bm{\mathrm{f\lnot F}})\bm{0}\\
+&= \bm{\mathrm{0F\lnot F}}\\
+&= \bm{\mathrm{\lnot F}}\\
+&= \bm{\mathrm{T}}
+\end{aligned}
+\end{gather*}
+Secondly with \textbf{2}:
+\begin{gather*}
+\begin{aligned}
+\bm{\mathrm{Z2}} &= (\lambda x.x\bm{\mathrm{f\lnot F}})\bm{2}\\
+&= \bm{\mathrm{2F\lnot F}}\\
+&= (\bm{\mathrm{F}}(\bm{\mathrm{F}}\lnot)) \bm{\mathrm{F}}\\
+&= (\bm{\mathrm{F}}(\lambda x.x))\bm{\mathrm{F}}\\
+&= (\lambda x.x)\bm{\mathrm{F}}
+&= \bm{\mathrm{F}
 \end{aligned}
 \end{gather*}
 \end{document}
