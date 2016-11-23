@@ -1,10 +1,10 @@
-%% It is just an empty TeX file.
-%% Write your code here.
 \documentclass {article}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{bm}
 
 \hypersetup{
@@ -16,13 +16,14 @@
 \date{2016-11-07}
 \author{Max Penrose}
 
+
 \begin{document}
 \pagenumbering{roman}
 
 
 \section{Effective Computability}
 
-In this first section I would like to describe the fundamental attributes a machine must have for it to be called a 'computer'. Prior to the war and the development of electronic computation, any human who performed a calculation would  frequently be called a 'computer'. However, this specific attribute of computation is difficult to define - to do so, I will be looking at the minimalist  $\lambda$-Calculus developed by Mathematician and Logician Alonzo Church, the famous concept of Universal Computation and  Computable Numbers developed by English Mathematician Alan Turing, and the work of [OTHERS]
+In this first section I would like to describe the fundamental attributes a machine must have for it to be called a 'computer'. Prior to the war and the development of electronic computation, any human who performed a calculatiation would  frequently be called a 'computer'. However, this specific attribute of computation is difficult to define - to do so, I will be looking at the minimalist  $\lambda$-Calculus developed by Mathematician and Logician Alonzo Church, the famous concept of Universal Computation and  Computable Numbers developed by English Mathematician Alan Turing, and the work of [OTHERS]
 
 
 \subsection{Church's $\lambda$-Calculus}
@@ -51,7 +52,7 @@ Church applies this medium to a variety of concepts we are familiar with. His de
 \begin{equation*}
 \begin{aligned}
 \bm{\mathrm{0}} &= \lambda sz.z,
-  & % separation
+  & % seperation
 \bm{\mathrm{1}} &= \lambda sz.sz,
   \\
 \bm{\mathrm{2}} &= \lambda sz.s(sz),
@@ -88,11 +89,35 @@ Let us test this by summing \textbf{2} and \textbf{3}:
 &= (\lambda wyx.y(wyx)) [(\lambda wyx.y(wyx)) [\lambda sz.s(s(s(z)))]]\\
 &= (\lambda wyx.y(wyx)) [\lambda sz.s(s(s(s(z))))]\\
 &= \lambda sz.s(s(s(s(s(z)))))\\
-&= \bm{\mathrm{5}} \qed
+&= \bm{\mathrm{5}}
+\end{aligned}
+\end{gather*}
+Multiplication can also be calculated by defining the function \textbf{M}:
+\begin{equation*}
+\bm{\mathrm{M}} = \lambda wyx.w(yx)
+\end{equation*}
+\begin{gather*}
+\begin{aligned}
+\bm{\mathrm{M22}} &= (\lambda wyx.w(yx))(\lambda ab.a(a(b)))(\lambda sz.s(s(z)))\\
+&= \lambda x.(\lambda ab.a(a(b)))[(\lambda sz.s(s(z)))x]\\
+&= \lambda x.(\lambda ab.a(a(b)))[\lambda z.x(x(z))]\\
+&= \lambda x.(\lambda b.[\lambda z.x(x(z))]([\lambda z.x(x(z))]b))\\
+&= \lambda x.(\lambda b.[\lambda z.x(x(z))][x(x(b))])\\
+&= \lambda x.(\lambda b.x(x(x(x(b)))))\\
+&= \lambda xb.x(x(x(x(b))))\\
+&= \bm{\mathrm{4}}
 \end{aligned}
 \end{gather*}
 
-
-
+    Church also defines boolean logic and operations used for them:
+    
+\begin{equation*}
+\begin{aligned}
+\bm{\mathrm{T}} &= \lambda ab.a,
+  & % seperation
+\bm{\mathrm{F}} &= \lambda ab.b
+\end{aligned}
+\end{equation*}
+Note that for these functions which each takes two arguments, \textbf{T} outputs the first while \textbf{F} outputs the second. 
 \end{document}
 
