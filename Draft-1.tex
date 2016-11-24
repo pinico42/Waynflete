@@ -1,38 +1,33 @@
 \documentclass {article}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
-\usepackage{hyperref}
-\usepackage{xcolor}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{bm}
 
-\hypersetup{
-	colorlinks=true,
-	urlcolor=blue!70!black
-}
 
-\title{Bibliography}
-\date{2016-11-07}
+\title{How Significant was WW2 in the Development of the Computer?}
+\date{November 24, 2016}
 \author{Max Penrose}
 
 
 \begin{document}
 \pagenumbering{roman}
-
+\maketitle
+\tableofcontents
 
 \section{Effective Computability}
 
-In this first section I would like to describe the fundamental attributes a machine must have for it to be called a 'computer'. Prior to the war and the development of electronic computation, any human who performed a calculatiation would  frequently be called a 'computer'. However, this specific attribute of computation is difficult to define - to do so, I will be looking at the minimalist  $\lambda$-Calculus developed by Mathematician and Logician Alonzo Church, the famous concept of Universal Computation and  Computable Numbers developed by English Mathematician Alan Turing, and the work of [OTHERS]
+In this first section I would like to describe the fundamental attributes a machine must have for it to be called a 'computer'. Prior to the war and the development of electronic computation, any human who performed a calculation would  frequently be called a 'computer'. However, this specific attribute of computation is difficult to define - to do so, I will be looking at the minimalist  $\lambda$-Calculus developed by Mathematician and Logician Alonzo Church, the famous concept of the Universal Turing Machine created by English Mathematician Alan Turing, and the similarities and differences between these two definitions.
 
 
 \subsection{Church's $\lambda$-Calculus}
 
-The simplest, and in my opinion the most beautiful definition of effective calculability was introduced by the American mathematician Alonzo Church in the 1930s, as a purely mathematical and abstract definition of computability, far from the very real and mechanical world of Turing. It deals with a set of objects - for our purposes denoted with alphanumeric characters - which define what school mathematics or common computer science would call 'functions'. These functions take as their arguments (other objects which the functions act upon) functions alone, and can also output only functions. Take, for example the function $f$:
+The simplest, and in my opinion the most beautiful definition of effective calculability was introduced by the American mathematician Alonzo Church in the 1930s, as a purely mathematical and abstract definition of computability, far from the very real and mechanical world of Turing. It deals with a set of objects - for our purposes denoted with single symbolic characters - which define what school mathematics or common computer science would call 'functions'. These functions take as their arguments (other objects which the functions act upon) functions alone, and can also output only functions. Take, for example the function $f$:
 \begin{equation*}
 f = ab
 \end{equation*}
-This particular function $f$ applies the function $a$ to the function $b$. Note that while commonly we would use the syntax $\mathit{a(b)}$ to express the same thing, it greatly simplifies expression to use this format. Church defines these functions through the method of 'abstraction' - let us look at a different function:
+This particular function $f$ applies the function $a$ to the function $b$. Note that while commonly we would use the syntax $a(b)$ to express the same thing, it greatly simplifies expression to use this format. Church defines these functions through the method of 'abstraction' - let us look at a different function to illustrate:
 \begin{equation*}
 \lambda u.tu
 \end{equation*}
@@ -40,6 +35,7 @@ This function takes one single argument, which it names the abstract name $u$. I
 \begin{equation*}
 (\lambda u.tu) a = ta	
 \end{equation*}
+
 Functions can take multiple arguments through the use of nesting:
 \begin{gather*}
 \begin{aligned}
@@ -65,6 +61,7 @@ etc.
 \end{aligned}
 \end{equation*}
 Here it can bee seen that for each number \textit{n} the argument $s$  is applied to the argument $z$ \textit{n} times.
+
 From this, it is not difficult to define an operation that takes a number as input and increments it by 1 - such a function would take three arguments (the first being the number, and the second two being the arguments $s$ and $z$ for the number) and would apply the argument $s$ to the number:
 \begin{equation*}
 \bm{\mathrm{S}} = \lambda wyx.y(wyx)
@@ -94,6 +91,7 @@ Let us test this by summing \textbf{2} and \textbf{3}:
 &= \bm{\mathrm{5}}
 \end{aligned}
 \end{gather*}
+
 Multiplication can also be calculated by defining the function \textbf{M}:
 \begin{equation*}
 \bm{\mathrm{M}} = \lambda wyx.w(yx)
@@ -114,6 +112,7 @@ We should rearrange our earlier addition method into an 'addition' function of t
 \begin{equation*}
 \bm{\mathrm{A}} = \lambda ab.aSb
 \end{equation*}
+
 A 'power' function to find $a^b$can also be defined, of astonishing simplicity:
 \begin{equation*}
 \bm{\mathrm{P}} = \lambda ba.ab
@@ -135,7 +134,7 @@ A 'power' function to find $a^b$can also be defined, of astonishing simplicity:
 
 \subsubsection{Logic and Conditions}
 
-    Church defines functions to operate boolean logic - firstly representing True and False:
+Church defines functions to operate boolean logic - firstly representing True and False:
     
 \begin{equation*}
 \begin{aligned}
@@ -145,6 +144,7 @@ A 'power' function to find $a^b$can also be defined, of astonishing simplicity:
 \end{aligned}
 \end{equation*}
 These functions each take two arguments - the \textbf{T} function returns the first, while the \textbf{F} function returns the second.
+
 These concepts are the base of conditional logic in computation, and in $\lambda$-calculus operate like \textit{if} statements found in most programming languages. For such operations, the concept of a 'pair' exists:
 \begin{equation*}
 \lambda x.xab
@@ -167,6 +167,7 @@ Functions representing boolean operations can also be defined:
 \end{aligned}
 \end{gather*}
 The derivation of such operations is not difficult to understand if one considers the truth tables for each operation, remembering that T selects the first and F selects the second argument.
+
 With the fundamental boolean system of our computational system in place, we must next construct conditionals. The first, and simplest, of these will check if a number is equal to zero:
 \begin{equation*}
 \bm{\mathrm{Z}} = \lambda x.x\bm{\mathrm{F\lnot F}}
@@ -195,10 +196,12 @@ Secondly with \textbf{2}:
 &= \bm{\mathrm{F}} 
 \end{aligned}
 \end{gather*}
-However, in order to develop other conditional tests we will need a 'predecessor' function - something frighteningly difficult under lambda calculus.
+
+However, in order to develop other conditional tests we will need a 'predecessor' function - something surprisingly difficult under lambda calculus.
 \subsubsection{Subtraction}
 
 The elusive predecessor function was created by Stephen Kleene, a student of Church's, and was something of a landmark in the development of $\lambda$-calculus.
+
 Firstly, the function transforms the pair (n, n-1) (the argument $p$) into the pair (n+1, n) (the new pair's elements are an increment and a copy of the first value respectively):
 \begin{equation*}
 \bm{\psi} = \lambda pc.c(S(pT))(pT)
@@ -220,6 +223,7 @@ To find the predecessor to $n$ therefore, we apply this function $n$ times to th
 &= \bm{\mathrm{2}}
 \end{aligned}
 \end{equation*}
+
 Of course now the subtraction function can be found (using \textbf{D} for difference):
 \begin{equation*}
 \bm{\mathrm{D}} = \lambda ab.bPa
@@ -282,5 +286,6 @@ The recursive identity \textbf{R} allows for \textbf{R}$\bm{\xi}$ to be applied 
 \bm{!} = \lambda x.\bm{\mathrm{R\xi}}x
 \end{equation*}
 
+\subsubsection{Conclusion}
 Our brief stroll through the key aspects of $\lambda$-Calculus is complete. We have defined that every basic necessary concept in a common programming language can be defined through the use of two simple axioms - that of the concept of functions, and the operation of substitution. $\lambda$-Calculus was described by Church as an 'effectively calculable' system, in that it could perform any calculable calculation. In more popular terms, it is Turing-complete - we will look at what this is and why this is the case later on in the project. However, it is clear to see that the Calculus is able to simulate many aspects of the computer - data storage with pairs (pairs of pairs can be used for larger capacity), conditionals and booleans, integers and arithmetic and, finally, the ability to be continuous (circular) from a finite configuration. This is our first definition of a 'computer', and therefore any mechanical or axiomatic system which is able to simulate $\lambda$-calculus is also a 'computer', and shall also be called 'effectively calculable'.
 \end{document}
