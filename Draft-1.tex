@@ -226,10 +226,39 @@ Of course now the subtraction function can be found (using \textbf{D} for differ
 \end{equation*}
 Bearing in mind the predecessor of \textbf{0} is \textbf{0}, this will produce \textbf{0} if $b>a$.
 \subsubsection{Further Conditional Logic}
+
 With this useful quirk of the \textbf{D} function, we can produce comparative logical operators:
-\begin{gather*}
+\begin{equation*}
 \begin{aligned}
-\bm{\leq} = \lambda ab.\bm{\mathrm{Z}}(Dab)
+\bm{\leq} &= \lambda ab.\bm{\mathrm{Z}}(\bm{\mathrm{D}}ab)
+  & % seperation
+\bm{\geq} &= \lambda ab.\bm{\mathrm{Z}}(\bm{\mathrm{D}}ba)
+  \\
+\bm{<} &= \lambda ab.\bm{\mathrm{Z}}(\bm{\mathrm{D}}a[Sb])
+  &
+\bm{>} &= \lambda ab.\bm{\mathrm{Z}}(\bm{\mathrm{D}}[Sb]a)
 \end{aligned}
-\end{gather*}
+\end{equation*}
+And through combination of these, we can create the equivalence and inequivalence operators (using $\bm{\doteq}$ for clarity from $=$:
+\begin{equation*}
+\begin{aligned}
+\bm{\doteq} &= \lambda ab.\wedge(\bm{\leq}ab)(\bm{\geq}ab)\\
+\bm{\neq} &= \lambda ab.\vee(\bm{<}ab)(\bm{>}ab)
+\end{aligned}
+\end{equation*}
+\subsubsection{Recursion}
+
+So far, Church's $\lambda$-Calculus is very close to the operation of a modern computation language. It has representation for boolean values, for conditional statements, for positive integers (signed integers can be expressed as a pair of a positive integer and a boolean for sign) and arithmetic, as well as set operations for booleans and comparators for integers - In fact, we are very close to our definition of computability save one thing. Continuity and repetition is one of the most significant aspects of computers, the power of this being the ability to transform a finite configuration into a potentially infinite result. This is done through one of the most remarkable functions in $\lambda$-Calculus, the recursor function:
+
+\begin{equation*}
+\bm{\mathrm{R}} = \lambda y.(\lambda x.y(xx))(\lambda x.y(xx)
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+\bm{\mathrm{R}}a &= (\lambda x.a(xx))[\lambda x.a(xx)]\\
+&= a([\lambda x.a(xx)][\lambda x.a(xx)]\\
+&= a(\bm{\mathrm{R}}a)
+\end{aligned}
+\end{equation*}
 \end{document}
