@@ -224,4 +224,12 @@ Of course now the subtraction function can be found (using \textbf{D} for differ
 \begin{equation*}
 \bm{\mathrm{D}} = \lambda ab.bPa
 \end{equation*}
+Bearing in mind the predecessor of \textbf{0} is \textbf{0}, this will produce \textbf{0} if $b>a$.
+\subsubsection{Further Conditional Logic}
+With this useful quirk of the \textbf{D} function, we can produce comparative logical operators:
+\begin{gather*}
+\begin{aligned}
+\bm{\leq} = \lambda ab.\bm{\mathrm{Z}}(Dab)
+\end{aligned}
+\end{gather*}
 \end{document}
