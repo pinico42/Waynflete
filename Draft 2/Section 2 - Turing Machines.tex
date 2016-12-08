@@ -1,7 +1,77 @@
 \documentclass[Master.tex]{subfiles}
 
+\usepackage{multirow, bigdelim}
+\usepackage{hhline}
+\usepackage{tabu}	
+\usepackage[bb=boondox]{mathalfa}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\renewcommand{\arraystretch}{1.5}
 
 \begin{document}
 
-Turing woo
+At roughly the same time, the English Mathematician Alan Turing was constructing a method to achieve the same goal, but in an entirely different way. Rather than building an incredibly simple axiomatic system to illustrate Effective Computability, the concept used was far more practical, and far closer to the mechanical computers that implemented this idea.
+
+The Turing Machine, or Finite State Machine (FSM), is composed of two parts: firstly, an ordered set of \textit{squares} of infinite length known as \textit{tape}, with a cursor at a certain point on this list, in which \textit{symbols} can be written for future use or output (much like random access memory on a modern computer); secondly, a set of states known as \textit{m-configurations}, each of which contain operations to be performed on the tape, and the \textit{m-configuration} that the FSM moves to. An example description of such a set would be:
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behaviour}} \\
+    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \hhline{====}
+    \multirow{1}{*}{$\mathbb{A}$} & None & P0, R & $\mathbb{B}$ \\
+    \hhline{----}
+    \multirow{1}{*}{$\mathbb{B}$} & None & R        & $\mathbb{C}$ \\
+    \hhline{----}
+    \multirow{1}{*}{$\mathbb{C}$} & None & P1, R & $\mathbb{D}$ \\
+    \hhline{----}
+    \multirow{1}{*}{$\mathbb{D}$} & None & R        & $\mathbb{A}$ \\
+\end{tabu}
+
+\noindent $\Rightarrow \mathbb{A}$
+
+\medskip
+
+This table format shall be used to describe FSM configurations. Firstly, the final line describes the starting \textit{m-configuration}. When the machine begins an interation on any one of these \textit{m-configurations}, it first checks if the symbol aspect of the configuration is equal to the \textit{symbol} currently under the cursor on the tape. If this condition is met, the operations are carried out - P\textit{n} for any symbol \textit{n} prints the symbol \textit{n} on the tape under the cursor; E erases any symbol under the cursor; L moves the cursor to the left; R moves the cursor to the right. When these operations are completed, the \textit{m-configuration} is set to that described in the last column. The FSM then moves to the next iteration.
+
+In this case, it is not difficult to see that as the machine runs, it leaves a sequence of alternating 0s and 1s on every other square on the tape. However, with the use of the \textit{symbol} condition, this table can be simplified:
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behaviour}} \\
+    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \hhline{====}
+    \multirow{3}{*}{$\mathbb{A}$} & None & P0          & $\mathbb{A}$ \\
+                                    & 0       & R, R, P1 & $\mathbb{A}$ \\ 
+                                    & 1       & R, R, P0 & $\mathbb{A}$ \\ 
+\end{tabu}
+
+\noindent $\Rightarrow \mathbb{A}$
+
+\medskip
+
+It is again not difficult to see that this produces the same output as the previous machine, but this time using only one \textit{m-configuration}. 
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behaviour}} \\
+    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \hhline{====}
+    \multirow{1}{*}{$\mathbb{Q}$} & Any & Pe, R Pe, R,  P0, R, R, P0, L, L   & $\mathbb{A}$ \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{A}$} & 1        & R, Px, L, L, L                                     & $\mathbb{A}$ \\
+                                                        & 0        &                                                           & $\mathbb{B}$ \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{B}$} & Any   & R, R                                                  & $\mathbb{B}$ \\
+                                                         & None & P1, L                                                 & $\mathbb{C}$ \\
+    \hhline{----}
+    \multirow{3}{*}{$\mathbb{C}$} & x        & E, R                                                  & $\mathbb{B}$ \\
+                                                         & e        & R                                                      & $\mathbb{D}$ \\
+                                                         & None & L, L                                                   & $\mathbb{C}$ \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{D}$} & Any    & R, R                                                  & $\mathbb{D}$ \\
+                                                          & None & P0, L, L                                            & $\mathbb{A}$ \\
+\end{tabu}
+
+\noindent $\Rightarrow \mathbb{Q}$
+
+\medskip
 \end{document}
