@@ -90,7 +90,7 @@ Multiplication can also be calculated by defining the function \textbf{M}:
 \end{gather*}
 We should rearrange our earlier addition method into an 'addition' function of the same format which takes two arguments:
 \begin{equation*}
-\bm{\mathrm{A}} = \lambda ab.aSb
+\bm{\mathrm{A}} = \lambda ab.a\bm{\mathrm{S}}b
 \end{equation*}
 
 A 'power' function to find $a^b$can also be defined, of astonishing simplicity:
@@ -132,8 +132,8 @@ These concepts are the base of conditional logic in computation, and in $\lambda
 where $a$ and $b$ are functions. For a choice of an element from the pair, the argument of either \textbf{T} or \textbf{F} is provided:
 \begin{gather*}
 \begin{aligned}
-(\lambda x.xab)T &= a\\
-(\lambda x.xab)F &= b
+(\lambda x.xab)\bm{\mathrm{T}} &= a\\
+(\lambda x.xab)\bm{\mathrm{F}} &= b
 \end{aligned}
 \end{gather*}
 
@@ -184,11 +184,11 @@ The elusive predecessor function was created by Stephen Kleene, a student of Chu
 
 Firstly, the function transforms the pair (n, n-1) (the argument $p$) into the pair (n+1, n) (the new pair's elements are an increment and a copy of the first value respectively):
 \begin{equation*}
-\bm{\psi} = \lambda pc.c(S(pT))(pT)
+\bm{\psi} = \lambda pc.c(\bm{\mathrm{S}}(p\bm{\mathrm{T}}))(p\bm{\mathrm{T}})
 \end{equation*}
 To find the predecessor to $n$ therefore, we apply this function $n$ times to the pair (0, 0) and the pair (n, n-1) is formed, after which the second element can easily be selected.
 \begin{equation*}
-\bm{\mathrm{P}} = \lambda n.n \bm{\psi} (\lambda x.00) F 
+\bm{\mathrm{P}} = \lambda n.n \bm{\psi} (\lambda x.\bm{\mathrm{00}}) \bm{\mathrm{F}} 
 \end{equation*}
 \begin{equation*}
 \begin{aligned}
@@ -206,7 +206,7 @@ To find the predecessor to $n$ therefore, we apply this function $n$ times to th
 
 Of course now the subtraction function can be found (using \textbf{D} for difference):
 \begin{equation*}
-\bm{\mathrm{D}} = \lambda ab.bPa
+\bm{\mathrm{D}} = \lambda ab.b\bm{\mathrm{P}}a
 \end{equation*}
 Bearing in mind the predecessor of \textbf{0} is \textbf{0}, this will produce \textbf{0} if $b>a$.
 \subsubsection{Further Conditional Logic}
@@ -235,19 +235,19 @@ And through combination of these, we can create the equivalence and inequivalenc
 So far, Church's $\lambda$-Calculus is very close to the operation of a modern computation language. It has representation for boolean values, for conditional statements, for positive integers (signed integers can be expressed as a pair of a positive integer and a boolean for sign) and arithmetic, as well as set operations for booleans and comparators for integers - In fact, we are very close to our definition of computability save one thing. Continuity and repetition is one of the most significant aspects of computers, the power of this being the ability to transform a finite configuration into a potentially infinite result. This is done through one of the most remarkable functions in $\lambda$-Calculus, the recursor function:
 
 \begin{equation*}
-\bm{\mathrm{R}} = \lambda y.(\lambda x.y(xx))(\lambda x.y(xx)
+\bm{\mathrm{R}} = \lambda y.(\lambda x.y(xx))(\lambda x.y(xx))
 \end{equation*}
 \begin{equation*}
 \begin{aligned}
 \bm{\mathrm{R}}a &= (\lambda x.a(xx))[\lambda x.a(xx)]\\
-&= a([\lambda x.a(xx)][\lambda x.a(xx)]\\
+&= a([\lambda x.a(xx)][\lambda x.a(xx)])\\
 &= a(\bm{\mathrm{R}}a)
 \end{aligned}
 \end{equation*}
 Therefore, the \textbf{R} function applied to any function $a$ applies the function $a$ to the function \textbf{R} applied to $a$ - if substitution continues, an infinite series of nested $a$ functions is created; an infinite result is produced from a finite configuration. Of course we can create finites as well by halting the function - an example of this would be the factorial function, where \textbf{!}a = \textbf{M}a(\textbf{!}[\textbf{P}a]) and \textbf{!0} = \textbf{1}. Firstly, a recursive definition:
 \begin{equation*}
 \begin{aligned}
-\bm{\mathrm{\xi}} &= (\lambda fa.\bm{\mathrm{Z}}a\bm{\mathrm{1}}[\bm{\mathrm{M}}a(f[\bm{\mathrm{P}}a])])\\
+\bm{\mathrm{\xi}} &= \lambda fa.\bm{\mathrm{Z}}a\bm{\mathrm{1}}[\bm{\mathrm{M}}a(f[\bm{\mathrm{P}}a])]\\
 \bm{!} &= \bm{\xi}!
 \end{aligned}
 \end{equation*}
@@ -255,8 +255,8 @@ i.e. the factorial function is the $\bm{\xi}$ function with itself as the argume
 \begin{equation*}
 \begin{aligned}
 \bm{\mathrm{R\xi 3}} &= \bm{\mathrm{\xi}}(\bm{\mathrm{R\xi}})\bm{\mathrm{3}}\\
-&= \bm{\mathrm{Z30}}[\bm{\mathrm{M3}}([\bm{\mathrm{R\xi}}][\bm{\mathrm{P3}}])\\
-&= \bm{\mathrm{M3}}(\bm{\mathrm{R\xi}}\bm{2})]\\
+&= \bm{\mathrm{Z30}}[\bm{\mathrm{M3}}([\bm{\mathrm{R\xi}}][\bm{\mathrm{P3}}])]\\
+&= \bm{\mathrm{M3}}(\bm{\mathrm{R\xi}}\bm{2})\\
 &= \bm{\mathrm{M3}}(\bm{\mathrm{M2}}(\bm{\mathrm{M11}}))\\
 &= \bm{\mathrm{6}}
 \end{aligned}
