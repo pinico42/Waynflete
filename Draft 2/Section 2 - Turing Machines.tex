@@ -163,21 +163,21 @@ In this section I will define a set of common \textit{m}-functions that will be 
     \hhline{----}
     $\mathbb{e}_1$(\textfrak{C}) & - & E & \textfrak{C}\\
     \hhline{====}
-    $\mathbb{l}$(\textfrak{C}) & - & L & \textfrak{C} \\
+    $\mathbb{l}$(\textfrak{C}) & - & L & \textfrak{C} & Moves cursor left\\
     \hhline{----}
-    $\mathbb{r}$(\textfrak{C}) & - & R & \textfrak{C} \\
+    $\mathbb{r}$(\textfrak{C}) & - & R & \textfrak{C} & Moves cursor right\\
     \hhline{====}
-    $\mathbb{fl}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{l}$(\textfrak{C}),\textfrak{E},\textit{a}) \\
+    $\mathbb{fl}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{l}$(\textfrak{C}),\textfrak{E},\textit{a}) & Moves to left of \textit{a} \\
     \hhline{----}
-    $\mathbb{fr}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{r}$(\textfrak{C}),\textfrak{E},\textit{a}) \\
+    $\mathbb{fr}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{r}$(\textfrak{C}),\textfrak{E},\textit{a}) & Moves to right of \textit{a} \\
     \hhline{====}
-    $\mathbb{p0}$(\textfrak{C}) & - & P0 & \textfrak{C} \\
+    $\mathbb{p0}$(\textfrak{C}) & - & P0 & \textfrak{C} & Prints \texttt{0} \\
     \hhline{----}
-    $\mathbb{p1}$(\textfrak{C}) & - & P1 & \textfrak{C} \\
+    $\mathbb{p1}$(\textfrak{C}) & - & P1 & \textfrak{C} & Prints \texttt{0} \\
     \hhline{====}
-    $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$($\mathbb{n}_1$(\textfrak{C}),\textfrak{E},e) \\
+    $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$($\mathbb{n}_1$(\textfrak{C}),\textfrak{E},e) & \multirow{3}{80pt}{Moves to first empty (final) \textit{p}-square} \\
     \hhline{----}
-    \multirow{2}{*}{$\mathbb{n}_1$(\textfrak{C})} & Any  & RR & $\mathbb{n}_1$(\textfrak{C}) \\
+    \multirow{2}{*}{$\mathbb{n}_1$(\textfrak{C})} & Any  & R R & $\mathbb{n}_1$(\textfrak{C}) \\
                                                   & None & - & \textfrak{C} \\
     \hhline{====}
 \end{tabu}
@@ -186,18 +186,24 @@ In this section I will define a set of common \textit{m}-functions that will be 
 
 \subsubsection{Data Structures and Pointers}
 
-At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store more complex information, from integers to strings of characters to images, as binary sequences of \textit{p}-square \texttt{0}s and \texttt{1}s - these shall be stored on the tape as memory. The first data structure we shall define is the simple boolean - only 1 bit (1 \textit{p}-square) long. In order to identify these sequences on the tape as booleans, we shall mark the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define an \textit{m}-function to deal with assignments for the boolean type:
+At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store more complex information, from integers to strings of characters to images, as binary sequences of \textit{p}-square \texttt{0}s and \texttt{1}s - these shall be stored on the tape as memory. The first data structure we shall define is the simple boolean - only 1 bit (1 \textit{p}-square) long. In order to identify these sequences on the tape as booleans, we shall mark the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define some \textit{m}-functions to define and assign values to variables of the boolean type:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
+    $\mathbb{\mathbf{b}def}$(\textit{p},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{n}$($\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C}),\textfrak{E}) \\
+    $\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C})   & - & R P\textit{p} L & \textfrak{C} \\
+    \hhline{====}
     $\mathbb{\mathbf{b}copy}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E}),\textfrak{E},\textit{r}) \\
     \hhline{----}
-    \multirow{2}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & 0 & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
-                                                                                       & 1 & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+    \multirow{3}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & 0 & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+                                                                                       & 1 & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
+                                                                                       & other, none & - & \textfrak{E} \\
 \end{tabu}
 
 \medskip
+
+This taks two pointers, \textit{r} and \textit{w} as arguments which point to the boolean to be read and the boolean to be written
 
 \end{document}
