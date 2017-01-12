@@ -1,5 +1,7 @@
 \documentclass[Master.tex]{subfiles}
 
+\crefname{section}{§}{§§}
+\Crefname{section}{§}{§§}
 
 \renewcommand{\arraystretch}{1.5}
 
@@ -7,7 +9,8 @@
 
 At roughly the same time, the English Mathematician Alan Turing was constructing a method to achieve the same goal, but in an entirely different way. Rather than building an incredibly simple axiomatic system to illustrate Effective Computability, the concept used was far more practical, and far closer to the mechanical computers that implemented this idea.
 
-The Turing Machine, or Finite State Machine (FSM), is composed of two parts: firstly, an ordered set of \textit{squares} of infinite length known as \textit{tape}, with a cursor at a certain point on this list, in which \textit{symbols} can be written for future use or output (much like random access memory on a modern computer); secondly, a set of states known as \textit{m-configurations}, each of which contain operations to be performed on the tape, and the \textit{m-configuration} that the FSM moves to. An example description of such a set would be:
+\subsubsection{Examples of simple Finite State Machines}\label{sec:FSMintro}
+The Turing Machine, or Finite State Machine (FSM), is composed of two parts: firstly, an ordered set of \textit{squares} of infinite length known as \textit{tape}, with a cursor at a certain point on this list, in which \textit{symbols} can be written for future use or output (much like random access memory on a modern computer); secondly, a set of states known as \textit{m}-configurations, each of which contain operations to be performed on the tape, and the \textit{m-configuration} that the FSM moves to. An example description of such a set would be:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
@@ -26,7 +29,7 @@ The Turing Machine, or Finite State Machine (FSM), is composed of two parts: fir
 
 \medskip
 
-This table format shall be used to describe FSM configurations. Firstly, the final line describes the starting \textit{m-configuration}. When the machine begins an iteration on any one of these \textit{m-configurations}, it first checks if the symbol aspect of the configuration is equal to the \textit{symbol} currently under the cursor on the tape. If this condition is met, the operations are carried out - P\textit{n} for any symbol \textit{n} prints the symbol \textit{n} on the tape under the cursor; E erases any symbol under the cursor; L moves the cursor to the left; R moves the cursor to the right. When these operations are completed, the \textit{m-configuration} is set to that described in the last column. The FSM then moves to the next iteration.
+This table format shall be used to describe FSM configurations. Firstly, the final line describes the starting \textit{m}-configuration. When the machine begins an iteration on any one of these \textit{m}-configurations, it first checks if the symbol aspect of the configuration is equal to the \textit{symbol} currently under the cursor on the tape. If this condition is met, the operations are carried out - P\textit{n} for any symbol \textit{n} prints the symbol \textit{n} on the tape under the cursor; E erases any symbol under the cursor; L moves the cursor to the left; R moves the cursor to the right. When these operations are completed, the \textit{m}-configuration is set to that described in the last column. The FSM then moves to the next iteration.
 
 In this case, it is not difficult to see that as the machine runs, it leaves a sequence of alternating 0s and 1s on every other square on the tape. However, with the use of the \textit{symbol} condition, this table can be simplified:
 
@@ -43,7 +46,9 @@ In this case, it is not difficult to see that as the machine runs, it leaves a s
 
 \medskip
 
-It is again not difficult to see that this produces the same output as the previous machine, but this time using only one \textit{m-configuration}. 
+It is again not difficult to see that this produces the same output as the previous machine, but this time using only one \textit{m-configuration}.
+
+An example of a more complex FSM is shown below, which generates the sequence \texttt{010110111011110111110...} again on alternate squares, beginning at the fifth square.
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
@@ -70,37 +75,58 @@ It is again not difficult to see that this produces the same output as the previ
 
 \medskip
 
-blah
+The operation of such a machine is significantly more complex than the earlier one. Key to the operation of this machine is the fact that squares are paired into primary squares or \textit{p}-squares (odd-numbered squares) on which the symbols of the output sequence are printed. Only the symbols \texttt{0} and \texttt{1} will be printed on these squares, and printed symbols will never be erased. To the right of each \textit{p}-square is a secondary square, or \textit{s}-square (an even-numbered square). These squares will either be left empty or will contain a 'marker' symbol, which marks the symbol on the \textit{p}-square to the left. These symbols can be erased and overwritten, and are not part of the output sequence. Only one \textit{s}-square is needed to contain multiple markers, or more descriptive markers for a single \textit{p}-square, as this can be achieved with a sufficiently large array of marker symbols.
+
+This machine operates by first printing the symbols \texttt{e e 0} at the start of the tape, before printing the first \texttt{0} of the sequence on the fifth square, finishing on the third square and moving to state $\mathbb{A}$. (in future I shall represent this finishing state as $\rightarrow \mathbb{A}$).
+
+If $\mathbb{A}$ is triggered, every \texttt{1} consecutively to the left of the cursor inclusively will be marked with \texttt{x}, $\rightarrow \mathbb{B}$.
+
+If $\mathbb{B}$ is triggered, the symbol \texttt{1} is appended to the output sequence, $\rightarrow \mathbb{C}$.
+
+If $\mathbb{C}$ is triggered, the cursor moves leftwards through the markers: if an \texttt{x} is found it is erased and $\rightarrow \mathbb{B}$; if the cursor reaches the beginning (an \texttt{e} is found) $\rightarrow \mathbb{D}$.
+
+If $\mathbb{D}$ is triggered, the symbol \texttt{0} is appended to the output sequence, the cursor moves to the previous \textit{p}-square and $\rightarrow \mathbb{A}$.
+
+The workings of this algorithm are mostly in states $\mathbb{A}$ and $\mathbb{C}$: after the \texttt{0} is drawn $\mathbb{A}$ draws a number of \texttt{x} symbols equal to the previous number of \texttt{1} symbols drawn. $\mathbb{C}$ triggers $\mathbb{B}$ a number of times equal to the number of found \texttt{x} symbols before drawing a \texttt{0} - as $\mathbb{B}$ has already been triggered once, a number of \texttt{1} symbols will be drawn which is one more than the previous number drawn. For clarity in the comprehension of this somewhat abstract algorithm, some of the early states have been listed on the next page. Empty squares are represented by dots ($\cdot$) and the tape states continue in columns. An ellipsis marks the omission of a set of states which are implied or trivial.
 
 \begin{equation*}
 \begin{aligned}
-&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{A}\\
-&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
-&\mathtt{e\ e\ 0\ \underset{\uparrow}{\cdot}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\\
-&\mathtt{e\ \underset{\uparrow}{e}\ 0\ \cdot\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\\
-&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0\ \cdot\ 1} & \rightarrow \mathbb{D}\\
-&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{D}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}} & \rightarrow \mathbb{D}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{A}\\
-&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{A}\\
-&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ x\ 0} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ \underset{\uparrow}{0}} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{x}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
-&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{A}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{A}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{A}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 1\ x\ 0} & \rightarrow \mathbb{A}\\
+&\mathtt{e\ e\ 0\ \underset{\uparrow}{\cdot}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 1\ x\ 0} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ \underset{\uparrow}{e}\ 0\ \cdot\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0\ \cdot\ 1} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ x\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ x\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \underset{\uparrow}{x}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{A}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{A}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ x\ 0} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ \underset{\uparrow}{0}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{x}\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{x}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ \underset{\uparrow}{e}\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{D}\\
+&...& &...&\\
+&\mathtt{e\ \underset{\uparrow}{e}\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\\
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{D}\\
 \end{aligned}
 \end{equation*}
 
-blah
+\clearpage
+
+It is clear from this example that the operation of the FSM is very different from that of an ordinary computer. However, the core components are still mostly present - conditionals in the form of the symbol tests in the second column, variables in the form of markers, and continuity and looping when a state triggers itself - a form of recursion. The end result is the same - a solution is produced in the form of the computable sequence written on the \textit{p}-squares, and the machine can continue this sequence without halting indefinitely. Unfortunately, the operation of this machine is somewhat complex and involved. To simplify the usage of the FSM, we will introduce a type of function for the FSM.
+
+\subsubsection{\textit{M}-functions}\label{sec:mfunctions}
+
+\textit{M}-functions are effectively an extension of \textit{m}-configurations. They are described by a lowercase letter and a set of arguments contained in brackets - arguments in gothic script refer to \textit{m}-configurations (or other \textit{m}-functions), and arguments in italics refer to symbols. When an \textit{m}-function is triggered, the italic and gothic symbols in the description are substituted by the supplied arguments (much like in $\lambda$-calculus). An example of an \textit{m}-function would be the function $\mathbb{f}$ below:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
@@ -120,5 +146,57 @@ blah
 
 \medskip
 
-blah
+The function $\mathbb{f}$ takes three arguments - the \textit{m}-configurations \textfrak{C} and \textfrak{E} and the symbol \textit{a}. It is not difficult to see that if $\rightarrow \mathbb{f}$($\mathbb{A}$,$\mathbb{B}$,x) the cursor would trigger $\mathbb{A}$ at the leftmost occurrence of \texttt{x}. If no symbols \texttt{x} were found, \textfrak{E} would be triggered on the marker of the first empty \textit{p}-square.
+
+The use of \textit{m}-functions greatly simplifies the table descriptions, as certain operations are common to many machines. Of course, any table description that includes or refers to \textit{m}-functions can be written as an ordinary table as described in \cref{sec:FSMintro}. This is possible because of the finite nature of both symbols and \textit{m}-configurations; simply by listing in separate rows under the same \textit{m}-configuration every permutation of symbols and \textit{m}-configurations that the function could possibly take substituted in.
+
+\subsubsection{Common Operations}
+
+In this section I will define a set of common \textit{m}-functions that will be used regularly in future.
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
+    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \hhline{====}
+    $\mathbb{e}$(\textfrak{C},\textfrak{E},\textit{a}) & - & - & $\mathbb{f}$($\mathbb{e}_1$(\textfrak{C}),\textfrak{E},\textit{a}) & \multirow{2}{80pt}{Erases first occurrence of symbol \textit{a}} \\
+    \hhline{----}
+    $\mathbb{e}_1$(\textfrak{C}) & - & E & \textfrak{C}\\
+    \hhline{====}
+    $\mathbb{l}$(\textfrak{C}) & - & L & \textfrak{C} \\
+    \hhline{----}
+    $\mathbb{r}$(\textfrak{C}) & - & R & \textfrak{C} \\
+    \hhline{====}
+    $\mathbb{fl}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{l}$(\textfrak{C}),\textfrak{E},\textit{a}) \\
+    \hhline{----}
+    $\mathbb{fr}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{r}$(\textfrak{C}),\textfrak{E},\textit{a}) \\
+    \hhline{====}
+    $\mathbb{p0}$(\textfrak{C}) & - & P0 & \textfrak{C} \\
+    \hhline{----}
+    $\mathbb{p1}$(\textfrak{C}) & - & P1 & \textfrak{C} \\
+    \hhline{====}
+    $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$($\mathbb{n}_1$(\textfrak{C}),\textfrak{E},e) \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{n}_1$(\textfrak{C})} & Any  & RR & $\mathbb{n}_1$(\textfrak{C}) \\
+                                                  & None & - & \textfrak{C} \\
+    \hhline{====}
+\end{tabu}
+
+\medskip
+
+\subsubsection{Data Structures and Pointers}
+
+At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store more complex information, from integers to strings of characters to images, as binary sequences of \textit{p}-square \texttt{0}s and \texttt{1}s - these shall be stored on the tape as memory. The first data structure we shall define is the simple boolean - only 1 bit (1 \textit{p}-square) long. In order to identify these sequences on the tape as booleans, we shall mark the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define an \textit{m}-function to deal with assignments for the boolean type:
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
+    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \hhline{====}
+    $\mathbb{\mathbf{b}copy}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E}),\textfrak{E},\textit{r}) \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & 0 & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+                                                                                       & 1 & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+\end{tabu}
+
+\medskip
+
 \end{document}
