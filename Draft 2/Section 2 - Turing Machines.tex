@@ -91,7 +91,6 @@ The workings of this algorithm are mostly in states $\mathbb{A}$ and $\mathbb{C}
 
 \begin{equation*}
 \begin{aligned}
-<<<<<<< HEAD
 &\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{A}\ \ \ \ \ \ \ \ \ \ & ...&\\
 &\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\\
 &\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{A}\\
@@ -177,7 +176,7 @@ In this section I will define a set of common \textit{m}-functions that will be 
     \hhline{====}
     $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$($\mathbb{n}_1$(\textfrak{C}),\textfrak{E},e) & \multirow{3}{80pt}{Moves to first empty (final) \textit{p}-square} \\
     \hhline{----}
-    \multirow{2}{*}{$\mathbb{n}_1$(\textfrak{C})} & Any  & R R & $\mathbb{n}_1$(\textfrak{C}) \\
+    \multirow{2}{*}{$\mathbb{n}_1$(\textfrak{C})} & Any  & R, R & $\mathbb{n}_1$(\textfrak{C}) \\
                                                   & None & - & \textfrak{C} \\
     \hhline{====}
 \end{tabu}
@@ -193,7 +192,7 @@ At this point, the similarity between Turing machines and modern computers becom
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
     $\mathbb{\mathbf{b}def}$(\textit{p},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{n}$($\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C}),\textfrak{E}) \\
-    $\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C})   & - & R P\textit{p} L & \textfrak{C} \\
+    $\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C})   & - & P0, R, P\textit{p}, L & \textfrak{C} \\
     \hhline{====}
     $\mathbb{\mathbf{b}copy}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E}),\textfrak{E},\textit{r}) \\
     \hhline{----}
@@ -204,6 +203,6 @@ At this point, the similarity between Turing machines and modern computers becom
 
 \medskip
 
-This taks two pointers, \textit{r} and \textit{w} as arguments which point to the boolean to be read and the boolean to be written
+The first takes one pointer \textit{p}, finds the first free bit (\textit{p}-square) on the tape, writes the dummy value of \texttt{0} to it and marks it with \textit{p}. This method of assumption - appending
 
 \end{document}
