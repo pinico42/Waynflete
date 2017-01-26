@@ -203,6 +203,20 @@ At this point, the similarity between Turing machines and modern computers becom
 
 \medskip
 
-The first takes one pointer \textit{p}, finds the first free bit (\textit{p}-square) on the tape, writes the dummy value of \texttt{0} to it and marks it with \textit{p}. This method of assumption - appending
+The first takes one pointer \textit{p}, finds the first free bit (\textit{p}-square) on the tape, writes the dummy value of \texttt{0} to it and marks it with \textit{p}. This method of appendng makes the assumption that no \textit{p}-squares are left empty across the used tape - in order to preserve this, we shall only append to \textit{p}-squares directly at the end of the used tape, and we shall never erase \textit{p}-squares. The second very simply finds the bit at pointer \textit{r}, and branches to write either \texttt{0} or \texttt{1} at the bit at the pointer \textit{w}
+
+Next, similar to as we did in $\lambda$-calculus, we shall define boolean operations. Every operation will take one or many pointers as arguments, and write the evaluated result to another given pointer. The simplest of these we can create is the negator:
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    $\mathbb{\mathbf{b}neg}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
+    \hhline{----}
+    \multirow{3}{*}{$\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C},\textfrak{E})} & 0 & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+                                                                                       & 1 & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
+                                                                                       & other, none & - & \textfrak{E} \\
+\end{tabu}
+
+\medskip
+
+This is almost identical to the copying function, but inverting the written symbols.56
 
 \end{document}
