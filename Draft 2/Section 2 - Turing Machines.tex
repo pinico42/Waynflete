@@ -244,9 +244,6 @@ This is almost identical to the copying function, but inverting the written symb
 
 \medskip
 In each of these, the first argument \textit{a} is observed, and an action which either writes a \texttt{1} or \texttt{0}, or copies or negates from \textit{b} depending on the truth tables, in a very similar manner to $\lambda$-calculus. Gradually, the cryptic and simplified language of Finite State Machines is yielding results similar to that of a computer.
-
-\subsubsection{Simplified Configurations}
-
 As we have moved into more and more complex FSM functions, it can be noted that the middle two columns of the FSM are becoming gradually more scarce - this is due to the fact that their operation can be entirely represented within \textit{m}-functions. We have started doing so with the functions $\mathbb{l}$, $\mathbb{r}$, $\mathbb{p0}$, and $\mathbb{p1}$ - furthermore, it is not difficult to create conditional functions to replicate the operation of the second column.
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
@@ -260,6 +257,18 @@ As we have moved into more and more complex FSM functions, it can be noted that 
 \medskip
 
 The function $\mathbb{if}$ takes a symbol argument, which is compared to the symbol under the cursor - if they are the same, the machine $\rightarrow \mathbb{I}$; if not the machine $\rightarrow \mathbb{O}$.
-Since we have now entirely defined the operation of the machine in terms of functions, we no longer have any need for tables. 
+Since we have now entirely defined the operation of the machine in terms of functions (as loops can be done with recursion), we no longer have any need for tables - in effect, we have built a purely functional programming language in terms of a simple finite state machine. Now, in order to define more \textit{m}-functions we no longer have to write a table:
 
+\begin{lstlisting}
+ifp(r,c,I,O,E) = fl(
+    if(c,
+        I,
+        O
+    ),
+    E,
+    r
+)
+\end{lstlisting}
+
+Admittedly not the cleanest syntax, but still a simple one.
 \end{document}
