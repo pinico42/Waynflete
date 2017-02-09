@@ -160,21 +160,23 @@ In this section I will define a set of common \textit{m}-functions that will be 
     \hhline{====}
     $\mathbb{e}$(\textit{a}, \textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$(\textit{a}, $\mathbb{e}_1$(\textfrak{C}), \textfrak{E}) & \multirow{2}{80pt}{Erases first occurrence of symbol \textit{a}} \\
     \hhline{----}
-    $\mathbb{e}_1$(\textfrak{C}) & - & E & \textfrak{C}\\
+    $\mathbb{e}_1$(\textfrak{C}, \textfrak{E}) & - & E & \textfrak{C}\\
     \hhline{====}
-    $\mathbb{l}$(\textfrak{C}) & - & L & \textfrak{C} & Moves cursor left\\
+    $\mathbb{l}$(\textfrak{C}, \textfrak{E}) & - & L & \textfrak{C} & Moves cursor left\\
     \hhline{----}
-    $\mathbb{r}$(\textfrak{C}) & - & R & \textfrak{C} & Moves cursor right\\
+    $\mathbb{r}$(\textfrak{C}, \textfrak{E}) & - & R & \textfrak{C} & Moves cursor right\\
     \hhline{====}
-    $\mathbb{fl}$(\textit{a}, \textfrak{C}, \textfrak{e}) & - & - & $\mathbb{f}$($\mathbb{l}$(\textit{a}, \textfrak{C}), \textfrak{E}) & Moves to left of \textit{a} \\
+    $\mathbb{fl}$(\textit{a}, \textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$(\textit{a}, $\mathbb{l}$(\textfrak{C}), \textfrak{E}) & Moves to left of \textit{a} \\
     \hhline{----}
-    $\mathbb{fr}$(\textit{a}, \textfrak{C}, \textfrak{e}) & - & - & $\mathbb{f}$($\mathbb{r}$(\textit{a}, \textfrak{C}), \textfrak{E}) & Moves to right of \textit{a} \\
+    $\mathbb{fr}$(\textit{a}, \textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$(\textit{a}, $\mathbb{r}$(\textfrak{C}), \textfrak{E}) & Moves to right of \textit{a} \\
     \hhline{====}
-    $\mathbb{p0}$(\textfrak{C}) & - & P\texttt{0} & \textfrak{C} & Prints \texttt{0} \\
+    $\mathbb{p0}$(\textfrak{C}, \textfrak{E}) & - & P\texttt{0} & \textfrak{C} & Prints \texttt{0} \\
     \hhline{----}
-    $\mathbb{p1}$(\textfrak{C}) & - & P\texttt{1} & \textfrak{C} & Prints \texttt{0} \\
+    $\mathbb{p1}$(\textfrak{C}, \textfrak{E}) & - & P\texttt{1} & \textfrak{C} & Prints \texttt{0} \\
+    \hhline{----}
+    $\mathbb{ps}$(\textit{s},\textfrak{C}, \textfrak{E}) & - & P\textit{s} & \textfrak{C} & Prints \texttt{0} \\
     \hhline{====}
-    $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$($\mathbb{n}_1$(\texttt{e}, \textfrak{C}), \textfrak{E}) & \multirow{3}{80pt}{Moves to first empty (final) \textit{p}-square} \\
+    $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$(\texttt{e}, $\mathbb{n}_1$(\textfrak{C}), \textfrak{E}) & \multirow{3}{80pt}{Moves to first empty (final) \textit{p}-square} \\
     \hhline{----}
     \multirow{2}{*}{$\mathbb{n}_1$(\textfrak{C})} & Any  & R, R & $\mathbb{n}_1$(\textfrak{C}) \\
                                                   & None & - & \textfrak{C} \\
@@ -191,14 +193,14 @@ At this point, the similarity between Turing machines and modern computers becom
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
-    $\mathbb{\mathbf{b}def}$(\textit{p},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{n}$($\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C}),\textfrak{E}) \\
-    $\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C})   & - & P\texttt{0}, R, P\textit{p}, L & \textfrak{C} \\
+    $\mathbb{\mathbf{b}def}$(\textit{p}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{n}$($\mathbb{\mathbf{b}def}_1$(\textit{p}, \textfrak{C}), \textfrak{E}) \\
+    $\mathbb{\mathbf{b}def}_1$(\textit{p}, \textfrak{C})   & - & P\texttt{0}, R, P\textit{p}, L & \textfrak{C} \\
     \hhline{====}
-    $\mathbb{\mathbf{b}copy}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E}),\textfrak{E},\textit{r}) \\
+    $\mathbb{\mathbf{b}copy}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}copy}_1$(\textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}, \textit{r}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
-                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
-                                                                                       & other & - & \textfrak{E} \\
+    \multirow{3}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\ 
+                                                                                       & Other & - & \textfrak{E} \\
 \end{tabu}
 
 \medskip
@@ -210,64 +212,64 @@ The first takes one pointer \textit{p}, finds the first free bit (\textit{p}-squ
 As we did in $\lambda$-calculus, we shall define boolean operations. Every operation will take one or many pointers as arguments, and write the evaluated result to another given pointer. The simplest of these we can create is the negator:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
-    $\mathbb{\mathbf{b}neg}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
+    $\mathbb{\mathbf{b}neg}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
-                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
-                                                                                       & other & - & \textfrak{E} \\
+    \multirow{3}{*}{$\mathbb{\mathbf{b}neg}_1$(\textit{w}, \textfrak{C}, \textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}, \textfrak{E}), \textfrak{E}, \textit{w}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}, \textfrak{E}), \textfrak{E}, \textit{w}) \\ 
+                                                                                       & Other & - & \textfrak{E} \\
 \end{tabu}
 
 \medskip
 This is almost identical to the copying function, but inverting the written symbols. The definition of the remaining logical functions based on truth tables now becomes simple:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
-    $\mathbb{\mathbf{b}and}$(\textit{a},\textit{b},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}and}_1$(\textit{b},\textit{w},\textfrak{C}),\textfrak{E}) \\
+    $\mathbb{\mathbf{b}and}$(\textit{a}, \textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}and}_1$(\textit{b}, \textit{w}, \textfrak{C}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}and}_1$(\textit{b},\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
-                                                                                       & \texttt{1} & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\ 
-                                                                                       & other & - & \textfrak{E} \\
+    \multirow{3}{*}{$\mathbb{\mathbf{b}and}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{\mathbf{b}copy}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\ 
+                                                                                       & Other & - & \textfrak{E} \\
     \hhline{====}
-    $\mathbb{\mathbf{b}or}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}or}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
+    $\mathbb{\mathbf{b}or}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}or}_1$(\textit{w}, \textfrak{C}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}or}_1$(\textit{w},\textfrak{C},\textfrak{E})} 
-                                                                                       & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\
-                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
-                                                                                       & other & - & \textfrak{E} \\
+    \multirow{3}{*}{$\mathbb{\mathbf{b}or}_1$(\textit{w}, \textfrak{C}, \textfrak{E})} 
+                                                                                       & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\ 
+                                                                                       & Other & - & \textfrak{E} \\
     \hhline{====}
-    $\mathbb{\mathbf{b}xor}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}xor}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
+    $\mathbb{\mathbf{b}xor}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}xor}_1$(\textit{w}, \textfrak{C}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}xor}_1$(\textit{w},\textfrak{C},\textfrak{E})} 
-                                                                                       & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\
-                                                                                       & \texttt{1} & - &  $\mathbb{\mathbf{b}not}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\ 
-                                                                                       & other & - & \textfrak{E} \\
+    \multirow{3}{*}{$\mathbb{\mathbf{b}xor}_1$(\textit{w}, \textfrak{C}, \textfrak{E})} 
+                                                                                       & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\
+                                                                                       & \texttt{1} & - &  $\mathbb{\mathbf{b}not}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\ 
+                                                                                       & Other & - & \textfrak{E} \\
 \end{tabu}
 
 \medskip
 In each of these, the first argument \textit{a} is observed, and an action which either writes a \texttt{1} or \texttt{0}, or copies or negates from \textit{b} depending on the truth tables, in a very similar manner to $\lambda$-calculus. Gradually, the cryptic and simplified language of Finite State Machines is yielding results similar to that of a computer.
+
+\subsubsection{Scripted Configurations}
 As we have moved into more and more complex FSM functions, it can be noted that the middle two columns of the FSM are becoming gradually more scarce - this is due to the fact that their operation can be entirely represented within \textit{m}-functions. We have started doing so with the functions $\mathbb{l}$, $\mathbb{r}$, $\mathbb{p0}$, and $\mathbb{p1}$ - furthermore, it is not difficult to create conditional functions to replicate the operation of the second column.
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
-    \multirow{2}{*}{$\mathbb{if}$(\textit{c},\textfrak{I},\textfrak{O})} 
+    \multirow{2}{*}{$\mathbb{if}$(\textit{c}, \textfrak{I}, \textfrak{O})} 
                                                                                        & \textit{c} & - & \textfrak{I} \\
-                                                                                       & other & - & \textfrak{O} \\ 
+                                                                                       & Other & - & \textfrak{O} \\ 
     \hhline{====}
-    $\mathbb{ifp}$(\textit{r},\textit{c},\textfrak{I},\textfrak{O}, \textfrak{E}) & - & - & $\mathbb{fl}$($\mathbb{if}$(\textit{c}, \textfrak{I}, \textfrak{O}), \textfrak{E}, \textit{r}) \\
+    $\mathbb{ifp}$(\textit{r}, \textit{c}, \textfrak{I}, \textfrak{O}, \textfrak{E}) & - & - & $\mathbb{fl}$($\mathbb{if}$(\textit{c}, \textfrak{I}, \textfrak{O}), \textfrak{E}, \textit{r}) \\
 \end{tabu}
 
 \medskip
 
-The function $\mathbb{if}$ takes a symbol argument, which is compared to the symbol under the cursor - if they are the same, the machine $\rightarrow \mathbb{I}$; if not the machine $\rightarrow \mathbb{O}$.
-Since we have now entirely defined the operation of the machine in terms of functions (as loops can be done with recursion), we no longer have any need for the central two table columns. In continuing to define functions, we could simply choose to omit these columns, or even omit the table altogether and use a more common notation - in this case, for a definition of the if function but based on pointers: 
+The function $\mathbb{if}$ takes a symbol argument, which is compared to the symbol under the cursor - if they are the same, the machine $\rightarrow$ \textfrak{O}; if not the machine $\rightarrow$ \textfrak{O}.
+Since we have now entirely defined the operation of the machine in terms of \textit{m}-functions, we no longer have any need for the central two table columns. In continuing to define \textit{m}-functions, we could simply choose to omit these columns, or even omit the table altogether and use a more common notation - in this case, for a definition of the if function but based on pointers: 
 
 \begin{lstlisting}
-ifp(r,c,I,O,E) = fl(
-    if(c,
-        I,
-        O
-    ),
-    E,
-    r
+ifp(r, c, I, O, E) = fl(r,
+    if(c, I, O), E
 )
 \end{lstlisting}
-While this syntax is more concise, it is still somewhat obfuscated. Therefore, we will use our function method to define what is effectively a programming language.
+
+While this syntax is more concise, it is still somewhat obfuscated. Therefore, we will use our function method to define what is effectively a list of commands for the machine which will be executed in order. The main difference in this system is that, as the \textfrak{C} argument is always the function that must be run when that function is completed (except in the case of the conditional function), on interpretation of the language the entire operation of the machine after that point must be passed as the \textfrak{C} argument to that 
+
+
 \end{document}
