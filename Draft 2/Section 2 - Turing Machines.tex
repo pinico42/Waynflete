@@ -16,11 +16,11 @@ The Turing Machine, or Finite State Machine (FSM), is composed of two parts: fir
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
-    \multirow{1}{*}{$\mathbb{A}$} & None & P0, R & $\mathbb{B}$ \\
+    \multirow{1}{*}{$\mathbb{A}$} & None & P\texttt{0}, R & $\mathbb{B}$ \\
     \hhline{----}
     \multirow{1}{*}{$\mathbb{B}$} & None & R     & $\mathbb{C}$ \\
     \hhline{----}
-    \multirow{1}{*}{$\mathbb{C}$} & None & P1, R & $\mathbb{D}$ \\
+    \multirow{1}{*}{$\mathbb{C}$} & None & P\texttt{1}, R & $\mathbb{D}$ \\
     \hhline{----}
     \multirow{1}{*}{$\mathbb{D}$} & None & R     & $\mathbb{A}$ \\
 \end{tabu}
@@ -37,9 +37,9 @@ In this case, it is not difficult to see that as the machine runs, it leaves a s
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
-    \multirow{3}{*}{$\mathbb{A}$} & None & P0       & $\mathbb{A}$ \\
-                                  & 0    & R, R, P1 & $\mathbb{A}$ \\ 
-                                  & 1    & R, R, P0 & $\mathbb{A}$ \\ 
+    \multirow{3}{*}{$\mathbb{A}$} & None & P\texttt{0}       & $\mathbb{A}$ \\
+                                  & \texttt{0}    & R, R, P\texttt{1} & $\mathbb{A}$ \\ 
+                                  & \texttt{1}    & R, R, P\texttt{0} & $\mathbb{A}$ \\ 
 \end{tabu}
 
 \noindent $\Rightarrow \mathbb{A}$
@@ -54,20 +54,20 @@ An example of a more complex FSM is shown below, which generates the sequence \t
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
-    \multirow{1}{*}{$\mathbb{Q}$} & Any  & Pe, R Pe, R,  P0, R, R, P0, L, L & $\mathbb{A}$ \\
+    \multirow{1}{*}{$\mathbb{Q}$} & Any        & P\texttt{e}, R P\texttt{e}, R,  P\texttt{e}, R, R, P\texttt{0}, L, L & $\mathbb{A}$ \\
     \hhline{----}
-    \multirow{2}{*}{$\mathbb{A}$} & 1    & R, Px, L, L, L                   & $\mathbb{A}$ \\
-                                  & 0    &                                  & $\mathbb{B}$ \\
+    \multirow{2}{*}{$\mathbb{A}$} & \texttt{1} & R, P\texttt{x}, L, L, L                   & $\mathbb{A}$ \\
+                                  & \texttt{1} &                                  & $\mathbb{B}$ \\
     \hhline{----}
-    \multirow{2}{*}{$\mathbb{B}$} & Any  & R, R                             & $\mathbb{B}$ \\
-                                  & None & P1, L                            & $\mathbb{C}$ \\
+    \multirow{2}{*}{$\mathbb{B}$} & Any        & R, R                             & $\mathbb{B}$ \\
+                                  & None       & P\texttt{1}, L                            & $\mathbb{C}$ \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{C}$} & x    & E, R                             & $\mathbb{B}$ \\
-                                  & e    & R                                & $\mathbb{D}$ \\
-                                  & None & L, L                             & $\mathbb{C}$ \\
+    \multirow{3}{*}{$\mathbb{C}$} & \texttt{x} & E, R                             & $\mathbb{B}$ \\
+                                  & \texttt{e} & R                                & $\mathbb{D}$ \\
+                                  & None       & L, L                             & $\mathbb{C}$ \\
     \hhline{----}
-    \multirow{2}{*}{$\mathbb{D}$} & Any  & R, R                             & $\mathbb{D}$ \\
-                                  & None & P0, L, L                         & $\mathbb{A}$ \\
+    \multirow{2}{*}{$\mathbb{D}$} & Any        & R, R                             & $\mathbb{D}$ \\
+                                  & None       & P\texttt{0}, L, L                         & $\mathbb{A}$ \\
 \end{tabu}
 
 \noindent $\Rightarrow \mathbb{Q}$
@@ -132,15 +132,15 @@ It is clear from this example that the operation of the FSM is very different fr
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
-    \multirow{2}{*}{$\mathbb{f}$(\textfrak{C},\textfrak{E},\textit{a})}   & e              & L & $\mathbb{f}_1$(\textfrak{C},\textfrak{E},\textit{a}) \\
-                                                                          & Not e          & L & $\mathbb{f}$(\textfrak{C},\textfrak{E},\textit{a})   \\
+    \multirow{2}{*}{$\mathbb{f}$(\textit{a}, \textfrak{C}, \textfrak{E})}   & \texttt{e}              & L & $\mathbb{f}_1$(\textit{a}, \textfrak{C}, \textfrak{E}) \\
+                                                                          & Not \texttt{e}          & L & $\mathbb{f}$(\textit{a}, \textfrak{C}, \textfrak{E})   \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{f}_1$(\textfrak{C},\textfrak{E},\textit{a})} & \textit{a}     &   & \textfrak{C} \\
-                                                                          & Not \textit{a} & R & $\mathbb{f}_1$(\textfrak{C},\textfrak{E},\textit{a}) \\
-                                                                          & None           & R & $\mathbb{f}_2$(\textfrak{C},\textfrak{E},\textit{a}) \\
+    \multirow{3}{*}{$\mathbb{f}_1$(\textit{a}, \textfrak{C}, \textfrak{E})} & \textit{a}     &   & \textfrak{C} \\
+                                                                          & Not \textit{a} & R & $\mathbb{f}_1$(\textit{a}, \textfrak{C}, \textfrak{E}) \\
+                                                                          & None           & R & $\mathbb{f}_2$(\textit{a}, \textfrak{C}, \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{f}_2$(\textfrak{C},\textfrak{E},\textit{a})} & \textit{a}     &   & \textfrak{C} \\
-                                                                          & Not \textit{a} & R & $\mathbb{f}_1$(\textfrak{C},\textfrak{E},\textit{a}) \\
+    \multirow{3}{*}{$\mathbb{f}_2$(\textit{a}, \textfrak{C}, \textfrak{E})} & \textit{a}     &   & \textfrak{C} \\
+                                                                          & Not \textit{a} & R & $\mathbb{f}_1$(\textit{a}, \textfrak{C}, \textfrak{E}) \\
                                                                           & None           & R & \textfrak{E} 
 \end{tabu}
 
@@ -158,7 +158,7 @@ In this section I will define a set of common \textit{m}-functions that will be 
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
-    $\mathbb{e}$(\textfrak{C},\textfrak{E},\textit{a}) & - & - & $\mathbb{f}$($\mathbb{e}_1$(\textfrak{C}),\textfrak{E},\textit{a}) & \multirow{2}{80pt}{Erases first occurrence of symbol \textit{a}} \\
+    $\mathbb{e}$(\textit{a}, \textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$(\textit{a}, $\mathbb{e}_1$(\textfrak{C}), \textfrak{E}) & \multirow{2}{80pt}{Erases first occurrence of symbol \textit{a}} \\
     \hhline{----}
     $\mathbb{e}_1$(\textfrak{C}) & - & E & \textfrak{C}\\
     \hhline{====}
@@ -166,15 +166,15 @@ In this section I will define a set of common \textit{m}-functions that will be 
     \hhline{----}
     $\mathbb{r}$(\textfrak{C}) & - & R & \textfrak{C} & Moves cursor right\\
     \hhline{====}
-    $\mathbb{fl}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{l}$(\textfrak{C}),\textfrak{E},\textit{a}) & Moves to left of \textit{a} \\
+    $\mathbb{fl}$(\textit{a}, \textfrak{C}, \textfrak{e}) & - & - & $\mathbb{f}$($\mathbb{l}$(\textit{a}, \textfrak{C}), \textfrak{E}) & Moves to left of \textit{a} \\
     \hhline{----}
-    $\mathbb{fr}$(\textfrak{C}, \textfrak{e}, \textit{a}) & - & - & $\mathbb{f}$($\mathbb{r}$(\textfrak{C}),\textfrak{E},\textit{a}) & Moves to right of \textit{a} \\
+    $\mathbb{fr}$(\textit{a}, \textfrak{C}, \textfrak{e}) & - & - & $\mathbb{f}$($\mathbb{r}$(\textit{a}, \textfrak{C}), \textfrak{E}) & Moves to right of \textit{a} \\
     \hhline{====}
-    $\mathbb{p0}$(\textfrak{C}) & - & P0 & \textfrak{C} & Prints \texttt{0} \\
+    $\mathbb{p0}$(\textfrak{C}) & - & P\texttt{0} & \textfrak{C} & Prints \texttt{0} \\
     \hhline{----}
-    $\mathbb{p1}$(\textfrak{C}) & - & P1 & \textfrak{C} & Prints \texttt{0} \\
+    $\mathbb{p1}$(\textfrak{C}) & - & P\texttt{1} & \textfrak{C} & Prints \texttt{0} \\
     \hhline{====}
-    $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$($\mathbb{n}_1$(\textfrak{C}),\textfrak{E},e) & \multirow{3}{80pt}{Moves to first empty (final) \textit{p}-square} \\
+    $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$($\mathbb{n}_1$(\texttt{e}, \textfrak{C}), \textfrak{E}) & \multirow{3}{80pt}{Moves to first empty (final) \textit{p}-square} \\
     \hhline{----}
     \multirow{2}{*}{$\mathbb{n}_1$(\textfrak{C})} & Any  & R, R & $\mathbb{n}_1$(\textfrak{C}) \\
                                                   & None & - & \textfrak{C} \\
@@ -192,12 +192,12 @@ At this point, the similarity between Turing machines and modern computers becom
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
     $\mathbb{\mathbf{b}def}$(\textit{p},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{n}$($\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C}),\textfrak{E}) \\
-    $\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C})   & - & P0, R, P\textit{p}, L & \textfrak{C} \\
+    $\mathbb{\mathbf{b}def}_1$(\textit{p},\textfrak{C})   & - & P\texttt{0}, R, P\textit{p}, L & \textfrak{C} \\
     \hhline{====}
     $\mathbb{\mathbf{b}copy}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E}),\textfrak{E},\textit{r}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & 0 & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
-                                                                                       & 1 & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
+    \multirow{3}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
                                                                                        & other & - & \textfrak{E} \\
 \end{tabu}
 
@@ -212,8 +212,8 @@ As we did in $\lambda$-calculus, we shall define boolean operations. Every opera
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     $\mathbb{\mathbf{b}neg}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C},\textfrak{E})} & 0 & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
-                                                                                       & 1 & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
+    \multirow{3}{*}{$\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
                                                                                        & other & - & \textfrak{E} \\
 \end{tabu}
 
@@ -223,22 +223,22 @@ This is almost identical to the copying function, but inverting the written symb
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     $\mathbb{\mathbf{b}and}$(\textit{a},\textit{b},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}and}_1$(\textit{b},\textit{w},\textfrak{C}),\textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}and}_1$(\textit{b},\textit{w},\textfrak{C},\textfrak{E})} & 0 & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
-                                                                                       & 1 & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\ 
+    \multirow{3}{*}{$\mathbb{\mathbf{b}and}_1$(\textit{b},\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}),\textfrak{E},\textit{w}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\ 
                                                                                        & other & - & \textfrak{E} \\
     \hhline{====}
     $\mathbb{\mathbf{b}or}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}or}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
     \hhline{----}
     \multirow{3}{*}{$\mathbb{\mathbf{b}or}_1$(\textit{w},\textfrak{C},\textfrak{E})} 
-                                                                                       & 0 & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\
-                                                                                       & 1 & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
+                                                                                       & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}),\textfrak{E},\textit{w}) \\ 
                                                                                        & other & - & \textfrak{E} \\
     \hhline{====}
     $\mathbb{\mathbf{b}xor}$(\textit{r},\textit{w},\textfrak{C},\textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}xor}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
     \hhline{----}
     \multirow{3}{*}{$\mathbb{\mathbf{b}xor}_1$(\textit{w},\textfrak{C},\textfrak{E})} 
-                                                                                       & 0 & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\
-                                                                                       & 1 & - &  $\mathbb{\mathbf{b}not}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\ 
+                                                                                       & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\
+                                                                                       & \texttt{1} & - &  $\mathbb{\mathbf{b}not}$(\textit{b},\textit{w},\textfrak{C},\textfrak{E}) \\ 
                                                                                        & other & - & \textfrak{E} \\
 \end{tabu}
 
@@ -257,7 +257,7 @@ As we have moved into more and more complex FSM functions, it can be noted that 
 \medskip
 
 The function $\mathbb{if}$ takes a symbol argument, which is compared to the symbol under the cursor - if they are the same, the machine $\rightarrow \mathbb{I}$; if not the machine $\rightarrow \mathbb{O}$.
-Since we have now entirely defined the operation of the machine in terms of functions (as loops can be done with recursion), we no longer have any need for tables - in effect, we have built a purely functional programming language in terms of a simple finite state machine. Now, in order to define more \textit{m}-functions we no longer have to write a table:
+Since we have now entirely defined the operation of the machine in terms of functions (as loops can be done with recursion), we no longer have any need for the central two table columns. In continuing to define functions, we could simply choose to omit these columns, or even omit the table altogether and use a more common notation - in this case, for a definition of the if function but based on pointers: 
 
 \begin{lstlisting}
 ifp(r,c,I,O,E) = fl(
@@ -269,6 +269,5 @@ ifp(r,c,I,O,E) = fl(
     r
 )
 \end{lstlisting}
-
-Admittedly not the cleanest syntax, but still a simple one.
+While this syntax is more concise, it is still somewhat obfuscated. Therefore, we will use our function method to define what is effectively a programming language.
 \end{document}
