@@ -24,7 +24,7 @@ Functions can take multiple arguments through the use of nesting:
 \end{aligned}
 \end{gather*}
 
-\subsubsection{Arithmetical definitions}
+\subsection{Arithmetical definitions}
 
 Church applies this medium to a variety of concepts we will already be familiar with - firstly, that of positive integers:
 \begin{equation*}
@@ -112,7 +112,7 @@ A 'power' function to find $a^b$can also be defined, of astonishing simplicity:
 \end{aligned}
 \end{gather*}
 
-\subsubsection{Logic and Conditions}
+\subsection{Boolean Logic}
 
 Church defines functions to operate boolean logic - firstly representing True and False:
     
@@ -148,7 +148,9 @@ Functions representing boolean operations can also be defined:
 \end{gather*}
 The derivation of such operations is not difficult to understand if one considers the truth tables for each operation, remembering that T selects the first and F selects the second argument.
 
-With the fundamental boolean system of our computational system in place, we must next construct conditionals. The first, and simplest, of these will check if a number is equal to zero:
+\subsection{Basic Comparison operators}
+
+With the fundamental boolean system of our computational system in place, we must next construct comparison operators. The first, and simplest, of these will check if a number is equal to zero:
 \begin{equation*}
 \bm{\mathrm{Z}} = \lambda x.x\bm{\mathrm{F\lnot F}}
 \end{equation*}
@@ -178,7 +180,7 @@ Secondly with \textbf{2}:
 \end{gather*}
 
 However, in order to develop other conditional tests we will need a 'predecessor' function - something surprisingly difficult under lambda calculus.
-\subsubsection{Subtraction}
+\subsection{Subtraction}
 
 The elusive predecessor function was created by Stephen Kleene, a student of Church's, and was something of a landmark in the development of $\lambda$-calculus.
 
@@ -209,7 +211,7 @@ Of course now the subtraction function can be found (using \textbf{D} for differ
 \bm{\mathrm{D}} = \lambda ab.b\bm{\mathrm{P}}a
 \end{equation*}
 Bearing in mind the predecessor of \textbf{0} is \textbf{0}, this will produce \textbf{0} if $b>a$.
-\subsubsection{Further Conditional Logic}
+\subsection{Further Conditional Logic}
 
 With this useful quirk of the \textbf{D} function, we can produce comparative logical operators:
 \begin{equation*}
@@ -230,40 +232,40 @@ And through combination of these, we can create the equivalence and inequivalenc
 \bm{\neq} &= \lambda ab.\vee(\bm{<}ab)(\bm{>}ab)
 \end{aligned}
 \end{equation*}
-\subsubsection{Recursion}
+\subsection{Recursion}
 
-So far, Church's $\lambda$-Calculus is very close to the operation of a modern computation language. It has representation for boolean values, for conditional statements, for positive integers (signed integers can be expressed as a pair of a positive integer and a boolean for sign) and arithmetic, as well as set operations for booleans and comparators for integers - In fact, we are very close to our definition of computability save one thing. Continuity and repetition is one of the most significant aspects of computers, the power of this being the ability to transform a finite configuration into a potentially infinite result. This is done through one of the most remarkable functions in $\lambda$-Calculus, the recursor function:
+So far, Church's $\lambda$-Calculus is very close to the operation of a modern computation language. It has representation for boolean values, for conditional statements, for positive integers (signed integers can be expressed as a pair of a positive integer and a boolean for sign) and arithmetic, as well as set operations for booleans and comparators for integers - In fact, we are very close to our definition of computability save one thing. Continuity and repetition is one of the most significant aspects of computers, the power of this being the ability to transform a finite configuration into a potentially infinite result. This is done through one of the most remarkable functions in $\lambda$-Calculus, the \textbf{Y} combinator:
 
 \begin{equation*}
-\bm{\mathrm{R}} = \lambda y.(\lambda x.y(xx))(\lambda x.y(xx))
+\bm{\mathrm{Y}} = \lambda y.(\lambda x.y(xx))(\lambda x.y(xx))
 \end{equation*}
 \begin{equation*}
 \begin{aligned}
-\bm{\mathrm{R}}a &= (\lambda x.a(xx))[\lambda x.a(xx)]\\
+\bm{\mathrm{Y}}a &= (\lambda x.a(xx))[\lambda x.a(xx)]\\
 &= a([\lambda x.a(xx)][\lambda x.a(xx)])\\
-&= a(\bm{\mathrm{R}}a)
+&= a(\bm{\mathrm{Y}}a)
 \end{aligned}
 \end{equation*}
-Therefore, the \textbf{R} function applied to any function $a$ applies the function $a$ to the function \textbf{R} applied to $a$ - if substitution continues, an infinite series of nested $a$ functions is created; an infinite result is produced from a finite configuration. Of course we can create finites as well by halting the function - an example of this would be the factorial function, where \textbf{!}a = \textbf{M}a(\textbf{!}[\textbf{P}a]) and \textbf{!0} = \textbf{1}. Firstly, a recursive definition:
+Therefore, the \textbf{Y} function applied to any function $a$ applies the function $a$ to the function \textbf{Y} applied to $a$ - if substitution continues, an infinite series of nested $a$ functions is created; an infinite result is produced from a finite configuration. Of course we can create finites as well by halting the function - an example of this would be the factorial function, where \textbf{!}a = \textbf{M}a(\textbf{!}[\textbf{P}a]) and \textbf{!0} = \textbf{1}. Firstly, a recursive definition:
 \begin{equation*}
 \begin{aligned}
 \bm{\mathrm{\xi}} &= \lambda fa.\bm{\mathrm{Z}}a\bm{\mathrm{1}}[\bm{\mathrm{M}}a(f[\bm{\mathrm{P}}a])]\\
 \bm{!} &= \bm{\xi}!
 \end{aligned}
 \end{equation*}
-i.e. the factorial function is the $\bm{\xi}$ function with itself as the argument $f$. Unfortunately such a definition is illegal under $\lambda$-Calculus as strictly no functions have names - this is where the function \textbf{R} comes into play. To find the factorial of \textbf{3}:
+i.e. the factorial function is the $\bm{\xi}$ function with itself as the argument $f$. Unfortunately such a definition is illegal under $\lambda$-Calculus as strictly no functions have names - this is where the \textbf{Y} combinator comes into play. To find the factorial of \textbf{3}:
 \begin{equation*}
 \begin{aligned}
-\bm{\mathrm{R\xi 3}} &= \bm{\mathrm{\xi}}(\bm{\mathrm{R\xi}})\bm{\mathrm{3}}\\
-&= \bm{\mathrm{Z31}}[\bm{\mathrm{M3}}([\bm{\mathrm{R\xi}}][\bm{\mathrm{P3}}])]\\
-&= \bm{\mathrm{M3}}(\bm{\mathrm{R\xi}}\bm{2})\\
+\bm{\mathrm{Y\xi 3}} &= \bm{\mathrm{\xi}}(\bm{\mathrm{Y\xi}})\bm{\mathrm{3}}\\
+&= \bm{\mathrm{Z31}}[\bm{\mathrm{M3}}([\bm{\mathrm{Y\xi}}][\bm{\mathrm{P3}}])]\\
+&= \bm{\mathrm{M3}}(\bm{\mathrm{Y\xi}}\bm{2})\\
 &= \bm{\mathrm{M3}}(\bm{\mathrm{M2}}(\bm{\mathrm{M11}}))\\
 &= \bm{\mathrm{6}}
 \end{aligned}
 \end{equation*}
-The recursive identity \textbf{R} allows for \textbf{R}$\bm{\xi}$ to be applied as the first argument to the $\bm{\xi}$ function - as a result, the procedure also processes \textbf{2} and \textbf{1}, before stopping at \textbf{0} (which produces simply \textbf{1}. To simplify, the factorial function:
+The \textbf{Y} combinator allows for \textbf{Y}$\bm{\xi}$ to be applied as the first argument to the $\bm{\xi}$ function - as a result, the procedure also processes \textbf{2} and \textbf{1}, before stopping at \textbf{0} (which produces simply \textbf{1}. To simplify, the factorial function:
 \begin{equation*}
-\bm{!} = \lambda x.\bm{\mathrm{R\xi}}x
+\bm{!} = \lambda x.\bm{\mathrm{Y\xi}}x
 \end{equation*}
 
 \subsubsection{Conclusion}
