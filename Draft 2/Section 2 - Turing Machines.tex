@@ -3,14 +3,31 @@
 \crefname{section}{§}{§§}
 \Crefname{section}{§}{§§}
 
-\renewcommand{\arraystretch}{1.5}
+\renewcommand{\arraystretch}{1.5}p
 
+\lstdefinelanguage{Turlang}
+{
+  morekeywords={
+    function,
+    bool,
+    int,
+    and,
+    or,
+    not,
+    xor
+  },
+  sensitive=true, % keywords are not case-sensitive
+  morecomment=[l]{//}, % l is for line comment
+  morecomment=[s]{/*}{*/}, % s is for start and end delimiter
+  morestring=[b]" % defines that strings are enclosed in double quotes
+}
+\lstset{language=Turlang}
 \begin{document}
 
 At roughly the same time, the English Mathematician Alan Turing was constructing a method to achieve the same goal, but in an entirely different way. Rather than building an incredibly simple axiomatic system to illustrate Effective Computability, the concept used was far more practical, and far closer to the mechanical computers that implemented this idea.
 
-\subsubsection{Examples of simple Finite State Machines}\label{sec:FSMintro}
-The Turing Machine, or Finite State Machine (FSM), is composed of two parts: firstly, an ordered set of \textit{squares} of infinite length known as \textit{tape}, with a cursor at a certain point on this list, in which \textit{symbols} can be written for future use or output (much like random access memory on a modern computer); secondly, a set of states known as \textit{m}-configurations, each of which contain operations to be performed on the tape, and the \textit{m-configuration} that the FSM moves to. An example description of such a set would be:
+\subsection{Examples of simple Finite State Machines}\label{sec:FSMintro}
+The Turing Machine, or Finite State Machine (FSM), is composed of two parts: firstly, an ordered set of \textit{squares} of infinite length known as \textit{tape}, with a cursor at a certain point on this list, in which \textit{symbols} can be written for future use or output; secondly, a set of states known as \textit{m}-configurations, each of which contain operations to be performed on the tape, and the \textit{m}-configuration that the FSM moves to. An example description of such a set would be:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
@@ -54,9 +71,9 @@ An example of a more complex FSM is shown below, which generates the sequence \t
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
     \hhline{====}
-    \multirow{1}{*}{$\mathbb{Q}$} & Any        & P\texttt{e}, R P\texttt{e}, R,  P\texttt{e}, R, R, P\texttt{0}, L, L & $\mathbb{A}$ \\
+    \multirow{1}{*}{$\mathbb{Q}$} & Any        & P\texttt{e}, R P\texttt{e}, R,  P\texttt{0}, R, R, P\texttt{0}, L, L & $\mathbb{A}$ \\
     \hhline{----}
-    \multirow{2}{*}{$\mathbb{A}$} & \texttt{1} & R, P\texttt{x}, L, L, L                   & $\mathbb{A}$ \\
+    \multirow{2}{*}{$\mathbb{A}$} & \texttt{0} & R, P\texttt{x}, L, L, L                   & $\mathbb{A}$ \\
                                   & \texttt{1} &                                  & $\mathbb{B}$ \\
     \hhline{----}
     \multirow{2}{*}{$\mathbb{B}$} & Any        & R, R                             & $\mathbb{B}$ \\
@@ -124,7 +141,7 @@ The workings of this algorithm are mostly in states $\mathbb{A}$ and $\mathbb{C}
 
 It is clear from this example that the operation of the FSM is very different from that of an ordinary computer. However, the core components are still mostly present - conditionals in the form of the symbol tests in the second column, variables in the form of markers, and continuity and looping when a state triggers itself - a form of recursion. The end result is the same - a solution is produced in the form of the computable sequence written on the \textit{p}-squares, and the machine can continue this sequence without halting indefinitely. Unfortunately, the operation of this machine is somewhat complex and involved. To simplify the usage of the FSM, we will introduce a type of function for the FSM.
 
-\subsubsection{\textit{M}-functions}\label{sec:mfunctions}
+\subsection{\textit{M}-functions}\label{sec:mfunctions}
 
 \textit{M}-functions are effectively an extension of \textit{m}-configurations. They are described by a lowercase letter and a set of arguments contained in brackets - arguments in gothic script refer to \textit{m}-configurations (or other \textit{m}-functions), and arguments in italics refer to symbols. When an \textit{m}-function is triggered, the italic and gothic symbols in the description are substituted by the supplied arguments (much like in $\lambda$-calculus). An example of an \textit{m}-function would be the function $\mathbb{f}$ below:
 
@@ -185,7 +202,7 @@ In this section I will define a set of common \textit{m}-functions that will be 
 
 \medskip
 
-\subsubsection{Data Structures and Pointers}
+\subsection{Data Structures and Pointers}
 
 At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store more complex information, from integers to strings of characters to images, as binary sequences of \textit{p}-square \texttt{0}s and \texttt{1}s - these shall be stored on the tape as memory. The first data structure we shall define is the simple boolean - only 1 bit (1 \textit{p}-square) long. In order to identify these sequences on the tape as booleans, we shall mark the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define some \textit{m}-functions to define and assign values to variables of the boolean type:
 
@@ -247,18 +264,16 @@ This is almost identical to the copying function, but inverting the written symb
 \medskip
 In each of these, the first argument \textit{a} is observed, and an action which either writes a \texttt{1} or \texttt{0}, or copies or negates from \textit{b} depending on the truth tables, in a very similar manner to $\lambda$-calculus. Gradually, the cryptic and simplified language of Finite State Machines is yielding results similar to that of a computer.
 
-\subsubsection{Scripted Configurations}
+\subsection{Scripted Configurations}
 As we have moved into more and more complex FSM functions, it can be noted that the middle two columns of the FSM are becoming gradually more scarce - this is due to the fact that their operation can be entirely represented within \textit{m}-functions. We have started doing so with the functions $\mathbb{l}$, $\mathbb{r}$, $\mathbb{p0}$, and $\mathbb{p1}$ - furthermore, it is not difficult to create conditional functions to replicate the operation of the second column.
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multirow{2}{*}{$\mathbb{if}$(\textit{c}, \textfrak{I}, \textfrak{O})} 
                                                                                        & \textit{c} & - & \textfrak{I} \\
-                                                                                       & Other & - & \textfrak{O} \\ 
-    \hhline{====}
-    $\mathbb{ifp}$(\textit{r}, \textit{c}, \textfrak{I}, \textfrak{O}, \textfrak{E}) & - & - & $\mathbb{fl}$($\mathbb{if}$(\textit{c}, \textfrak{I}, \textfrak{O}), \textfrak{E}, \textit{r}) \\
+                                                                                       & Other & - & \textfrak{O} \\
 \end{tabu}
 
-\medskip
+\medskip  
 
 The function $\mathbb{if}$ takes a symbol argument, which is compared to the symbol under the cursor - if they are the same, the machine $\rightarrow$ \textfrak{O}; if not the machine $\rightarrow$ \textfrak{O}.
 Since we have now entirely defined the operation of the machine in terms of \textit{m}-functions, we no longer have any need for the central two table columns. In continuing to define \textit{m}-functions, we could simply choose to omit these columns, or even omit the table altogether and use a more common notation - in this case, for a definition of the if function but based on pointers: 
@@ -268,8 +283,29 @@ ifp(r, c, I, O, E) = fl(r,
     if(c, I, O), E
 )
 \end{lstlisting}
+While this syntax is more concise, it is still somewhat obfuscated. Therefore, we will use our function method to define what is effectively a list of commands for the machine which will be executed in order. The main difference in this system is that, as the \textfrak{C} argument is always the function that must be run when that function is completed (except in the case of the conditional function), on interpretation of the language the entire operation of the machine after that point must be passed as the \textfrak{C} argument to that function in order for the functions to be called sequentially. The following function main() defines variables \textit{var1} and \textit{var2}, and sets \textit{var2} to be not \textit{var1}, or \texttt{1}.
 
-While this syntax is more concise, it is still somewhat obfuscated. Therefore, we will use our function method to define what is effectively a list of commands for the machine which will be executed in order. The main difference in this system is that, as the \textfrak{C} argument is always the function that must be run when that function is completed (except in the case of the conditional function), on interpretation of the language the entire operation of the machine after that point must be passed as the \textfrak{C} argument to that 
+\begin{lstlisting}
+function main() {
+	bdef(var1)
+	bdef(var2)
+	bneg(var1, var2)
+}
+\end{lstlisting}
+For clarity, I have ignored error handling (i.e. omitted the E argument). This is equivalent to:
 
+\begin{lstlisting}
+
+main(C, E) = bdef(var1,
+    bdef(var2,
+        bneg(var1, var2, C, E), E
+    ), E
+)
+
+
+\end{lstlisting}
+With arguments for continuity and simple error correction. This, in turn, can be simplified into a table.
+
+Furthermore, we can simplify certain functions to have their own specific syntax. In the case of definitions, "\lstinline{bdef(var)}" shall be abbreviated to "\lstinline{bool var}";
 
 \end{document}

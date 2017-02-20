@@ -1,0 +1,49 @@
+\documentclass[Master.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Universality in the $\lambda$-calculus}
+
+The machine will be described as a function of two parameters, which calculates a single step in the FSM's calculation. It will receive as its first parameter the current state of the tape, and as its second the current \textit{m}-configuration. As this function will be unique to the specific FSM that is being emulated, the entire behavior of the machine based on this configuration (i.e. the machine's table) shall be contained within this function. The function will then be applied to itself repeatedly to produce the output tape.
+
+\subsubsection{Emulating the Tape}
+In order to achieve this, we must define certain new objects in $\lambda$-calculus. First of all, ordered lists - these will be used to describe the current content of the tape. These are defined as a sequence of nodes, where each node is a pair with the first element as the content of the node and the second element is the next node in the sequence. The final node will have \textbf{0} as its second element to signify the end of the list (of course this only works if the list is not designed to contain any values of zero or true, as they will be indistinguishable from the end marker - I shall use \textbf{1} to represent $S_0$, \textbf{2} to represent $S_1$ and so on). For example, the list [a,b,c,d,e] would be represented as:
+\begin{equation*}
+\lambda l.la(\lambda m.mb(\lambda n.nc(\lambda o.od(\lambda p.pe\bm{\mathrm{F}}))))
+\end{equation*}
+In order to obtain the first element (head), the argument \textbf{T} would be applied to the list; to get the remaining elements (tail) the \textbf{F} argument would be applied. 
+Furthermore, to prepend an element to the start of a list:
+\begin{equation*}
+\bm{\mathrm{:}} = \lambda xlf.f[x][l]
+\end{equation*}
+This takes an element to prepend $x$, and a list $l$, and constructs a new pair with the given element as the first element and the original list as the second.
+ 
+The tape of the FSM extends infinitely in both directions either side of the cursor. We shall represent this as a pair of lists, $T_p$ as the list of all the predecessors to the cursor and $T_s$ as the list of all the successors to the cursor. The predecessors shall be listed in reverse order, such that the head of $T_p$ is the symbol directly to the left of the cursor. The head of $T_s$ is the symbol considered to be `under' the cursor, the next element is the symbol to the right of that, and so on. These tapes will begin as a single node, and as the machine requires further squares in either direction further nodes will be added.
+\begin{equation*}
+T_a = \lambda f.f T_p T_s
+\end{equation*}
+
+\subsubsection{Movement Operations}
+To emulate cursor movement, we will create transformation functions for the tape. These functions will shift the tape by moving the head of $T_s$ to the head of $T_p$ or vice versa.
+
+\begin{gather*}
+\begin{aligned}
+\bm{M}_L &= \lambda t_a f.f [(t_a\bm{\mathrm{T}})\bm{\mathrm{F}}] [\bm{\mathrm{:}}([t_a\bm{\mathrm{T}}]\bm{\mathrm{T}})(t_a\bm{\mathrm{F}})]\\
+\bm{M}_R &= \lambda t_a f.f [\bm{\mathrm{:}}([t_a\bm{\mathrm{F}}]\bm{\mathrm{T}})(t_a\bm{\mathrm{T}})] [(t_a\bm{\mathrm{F}})\bm{\mathrm{F}}]\\
+\bm{M}_S &= \lambda x.x\\
+\end{aligned}
+\end{gather*}
+The $\bm{M}_L$ function produces a new tape pair, after taking the original tape pair as parameter $t_a$. The first element of this new pair is simply the tail of $T_p$ ($T_p$ being found at $T_a\bm{\mathrm{T}})$. The second element is the head of $T_p$ prepended to the entirety of $T_s$ (found at $T_a\bm{\mathrm{T}})$. $\bm{M}_R$ will do the effective opposite, prepending the head of $T_s$ to $T_p$ and producing the tail of $T_s$. $\bm{M}_S$ Will keep the tape in its current state.
+
+\subsubsection{Infinite-Length Tape}
+
+Unfortunately, the tape which we are currently dealing with is unlike that of a Turing machine, due to the fact that it is of finite length - we cannot write a single list in $\lambda$-calculus which expresses the entire tape. As such, when the machine moves left or right onto the \textbf{0} tail signifying the end of the list, we will replace it with a node, containing the blank square symbol $S_0$, represented by a \textbf{1}. To do this, we will have another transformation function which will check if either tail element of the tape pair is \textbf{0}, and if so, will replace it with $\lambda g.g[\bm{\textbf{1}}][\bm{\mathrm{0}}]$:
+\begin{equation*}
+\bm{C} = \lambda t_ag.g[\bm{\mathrm{Z}}(t_a\bm{\mathrm{T}}\bm{\mathrm{F}})(\lambda g.g[\bm{\textbf{1}}][\bm{\mathrm{0}}])(t_a\bm{\mathrm{T}}\bm{\mathrm{F}})][\bm{\mathrm{Z}}(t_a\bm{\mathrm{F}}\bm{\mathrm{F}})(\lambda g.g[\bm{\textbf{1}}][\bm{\mathrm{0}}])(t_a\bm{\mathrm{F}}\bm{\mathrm{F}})]
+\end{equation*}
+TODO: check that Z($\lambda x.xab$) -> F for all a,b
+
+This transformation will be applied after every tape movement operation.
+
+\subsubsection{Writing to the Tape}
+\end{document}
