@@ -7,7 +7,7 @@
 The machine will be described as a function of two parameters, which calculates a single step in the FSM's calculation. It will receive as its first parameter the current state of the tape, and as its second the current \textit{m}-configuration. As this function will be unique to the specific FSM that is being emulated, the entire behavior of the machine based on this configuration (i.e. the machine's table) shall be contained within this function. The function will then be applied to itself repeatedly to produce the output tape.
 
 \subsubsection{Emulating the Tape}
-In order to achieve this, we must define certain new objects in $\lambda$-calculus. First of all, ordered lists - these will be used to describe the current content of the tape. These are defined as a sequence of nodes, where each node is a pair with the first element as the content of the node and the second element is the next node in the sequence. The final node will have \textbf{0} as its second element to signify the end of the list (of course this only works if the list is not designed to contain any values of zero or true, as they will be indistinguishable from the end marker - I shall use \textbf{1} to represent $S_0$, \textbf{2} to represent $S_1$ and so on). For example, the list [a,b,c,d,e] would be represented as:
+In order to achieve this, we must define certain new objects in $\lambda$-calculus. First of all, ordered lists - these will be used to describe the current content of the tape. These are defined as a sequence of nodes, where each node is a pair with the first element as the content of the node and the second element is the next node in the sequence. The final node will have \textbf{0} as its first element to signify the end of the list - the second element will never be referred to; as such \textbf{0} will be used as a placeholder (of course this only works if the list is not designed to contain any values of zero or true, as they will be indistinguishable from the end marker - I shall use \textbf{1} to represent $S_0$, \textbf{2} to represent $S_1$ and so on). For example, the list [a,b,c,d,e] would be represented as:
 \begin{equation*}
 \lambda l.la(\lambda m.mb(\lambda n.nc(\lambda o.od(\lambda p.pe\bm{\mathrm{F}}))))
 \end{equation*}
@@ -37,13 +37,26 @@ The $\bm{M}_L$ function produces a new tape pair, after taking the original tape
 
 \subsubsection{Infinite-Length Tape}
 
-Unfortunately, the tape which we are currently dealing with is unlike that of a Turing machine, due to the fact that it is of finite length - we cannot write a single list in $\lambda$-calculus which expresses the entire tape. As such, when the machine moves left or right onto the \textbf{0} tail signifying the end of the list, we will replace it with a node, containing the blank square symbol $S_0$, represented by a \textbf{1}. To do this, we will have another transformation function which will check if either tail element of the tape pair is \textbf{0}, and if so, will replace it with $\lambda g.g[\bm{\textbf{1}}][\bm{\mathrm{0}}]$:
-\begin{equation*}
-\bm{C} = \lambda t_ag.g[\bm{\mathrm{Z}}(t_a\bm{\mathrm{T}}\bm{\mathrm{F}})(\lambda g.g[\bm{\textbf{1}}][\bm{\mathrm{0}}])(t_a\bm{\mathrm{T}}\bm{\mathrm{F}})][\bm{\mathrm{Z}}(t_a\bm{\mathrm{F}}\bm{\mathrm{F}})(\lambda g.g[\bm{\textbf{1}}][\bm{\mathrm{0}}])(t_a\bm{\mathrm{F}}\bm{\mathrm{F}})]
-\end{equation*}
-TODO: check that Z($\lambda x.xab$) -> F for all a,b
+Unfortunately, the tape which we are currently dealing with is unlike that of a Turing machine, due to the fact that it is of finite length - we cannot write a single list in $\lambda$-calculus which expresses the entire tape. As such, when the machine moves left or right onto the node with \textbf{0} as the head signifying the end of the list, we will replace it with a node containing the blank square symbol $S_0$, represented by a \textbf{1}, as the head, and another end marker node as he tail. To do this, we will have another transformation function which will check if either head element of the tape pair is \textbf{0}, and if so, will replace it with an empty square node $\bm{\epsilon}$ - otherwise it will simply be replacced with the original head:
 
+\begin{gather*}
+\begin{aligned}
+\bm{\epsilon} &= \lambda g.g[\bm{\textbf{1}}][\lambda d.d\bm{\mathrm{0}}\bm{\mathrm{0}}] \\
+\bm{C} &= \lambda t_a g.g[\bm{\mathrm{Z}}(t_a\bm{\mathrm{T}}\bm{\mathrm{T}})(\bm{\epsilon})(t_a\bm{\mathrm{T}}\bm{\mathrm{T}})][\bm{\mathrm{Z}}(t_a\bm{\mathrm{F}}\bm{\mathrm{T}})(\bm{\epsilon})(t_a\bm{\mathrm{F}}\bm{\mathrm{T}})]
+\end{aligned}
+\end{gather*}
 This transformation will be applied after every tape movement operation.
 
-\subsubsection{Writing to the Tape}
+\subsubsection{Printing to the Tape}
+
+The transformation that writes a given real number to the square beneath the cursor is not particularly complex - it simply replaces the current head of $T_s$ with a successor.
+
+\begin{equation*}
+\bm{W} = \lambda a t_a p.p[t_a\bm{\mathrm{T}}][\lambda d.d(a)(t_a\bm{\mathrm{FF}})]
+\end{equation*}
+
+\subsubsection{storing & accessing \textit{m}-configurations}
+\subsubsubwithchickenandmayopleasethanks{eating & fulfilling life goals #subwaydatesboiiiiis love man chllz peace wavey donss}
+
+
 \end{document}
