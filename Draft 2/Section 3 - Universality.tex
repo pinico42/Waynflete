@@ -58,15 +58,15 @@ The transformation that writes a given real number to the square beneath the cur
 \subsubsection{Storing \& Accessing \textit{m}-configurations}
 %\subsubsubwithchickenandmayopleasethanks{eating & fulfilling life goals #subwaydatesboiiiiis love man chllz peace wavey donss}
 Once again, in order to store the information and operations associated with each \textit{m}-configuration, we shall use another list. The first element of the list shall represent $q_0$, the second $q_1$ and so on.
-Each element of the list will be a list in itself. Each element of this list shall refer to the symbol aspect of the configuration. Each element of the list is a pair: the first element being the symbol to be found (a real number), the second being the actions to be performed under this configuration.
+Each element of the list will be a list in itself. Each element of this list shall refer to the symbol aspect of the configuration. These elements are pairs: the first element being the symbol to be found (a real number), the second being the action to be performed under this configuration.
 
-The action itself will be yet another pair. The first element is the transformation that should be performed on the tape - this transformation will be of the form $(\bm{C})(\{\bm{M}_L/\bm{M}_R/\bm{M}_S\})(\bm{W}a)$, which applies first a write transformation before a movement transformation and the tape length correction transformation. The second element is a function which, when given the description of the machine, finds the given \textit{m}-configuration. We shall note these m-configuration references as shown, with the example of the reference to $q_3$:
+The action itself will be yet another pair. The first element is the transformation that should be performed on the tape - this transformation will be of the form $(\bm{C})(\bm{M}_{L/R/S})(\bm{W}a)$, which applies first a write transformation before a movement transformation and the tape length correction transformation. The second element is a function which, when given the description of the machine, finds the given \textit{m}-configuration. We shall note these m-configuration references as shown, with the example of the reference to $q_3$:
 \begin{equation*}
 \bm{Q}_3 = \lambda l.l\bm{\textbf{FFFT}}
 \end{equation*}
 This gets the fourth head of the given list, which refers to $q_3$.
 
-As an example, here is the description for the first machine described, which generates the sequence \texttt{01010101...} (for clarity, this version does not leave \textit{s}-squares blank). For reference, here is the enumerated table:
+%As an example, here is the description for the first machine described, which generates the sequence \texttt{01010101...} (for simplicity, this version does not leave \textit{s}-squares blank). For reference, here is the enumerated table:
 %\medskip\noindent\begin{tabu} to \textwidth{XXXX}
 %    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
 %    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
@@ -75,19 +75,32 @@ As an example, here is the description for the first machine described, which ge
 %    $q_0$ & $S_1$ & PS_2 & $\mathbb{A}$ \\ 
 %    $q_0$ & \texttt{1}    & R, R, P\texttt{0} & $\mathbb{A}$ \\ 
 %\end{tabu}
-We shall represent this table as such:
+%We shall represent this table as such:
+%\begin{gather*}
+%\begin{aligned}
+%\bm{d}
+%\end{aligned}
+%\end{gather*}
+
+%[I cba to do this now]
+
+In order to find which action should be performed given a certain configuration, we shall use the following function which produces a pair of a list transformation and an \textit{m}-config reference from a current \textit{m}-config, the current symbol, and the description function. As part of this function, the recursive function $\bm{\rho}$ must be used in conjunction with the \textbf{Y} combinator, which returns the action aspect of the first pair under symbol $s$ in list $l$ (the $r$ argument is the argument which would represent the function as a whole, and is recursively called by the \textbf{Y} combinator)
+
 \begin{gather*}
 \begin{aligned}
-\bm{}
+\bm{\rho} &= \lambda rls.(\bm{\doteq}(l\bm{\mathrm{TT}})s)(l\bm{\mathrm{TF}})(r(l\bm{\mathrm{F}})s)\\
+\bm{I} &= \lambda qsd.\bm{\mathrm{Y}\rho}(qd)s
 \end{aligned}
 \end{gather*}
-{I cba to do this now}
 
-In order to find which action should be performed given a certain configuration, we shall use the following function which produces a pair of a list transformation and an \textit{m}-config reference from a current \textit{m}-config, the current symbol, and the description function.
+\subsubsection{Universal Machine State Change Operation}
+
+Finally, we can involve all of these functions to create a single operation which transforms a given machine configuration (\textit{m}-config, $T_p$ \& $T_s$, and the description table) into the machine configuration for the next state. This configuration shall be represented as a pair, the first element being a pair of the \textit{m}-config reference and the tape, and the second element as the description table. The $\bm{\nu}$ function gets the action function from the given machine configuration.
 
 \begin{gather*}
 \begin{aligned}
-\bm{I} = \lambda qsc.(qc)(RECURSIVE FUNCTION TO GET SYMBOL)
+\bm{\nu} &= \lambda c.\bm{I}(c\bm{\mathrm{TT}})([c\bm{\mathrm{TF}}]\bm{\mathrm{FT}})(c\bm{\mathrm{F}})\\
+\bm{U} &= \lambda cf.f[\lambda g.g[(\bm{\nu}c)\bm{\mathrm{F}}][((\bm{\nu}c)\bm{\mathrm{T}})(c\bm{\mathrm{TF}})]]c
 \end{aligned}
 \end{gather*}
 
