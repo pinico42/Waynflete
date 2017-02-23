@@ -2,9 +2,57 @@
 
 \begin{document}
 
-\subsection{Universality in the $\lambda$-calculus}
+\renewcommand{\arraystretch}{1.5}p
+So far, we have explored how our two methods of computation can perform many common operations, including data manipulation \& storage, on top of looping and conditional branching. Unfortunatley, it is too vague to simply define a 'comuputer' as a system which can perform a somewhat arbitrary set of operations - we must refine this to a simple set of functions. The easiest way of doing this is by assuming that a certain system can perform every operation a computer can perform. For this purpose, we will choose Turing machines, for purposes that will become clear later. Now, in order to prove that any system is a 'computer', we must simply prove that it can perform any operation a Turing machine can perform - in essence, it must be able to fully emulate the operation of a Turing FSM. 
 
-The machine will be described as a function of two parameters, which calculates a single step in the FSM's calculation. It will receive as its first parameter the current state of the tape, and as its second the current \textit{m}-configuration. As this function will be unique to the specific FSM that is being emulated, the entire behavior of the machine based on this configuration (i.e. the machine's table) shall be contained within this function. The function will then be applied to itself repeatedly to produce the output tape.
+ This essentially means that a machine, given a specific Turing machine starting configuration, should be able to produce every consecutive following state (i.e. it takes an FSM description table as input, and generates an infinite sequence of following tape \& \textit{m}-configuration states). Any machine that can do this shall be called a \textit{Universal Machine}.
+
+\subsection{Standard Turing Description Form}
+
+First, we must define what we actually mean by a description table - we shall do this by describing a standard form for these tables. Looking at the first table described, we can see that any sequence described in the operations section of the table follows a similar format: E; [E, R]; [E, L]; P\textit{a}; [ P\textit{a}, R]; [ P\textit{a}, L] or no entry at all. A more complex set of operations such as those found in later tables can always be put into one of these forms through the addition of intermediary \textit{m}-configurations which are called in sequence.
+
+Next, let us rename the \textit{m}-configurations as $q_0$, $q_1$, $q_2$, $...$, $q_n$ for clarity (the initial \textit{m}-configuration shall always be called $q_0$, the second $q_1$ and so on). Furthermore, the symbols shall be renamed $S_0$, $S_1$, $S_2$, $...$, $S_n$ - in this case, $S_0$ will represent the blank square, $S_1$ will represent \texttt{0} and $S_2$ will represent \texttt{1}. The movement transformations L and R will be renamed $M_L$, $M_R$, and the operation to keep the tape stationary is simply $M_S$. Our tables are now of form:
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
+    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \hhline{====}
+    $q_i$ & $S_i$ & P$S_k$, $M_{L/R/S}$ & $q_m$ \\
+    \hhline{----}
+\end{tabu}
+
+\medskip
+
+Lines such as 
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & E, $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+are to be written as
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & P$S_0$, $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+and lines such as 
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+are to be written as
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & P$S_i$, $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+in order for all lines to be written in the first format. As the number of symbols used for a machine is always finite as the number of states is finite, it is possible to enumerate under every single \textit{m}-configuration an action for every single symbol $S_i$ that the machine coud be reading. In this way, "All" and "Not \textit{a}" will be portrayed in this format as the enumerated behaviours for every relevant symbol. This idea also allows the last simplification shown in the table above to work.
+
+This expanded and generalised configuration is much more helpful to us, as while any Turing machine configuration (including using \textit{m}-functions) can be written in this format, it is very concise and regular. This allows it to be given as input to our universal machines.
+
+\subsection{Universality in the $\lambda$-calculus}
+Firstly, we shall prove that $\lambda$-calculus is Turing complete by building a universal machine using only $\lambda$-functions. The core of the machine will be a function which calculates a single step in the FSM's calculation: It will receive as its parameters the current state of the tape and the current \textit{m}-configuration. As this function will be unique to the specific FSM that is being emulated, the entire behavior of the machine based on this configuration (i.e. the machine's table) shall be contained within this function. The function will then be applied to itself repeatedly to produce the sequences of states.
 
 \subsubsection{Emulating the Tape}
 In order to achieve this, we must define certain new objects in $\lambda$-calculus. First of all, ordered lists - these will be used to describe the current content of the tape. These are defined as a sequence of nodes, where each node is a pair with the first element as the content of the node and the second element is the next node in the sequence. The final node will have \textbf{0} as its first element to signify the end of the list - the second element will never be referred to; as such \textbf{0} will be used as a placeholder (of course this only works if the list is not designed to contain any values of zero or true, as they will be indistinguishable from the end marker - I shall use \textbf{1} to represent $S_0$, \textbf{2} to represent $S_1$ and so on). For example, the list [a,b,c,d,e] would be represented as:
@@ -95,12 +143,23 @@ In order to find which action should be performed given a certain configuration,
 
 \subsubsection{Universal Machine State Change Operation}
 
-Finally, we can involve all of these functions to create a single operation which transforms a given machine configuration (\textit{m}-config, $T_p$ \& $T_s$, and the description table) into the machine configuration for the next state. This configuration shall be represented as a pair, the first element being a pair of the \textit{m}-config reference and the tape, and the second element as the description table. The $\bm{\nu}$ function gets the action function from the given machine configuration.
+At last, we can involve all of these functions to create a single operation which transforms a given machine configuration (\textit{m}-config, $T_p$ \& $T_s$, and the description table) into the machine configuration for the next state. This configuration shall be represented as a pair, the first element being a pair of the \textit{m}-config reference and the tape, and the second element as the description table. The $\bm{\nu}$ function gets the action function from the given machine configuration.
 
 \begin{gather*}
 \begin{aligned}
 \bm{\nu} &= \lambda c.\bm{I}(c\bm{\mathrm{TT}})([c\bm{\mathrm{TF}}]\bm{\mathrm{FT}})(c\bm{\mathrm{F}})\\
-\bm{U} &= \lambda cf.f[\lambda g.g[(\bm{\nu}c)\bm{\mathrm{F}}][((\bm{\nu}c)\bm{\mathrm{T}})(c\bm{\mathrm{TF}})]]c
+\bm{X} &= \lambda cf.f[\lambda g.g[(\bm{\nu}c)\bm{\mathrm{F}}][((\bm{\nu}c)\bm{\mathrm{T}})(c\bm{\mathrm{TF}})]]c
+\end{aligned}
+\end{gather*}
+
+\subsubsection{Universal Machine State Generator}
+
+Finally, we shall define a recursive function which produces every consecutive state by running $\bm{X}$ on itself an infinite number of times.
+
+\begin{gather*}
+\begin{aligned}
+\bm{\omega} &= \lambda uc.u(\bm{X}c) \\
+\bm{U} &= \lambda c.\bm{\mathrm{Y}}\bm{\omega}c
 \end{aligned}
 \end{gather*}
 
