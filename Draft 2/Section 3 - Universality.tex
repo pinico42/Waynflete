@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\renewcommand{\arraystretch}{1.5}p
+\renewcommand{\arraystretch}{1.5}
 So far, we have explored how our two methods of computation can perform many common operations, including data manipulation \& storage, on top of looping and conditional branching. Unfortunatley, it is too vague to simply define a 'comuputer' as a system which can perform a somewhat arbitrary set of operations - we must refine this to a simple set of functions. The easiest way of doing this is by assuming that a certain system can perform every operation a computer can perform. For this purpose, we will choose Turing machines, for purposes that will become clear later. Now, in order to prove that any system is a 'computer', we must simply prove that it can perform any operation a Turing machine can perform - in essence, it must be able to fully emulate the operation of a Turing FSM. 
 
  This essentially means that a machine, given a specific Turing machine starting configuration, should be able to produce every consecutive following state (i.e. it takes an FSM description table as input, and generates an infinite sequence of following tape \& \textit{m}-configuration states). Any machine that can do this shall be called a \textit{Universal Machine}.

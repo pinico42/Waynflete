@@ -3,7 +3,6 @@
 \crefname{section}{§}{§§}
 \Crefname{section}{§}{§§}
 
-\renewcommand{\arraystretch}{1.5}p
 
 \lstdefinelanguage{Turlang}
 {
@@ -23,6 +22,7 @@
 }
 \lstset{language=Turlang}
 \begin{document}
+\renewcommand{\arraystretch}{1.5}
 
 At roughly the same time, the English Mathematician Alan Turing was constructing a method to achieve the same goal, but in an entirely different way. Rather than building an incredibly simple axiomatic system to illustrate Effective Computability, the concept used was far more practical, and far closer to the mechanical computers that implemented this idea.
 
@@ -306,6 +306,8 @@ main(C, E) = bdef(var1,
 \end{lstlisting}
 With arguments for continuity and simple error correction. This, in turn, can be simplified into a table.
 
-Furthermore, we can simplify certain functions to have their own specific syntax. In the case of definitions, "\lstinline{bdef(var)}" shall be abbreviated to "\lstinline{bool var}";
+%Furthermore, we can simplify certain functions to have their own specific syntax. In the case of definitions, "\lstinline{bdef(var)}" shall be abbreviated to "\lstinline{bool var}";
+
+\textit{TODO: Integers, integer addition, loops. Maybe more explicitly state how m-functions can be expanded to full configurations}
 
 \end{document}
