@@ -40,7 +40,7 @@ Church uses this medium to define a variety of concepts we are already familiar 
 etc.
 \end{aligned}
 \end{equation*}
-Here it can bee seen that for each number \textit{n} the argument $s$  is applied to the argument $z$ \textit{n} times.
+Here it can bee seen that for each number \textit{n} the argument $s$ is applied to the argument $z$ \textit{n} times - the $s$ functions representing \textit{n} successors to zero ($z$).
 
 From this, it is not difficult to define an operation that takes a number as input and increments it by 1 - such a function would take three arguments (the first being the number, and the second two being the arguments $s$ and $z$ for the number) and would apply the argument $s$ to the number:
 \begin{equation*}
@@ -50,10 +50,10 @@ Let us test our new successor function by applying it to \textbf{2}:
 \begin{gather*}
 \begin{aligned}
 \bm{\mathrm{S2}} &= (\lambda wyx.y(wyx)) (\lambda sz.s(s(z)))\\
-&= y([\lambda sz.(s(s(z)))]yx)\\
-&=y[y(y(z))]\\
-&=s(s(s(z)))\\
-&=\bm{\mathrm{3}}
+&= \lambda yx.y([\lambda sz.(s(s(z)))]yx)\\
+&= \lambda yx.y(y(y(z)))\\
+&= \lambda sz.s(s(s(z)))\\
+&= \bm{\mathrm{3}}
 \end{aligned}
 \end{gather*}
 
@@ -64,10 +64,9 @@ a\bm{\mathrm{S}}b
 Let us test this by summing \textbf{2} and \textbf{3}:
 \begin{gather*}
 \begin{aligned}
-\bm{\mathrm{2S3}} &= (\lambda sz.s(s(z))) (\lambda wyx.y(wyx)) (\lambda sz.s(s(s(z))))\\
-&= (\lambda wyx.y(wyx)) [(\lambda wyx.y(wyx)) [\lambda sz.s(s(s(z)))]]\\
-&= (\lambda wyx.y(wyx)) [\lambda sz.s(s(s(s(z))))]\\
-&= \lambda sz.s(s(s(s(s(z)))))\\
+\bm{\mathrm{2S3}} &= (\lambda sz.s(s(z))) [\bm{\mathrm{S}}] [\bm{\textrm{3}}]\\
+&= \bm{\mathrm{S}} (\bm{\mathrm{S}} (\bm{\mathrm{3}}))\\
+&= \bm{\mathrm{S}} (\bm{\mathrm{4}})\\
 &= \bm{\mathrm{5}}
 \end{aligned}
 \end{gather*}
@@ -90,16 +89,16 @@ Multiplication can also be calculated by defining the function \textbf{M}:
 \end{gather*}
 We should rearrange our earlier addition method into an 'addition' function of the same format which takes two arguments:
 \begin{equation*}
-\bm{\mathrm{A}} = \lambda ab.a\bm{\mathrm{S}}b
+\bm{\mathrm{A}} = \lambda ab.b\bm{\mathrm{S}}a
 \end{equation*}
 
-A 'power' function to find $a^b$can also be defined, of astonishing simplicity:
+An 'exponent' function to find $a^b$can also be defined, of astonishing simplicity:
 \begin{equation*}
-\bm{\mathrm{P}} = \lambda ba.ab
+\bm{\mathrm{E}} = \lambda ba.ab
 \end{equation*}
 \begin{gather*}
 \begin{aligned}
-\bm{\mathrm{P23}} &= (\lambda ab.ab)(\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
+\bm{\mathrm{E23}} &= (\lambda ab.ab)(\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
 &= (\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
 &= (\lambda z.[\lambda ty.t(t(t(y)))]([\lambda ux.u(u(u(x)))]z))\\
 &= (\lambda z.[\lambda ty.t(t(t(y))][\lambda x.z(z(z(x)))])\\
@@ -146,7 +145,20 @@ Functions representing boolean operations can also be defined:
 \veebar &= \lambda xy.x(\lnot y)y
 \end{aligned}
 \end{gather*}
-The derivation of such operations is not difficult to understand if one considers the truth tables for each operation, remembering that T selects the first and F selects the second argument.
+The derivation of such operations is not difficult to understand if one considers the truth tables for each operation, remembering that T selects the first and F selects the second argument - for example, looking at the OR function $\vee$:
+
+\begin{gather*}
+\begin{aligned}
+\vee \bm{\mathrm{TF}} &= \bm{\mathrm{T}}[\bm{\mathrm{T}}][\bm{\mathrm{F}}] \\
+&= \bm{\mathrm{T}} \\
+\vee \bm{\mathrm{FF}} &= \bm{\mathrm{F}}[\bm{\mathrm{T}}][\bm{\mathrm{F}}] \\
+&= \bm{\mathrm{F}} \\
+\vee \bm{\mathrm{FT}} &= \bm{\mathrm{F}}[\bm{\mathrm{T}}][\bm{\mathrm{T}}] \\
+&= \bm{\mathrm{T}} \\
+\end{aligned}
+\end{gather*}
+
+If the first argument is \textbf{T} the function will always return \textbf{T}, as it is the first argument. If the first argument is \textbf{F} on the other hand, the value of the second argument will be returned (the $\vee$ function is dependant on at least one argument being \textbf{T} - if this is not the first argument, the outcome is simply whether the second argument is \textbf{T} or not). The remaining functions work in a similar way.
 
 \subsection{Basic Comparison operators}
 
@@ -161,7 +173,7 @@ To understand this somewhat less than trivial concept, note that \textbf{F} when
 From this, it easier to see how the function works. Firstly with \textbf{0}:
 \begin{gather*}
 \begin{aligned}
-\bm{\mathrm{Z0}} &= (\lambda x.x\bm{\mathrm{f\lnot F}})\bm{0}\\
+\bm{\mathrm{Z0}} &= (\lambda x.x\bm{\mathrm{F\lnot F}})\bm{0}\\
 &= \bm{\mathrm{0F\lnot F}}\\
 &= \bm{\mathrm{\lnot F}}\\
 &= \bm{\mathrm{T}}
@@ -170,7 +182,7 @@ From this, it easier to see how the function works. Firstly with \textbf{0}:
 Secondly with \textbf{2}:
 \begin{gather*}
 \begin{aligned}
-\bm{\mathrm{Z2}} &= (\lambda x.x\bm{\mathrm{f\lnot F}})\bm{2}\\
+\bm{\mathrm{Z2}} &= (\lambda x.x\bm{\mathrm{F\lnot F}})\bm{2}\\
 &= \bm{\mathrm{2F\lnot F}}\\
 &= (\bm{\mathrm{F}}(\bm{\mathrm{F}}\lnot)) \bm{\mathrm{F}}\\
 &= (\bm{\mathrm{F}}(\lambda x.x))\bm{\mathrm{F}}\\
