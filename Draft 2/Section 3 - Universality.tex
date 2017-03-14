@@ -154,7 +154,7 @@ At last, we can involve all of these functions to create a single operation whic
 
 \subsubsection{Universal Machine State Generator}
 
-Finally, we shall define a recursive function which produces every consecutive state by running $\bm{X}$ on itself an infinite number of times.
+Finally, we shall define a recursive function which produces every consecutive state by running $\bm{X}$ on itself repeatedly. When this is evaluated, each iteration of the machine shall be passed into the \textbf{Y} combinator, leading to each consecutive state being found during evaluation.
 
 \begin{gather*}
 \begin{aligned}
