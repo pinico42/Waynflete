@@ -185,9 +185,9 @@ In this section a set of common and useful \textit{m}-functions are defined that
     \hhline{====}
     $\mathbb{p0}$(\textfrak{C}, \textfrak{E}) & - & P\texttt{0} & \textfrak{C} & Prints \texttt{0} \\
     \hhline{----}
-    $\mathbb{p1}$(\textfrak{C}, \textfrak{E}) & - & P\texttt{1} & \textfrak{C} & Prints \texttt{0} \\
+    $\mathbb{p1}$(\textfrak{C}, \textfrak{E}) & - & P\texttt{1} & \textfrak{C} & Prints \texttt{1} \\
     \hhline{----}
-    $\mathbb{ps}$(\textit{s},\textfrak{C}, \textfrak{E}) & - & P\textit{s} & \textfrak{C} & Prints \texttt{0} \\
+    $\mathbb{ps}$(\textit{s},\textfrak{C}, \textfrak{E}) & - & P\textit{s} & \textfrak{C} & Prints \textit{s} \\
     \hhline{====}
     $\mathbb{n}$(\textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$(\texttt{e}, $\mathbb{n}_1$(\textfrak{C}), \textfrak{E}) & \multirow{3}{80pt}{Moves to first empty (final) \textit{p}-square} \\
     \hhline{----}
@@ -209,10 +209,10 @@ At this point, the similarity between Turing machines and modern computers becom
     $\mathbb{\mathbf{b}def}$(\textit{p}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{n}$($\mathbb{\mathbf{b}def}_1$(\textit{p}, \textfrak{C}), \textfrak{E}) \\
     $\mathbb{\mathbf{b}def}_1$(\textit{p}, \textfrak{C})   & - & P\texttt{0}, R, P\textit{p}, L & \textfrak{C} \\
     \hhline{====}
-    $\mathbb{\mathbf{b}copy}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}copy}_1$(\textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}, \textit{r}) \\
+    $\mathbb{\mathbf{b}copy}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$(\textit{r}, $\mathbb{\mathbf{b}copy}_1$(\textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\
-                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\ 
+    \multirow{3}{*}{$\mathbb{\mathbf{b}copy}_1$(\textit{w},\textfrak{C},\textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$(\textit{w}, $\mathbb{p0}$(\textfrak{C}, \textfrak{E}), \textfrak{E}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$(\textit{w}, $\mathbb{p1}$(\textfrak{C}, \textfrak{E}), \textfrak{E}) \\ 
                                                                                        & Other & - & \textfrak{E} \\
 \end{tabu}
 
@@ -225,10 +225,10 @@ The first takes one pointer \textit{p}, finds the first free bit (\textit{p}-squ
 As we did in $\lambda$-calculus, we shall define boolean operations. Every operation will take one or many pointers as arguments, and write the evaluated result to another given pointer. The simplest of these we can create is the negator:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
-    $\mathbb{\mathbf{b}neg}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}neg}_1$(\textit{w},\textfrak{C}),\textfrak{E}) \\
+    $\mathbb{\mathbf{b}not}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$(\textit{r}, $\mathbb{\mathbf{b}not}_1$(\textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}neg}_1$(\textit{w}, \textfrak{C}, \textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}, \textfrak{E}), \textfrak{E}, \textit{w}) \\
-                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}, \textfrak{E}), \textfrak{E}, \textit{w}) \\ 
+    \multirow{3}{*}{$\mathbb{\mathbf{b}not}_1$(\textit{w}, \textfrak{C}, \textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$(\textit{w}, $\mathbb{p1}$(\textfrak{C}, \textfrak{E}), \textfrak{E}) \\
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$(\textit{w}, $\mathbb{p0}$(\textfrak{C}, \textfrak{E}), \textfrak{E}) \\ 
                                                                                        & Other & - & \textfrak{E} \\
 \end{tabu}
 
@@ -236,22 +236,22 @@ As we did in $\lambda$-calculus, we shall define boolean operations. Every opera
 This is almost identical to the copying function, but inverting the written symbols. The definition of the remaining logical functions based on truth tables now becomes simple:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
-    $\mathbb{\mathbf{b}and}$(\textit{a}, \textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}and}_1$(\textit{b}, \textit{w}, \textfrak{C}), \textfrak{E}) \\
+    $\mathbb{\mathbf{b}and}$(\textit{a}, \textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$(\textit{a}, $\mathbb{\mathbf{b}and}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}and}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$($\mathbb{p0}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\
+    \multirow{3}{*}{$\mathbb{\mathbf{b}and}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})} & \texttt{0} & - & $\mathbb{fl}$(\textit{w}, $\mathbb{p0}$(\textfrak{C}, \textfrak{E}), \textfrak{E}) \\
                                                                                        & \texttt{1} & - & $\mathbb{\mathbf{b}copy}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\ 
                                                                                        & Other & - & \textfrak{E} \\
     \hhline{====}
-    $\mathbb{\mathbf{b}or}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}or}_1$(\textit{w}, \textfrak{C}), \textfrak{E}) \\
+    $\mathbb{\mathbf{b}or}$(\textit{a}, \textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$(\textit{a}, $\mathbb{\mathbf{b}or}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}or}_1$(\textit{w}, \textfrak{C}, \textfrak{E})} 
+    \multirow{3}{*}{$\mathbb{\mathbf{b}or}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})} 
                                                                                        & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\
-                                                                                       & \texttt{1} & - & $\mathbb{fl}$($\mathbb{p1}$(\textfrak{C}), \textfrak{E}, \textit{w}) \\ 
+                                                                                       & \texttt{1} & - & $\mathbb{fl}$(\textit{w}, $\mathbb{p1}$(\textfrak{C}, \textfrak{E}), \textfrak{E}) \\ 
                                                                                        & Other & - & \textfrak{E} \\
     \hhline{====}
-    $\mathbb{\mathbf{b}xor}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$($\mathbb{\mathbf{b}xor}_1$(\textit{w}, \textfrak{C}), \textfrak{E}) \\
+    $\mathbb{\mathbf{b}xor}$(\textit{a}, \textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$(\textit{a}, $\mathbb{\mathbf{b}xor}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}) \\
     \hhline{----}
-    \multirow{3}{*}{$\mathbb{\mathbf{b}xor}_1$(\textit{w}, \textfrak{C}, \textfrak{E})} 
+    \multirow{3}{*}{$\mathbb{\mathbf{b}xor}_1$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E})} 
                                                                                        & \texttt{0} & - & $\mathbb{\mathbf{b}copy}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\
                                                                                        & \texttt{1} & - &  $\mathbb{\mathbf{b}not}$(\textit{b}, \textit{w}, \textfrak{C}, \textfrak{E}) \\ 
                                                                                        & Other & - & \textfrak{E} \\
