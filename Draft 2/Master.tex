@@ -3,22 +3,25 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{subfiles}
-\usepackage{blindtext}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{biblatex}
+\usepackage{blindtext}
 \usepackage{bm}
-\usepackage{multirow, bigdelim}
-\usepackage{hhline}
-\usepackage{tabu}	
-\usepackage[bb=boondox]{mathalfa}
-\usepackage{yfonts}
 \usepackage{cleveref}
+\usepackage{hhline}
 \usepackage{listings}
+\usepackage[bb=boondox]{mathalfa}
+\usepackage{multirow, bigdelim}
+\usepackage{tabu}
+\usepackage{yfonts}
+
 
 \title{Did WW2 Produce an Equivalent to a Modern Computer?}
 \date{February 23, 2017}
 \author{Max Penrose}
+\addbibresource{bibliography.bib}
 
 \crefname{section}{§}{§§}
 \Crefname{section}{§}{§§}
@@ -34,14 +37,14 @@ In order to achieve this, I must first describe the fundamental attributes a mac
 
 \section{Church's $\lambda$-Calculus}
 
-\subfile{"Section 1 - Lambda Calculus"}
+%\subfile{"Section 1 - Lambda Calculus"}
 
 \section{Turing Machines}
 
-\subfile{"Section 2 - Turing Machines"}
+%\subfile{"Section 2 - Turing Machines"}
 
 \section{Universality}
 
-\subfile{"Section 3 - Universality"}
-
+%\subfile{"Section 3 - Universality"}
+\printbibliography
 \end{document}
