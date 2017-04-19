@@ -20,14 +20,14 @@
 \begin{document}
 \renewcommand{\arraystretch}{1.5}
 
-At roughly the same time, the English mathematician Alan Turing was constructing a method to achieve the same goal, but in an entirely different way. Rather than building a simple and practical axiomatic system, the concept used was far more practical, and far closer to the mechanical computers that eventually implemented this idea.
+At roughly the same time, the English mathematician Alan Turing was constructing a method to achieve the same goal, but in an entirely different way. Rather than building a basic and strongly theoretical system, the concept used was far more physical and far closer to the mechanical computers that eventually implemented this idea.
 
-\subsection{Examples of simple Finite State Machines}\label{sec:FSMintro}
-The Turing Machine, or Finite State Machine (FSM), is composed of two parts: firstly, an ordered set of \textit{squares} of infinite length known as \textit{tape}, with a cursor at a certain point on this list, in which \textit{symbols} can be written for future use or output; secondly, a set of states known as \textit{m}-configurations, each of which contain operations to be performed on the tape, and the \textit{m}-configuration that the FSM moves to. An example description of such a set would be:
+\subsection{Examples of simple Turing Machines}\label{sec:TMacIntro}
+The Turing Machine is composed of two parts. Firstly, an ordered set of \textit{cells} of infinite\footnote{Many definitions of Turing Machines have the tape extending infinitely in one direction only - in fact for full functionality a tape extending infinitely in both directions is unnecessary.} length known as \textit{tape}. On each of these cells one of a finite set of \textit{symbols} - either alphanumeric characters or the symbol which represents an empty cell. At a given point on this tape is a \textit{tape head} (or cursor) which is able to write symbols to the current cell. Secondly, a finite set of instructions known as \textit{states} contain finite-length sequences of operations known as the \textit{transition function} which the cursor enacts, and the states that the machine moves to after performing those operations. An example description of a set of states would be: \cite{turing1936computablenumbers}
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
-    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
     \hhline{====}
     \multirow{1}{*}{$\mathbb{A}$} & None & P\texttt{0}, R & $\mathbb{B}$ \\
     \hhline{----}
@@ -42,13 +42,13 @@ The Turing Machine, or Finite State Machine (FSM), is composed of two parts: fir
 
 \medskip
 
-This table format shall be used to describe FSM configurations. First of all, the last line describes the starting \textit{m}-configuration. When the machine begins an iteration on any one of these \textit{m}-configurations, it first checks if the symbol aspect of the configuration is equal to the \textit{symbol} currently under the cursor on the tape. If this condition is met, the operations are carried out - P\textit{n} for any symbol \textit{n} prints the symbol \textit{n} on the tape under the cursor; E erases any symbol under the cursor; L moves the cursor to the left; R moves the cursor to the right. When these operations are completed, the \textit{m}-configuration is set to that described in the last column. The FSM then moves to the next iteration.
+This table format shall be used to describe Turing Machine configurations. First of all, the last line describes the starting state ($\mathbb{A}$). When the machine begins an iteration on any one of these states, it first checks if the symbol aspect of the configuration is equal to the \textit{symbol} currently under the cursor on the tape. If this condition is met, the transition function is carried out - P\textit{n} for any symbol \textit{n} prints the symbol \textit{n} on the tape under the cursor; E erases any symbol under the cursor\footnote{More formally, prints the empty cell symbol}; L moves the cursor to the left; R moves the cursor to the right. When these operations are completed, the state is set to that described in the last column. The machine then moves to the next iteration.
 
-In this case, it is not difficult to see that as the machine runs, it leaves a sequence of alternating 0s and 1s on every other square on the tape. However, with the use of the \textit{symbol} condition, this table can be simplified:
+In this case, it is not difficult to see that as the machine runs, it leaves a sequence of alternating 0s and 1s on every other cell on the tape. With the use of the \textit{symbol} condition, this table can be simplified: \cite{turing1936computablenumbers}
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
-    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
     \hhline{====}
     \multirow{3}{*}{$\mathbb{A}$} & None & P\texttt{0}       & $\mathbb{A}$ \\
                                   & \texttt{0}    & R, R, P\texttt{1} & $\mathbb{A}$ \\ 
@@ -59,13 +59,13 @@ In this case, it is not difficult to see that as the machine runs, it leaves a s
 
 \medskip
 
-It is again not difficult to see that this produces the same output as the previous machine, but this time using only one \textit{m}-configuration.
+It is again not difficult to see that this produces the same output as the previous machine, but this time using only one state.
 
-An example of a more complex FSM is shown below, which generates the sequence \texttt{010110111011110111110...} again on alternate squares, beginning at the fifth square.
+An example of a more complex Turing machine is shown below, which generates the sequence \texttt{010110111011110111110...} again on alternate cells, beginning at the fifth cell. \cite{turing1936computablenumbers}
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
-    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
     \hhline{====}
     \multirow{1}{*}{$\mathbb{Q}$} & Any        & P\texttt{e}, R P\texttt{e}, R,  P\texttt{0}, R, R, P\texttt{0}, L, L & $\mathbb{A}$ \\
     \hhline{----}
@@ -88,17 +88,17 @@ An example of a more complex FSM is shown below, which generates the sequence \t
 
 \medskip
 
-The operation of such a machine is significantly more complex than the earlier one. Key to the operation is the fact that squares are paired, firstly into primary squares or \textit{p}-squares (odd-numbered squares) on which the symbols of the output sequence are printed. Only the symbols \texttt{0} and \texttt{1} will ever be printed on these squares. To the right of each \textit{p}-square is a secondary square, or \textit{s}-square (an even-numbered square). These squares will either be left empty or will contain a 'marker' symbol, which marks the symbol on the \textit{p}-square to the left. These symbols can be erased and overwritten, and are not part of the output sequence. Only one \textit{s}-square is needed to contain multiple markers, or more descriptive markers for a single \textit{p}-square, as this can be achieved with a sufficiently rich variety of marker symbols.
+The operation of such a machine is significantly more complex than the earlier one. Key to the operation is the fact that cells are paired into value cells (odd-numbered cells) on which the symbols of the output sequence are printed. Only the symbols \texttt{0} and \texttt{1} will ever be printed on these cells. To the right of each value cell is a label cell (an even-numbered cell). These cells will either be left empty or will contain a 'marker' symbol, which labels the symbol on the value cell to the left. These symbols can be erased and overwritten, and are not part of the output sequence. Only one label cell is needed to contain multiple markers, or more descriptive markers for a single value cell, as this can be achieved with a sufficiently rich variety of marker symbols. This method is frequently used by Alan Turing in \cite{turing1936computablenumbers}.
 
-This machine operates by first printing the symbols \texttt{e e 0} at the start of the tape, before printing the first \texttt{0} of the sequence on the fifth square, finishing on the third square and moving to state $\mathbb{A}$. (in future I shall represent this finishing state as $\rightarrow \mathbb{A}$).
+This machine operates by first printing the symbols \texttt{e e 0} at the start of the tape, before printing the first \texttt{0} of the sequence on the fifth cell, finishing on the third cell and moving to state $\mathbb{A}$. (in future I shall represent this finishing state as $\rightarrow \mathbb{A}$).
 
 If $\mathbb{A}$ is triggered, every \texttt{1} consecutively to the left of the cursor inclusively will be marked with \texttt{x}, $\rightarrow \mathbb{B}$.
 
 If $\mathbb{B}$ is triggered, the symbol \texttt{1} is appended to the output sequence, $\rightarrow \mathbb{C}$.
 
-If $\mathbb{C}$ is triggered, the cursor moves leftwards through the markers: if an \texttt{x} is found it is erased and $\rightarrow \mathbb{B}$; if the cursor reaches the beginning (an \texttt{e} is found) $\rightarrow \mathbb{D}$.
+If $\mathbb{C}$ is triggered, the cursor moves leftwards through the labels: if an \texttt{x} is found it is erased and $\rightarrow \mathbb{B}$; if the cursor reaches the beginning (an \texttt{e} is found) $\rightarrow \mathbb{D}$.
 
-If $\mathbb{D}$ is triggered, the symbol \texttt{0} is appended to the output sequence, the cursor moves to the previous \textit{p}-square and $\rightarrow \mathbb{A}$.
+If $\mathbb{D}$ is triggered, the symbol \texttt{0} is appended to the output sequence, the cursor moves to the previous value cell and $\rightarrow \mathbb{A}$.
 
 The workings of this algorithm are mostly in states $\mathbb{A}$ and $\mathbb{C}$: after the \texttt{0} is drawn $\mathbb{A}$ draws a number of \texttt{x} symbols equal to the previous number of \texttt{1} symbols drawn. $\mathbb{C}$ triggers $\mathbb{B}$ a number of times equal to the number of found \texttt{x} symbols before drawing a \texttt{0} - as $\mathbb{B}$ has already been triggered once, a number of \texttt{1} symbols will be drawn which is one more than the previous number drawn. For clarity in the comprehension of this somewhat abstract algorithm, some of the early states have been listed on the next page. Empty squares are represented by dots ($\cdot$) and the tape states continue in columns. An ellipsis marks the omission of a set of states which are implied or trivial.
 
@@ -135,15 +135,15 @@ The workings of this algorithm are mostly in states $\mathbb{A}$ and $\mathbb{C}
 
 \clearpage
 
-It is clear from this example that the operation of the FSM is very different from that of an ordinary computer. However, the core components are still mostly present - conditionals in the form of the symbol tests in the second column, variables in the form of markers, and continuity and looping when a state triggers itself - a form of recursion. The end result is the same - a solution is produced in the form of the computable sequence written on the \textit{p}-squares, and the machine can continue this sequence without halting indefinitely. Unfortunately, the operation of this machine is somewhat complex and involved. To simplify this, we will introduce a type of function for the FSM.
+It is clear from this example that the operation of the Turing Machine is very different from that of an ordinary computer. However, the core components are still mostly present - conditionals in the form of the symbol tests in the second column, variables in the form of labels, and continuity and looping when a state triggers itself - a form of recursion. The end result is the same - a solution is produced in the form of the computable sequence written on the value squares, and the machine can continue this sequence without halting indefinitely. Unfortunately, the operation of this machine is somewhat complex and involved. To simplify this, we will introduce a type of function for the Turing machine.
 
 \subsection{\textit{M}-functions}\label{sec:mfunctions}
 
-\textit{M}-functions are effectively an extension of \textit{m}-configurations. They are described by a lowercase letter and a set of arguments contained in brackets - arguments in gothic script refer to \textit{m}-configurations (or other \textit{m}-functions), and arguments in italics refer to symbols. When an \textit{m}-function is triggered, the italic and gothic symbols in the description are substituted by the supplied arguments (much like in $\lambda$-calculus). An example of an \textit{m}-function would be the function $\mathbb{f}$ below:
+\textit{M}-functions are effectively an extension of states described by Turing in \cite{turing1936computablenumbers}. They are denoted by a lowercase letter and a set of arguments contained in brackets - arguments in gothic script refer to states (or other \textit{m}-functions), and arguments in italics refer to symbols. When an \textit{m}-function is triggered, the italic and gothic symbols in the description are substituted by the supplied arguments (similar to application in $\lambda$-calculus). An example of an \textit{m}-function would be the function $\mathbb{f}$ below:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
-    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
     \hhline{====}
     \multirow{2}{*}{$\mathbb{f}$(\textit{a}, \textfrak{C}, \textfrak{E})}   & \texttt{e}              & L & $\mathbb{f}_1$(\textit{a}, \textfrak{C}, \textfrak{E}) \\
                                                                           & Not \texttt{e}          & L & $\mathbb{f}$(\textit{a}, \textfrak{C}, \textfrak{E})   \\
@@ -159,9 +159,9 @@ It is clear from this example that the operation of the FSM is very different fr
 
 \medskip
 
-The function $\mathbb{f}$ takes three arguments - the \textit{m}-configurations \textfrak{C} and \textfrak{E} and the symbol \textit{a}. It is not difficult to see that if $\rightarrow \mathbb{f}$($\mathbb{A}$,$\mathbb{B}$,x) the cursor would trigger $\mathbb{A}$ at the leftmost occurrence of \texttt{x}. If no symbols \texttt{x} were found, \textfrak{E} would be triggered on the marker of the first empty \textit{p}-square.
+The function $\mathbb{f}$ takes three arguments - the states \textfrak{C} and \textfrak{E} and the symbol \textit{a}. It is not difficult to see that if $\rightarrow \mathbb{f}$($\mathbb{A}$,$\mathbb{B}$,x) the cursor would trigger $\mathbb{A}$ at the leftmost occurrence of \texttt{x}. If no symbols \texttt{x} were found, \textfrak{E} would be triggered on the marker of the first empty value square.
 
-The use of \textit{m}-functions greatly simplifies the table descriptions, as certain operations are common to many machines. Of course, any table description that includes or refers to \textit{m}-functions can be written as an ordinary table as described in \cref{sec:FSMintro}. This is possible because of the finite nature of both symbols and \textit{m}-configurations; simply by listing in separate rows under the same \textit{m}-configuration every permutation of symbols and \textit{m}-configurations that the function could possibly take substituted in.
+The use of \textit{m}-functions greatly simplifies the table descriptions, as certain operations are common to many machines. Of course, any table description that includes or refers to \textit{m}-functions can be written as an ordinary table as described in \cref{sec:TMacIntro}. This is possible because of the finite nature of both states and symbols; simply by listing in separate rows under the same state every permutation of the finite symbols and states that the function could possibly take substituted in.
 
 \subsubsection{Common Operations}
 
@@ -169,7 +169,7 @@ In this section a set of common and useful \textit{m}-functions are defined that
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
-    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
     \hhline{====}
     $\mathbb{e}$(\textit{a}, \textfrak{C}, \textfrak{E}) & - & - & $\mathbb{f}$(\textit{a}, $\mathbb{e}_1$(\textfrak{C}), \textfrak{E}) & \multirow{2}{80pt}{Erases first occurrence of symbol \textit{a}} \\
     \hhline{----}
@@ -200,11 +200,11 @@ In this section a set of common and useful \textit{m}-functions are defined that
 
 \subsection{Data Structures and Pointers}
 
-At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store more complex information, from integers to strings of characters to images, as binary sequences of \textit{p}-square \texttt{0}s and \texttt{1}s - these shall be stored on the tape as memory. The first data structure we shall define is the simple boolean - only 1 bit (1 \textit{p}-square) long. In order to identify these sequences on the tape as booleans, we shall mark the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define some \textit{m}-functions to define and assign values to variables of the boolean type:
+At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store more complex information, from integers to strings of characters to images, as binary sequences of value square \texttt{0}s and \texttt{1}s - these shall be stored on the tape as memory. The first data structure we shall define is the simple boolean - only 1 bit (1 value square) long. In order to identify these sequences on the tape as booleans, we shall label the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define some \textit{m}-functions to define and assign values to variables of the boolean type:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
-    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
     \hhline{====}
     $\mathbb{\mathbf{b}def}$(\textit{p}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{n}$($\mathbb{\mathbf{b}def}_1$(\textit{p}, \textfrak{C}), \textfrak{E}) \\
     $\mathbb{\mathbf{b}def}_1$(\textit{p}, \textfrak{C})   & - & P\texttt{0}, R, P\textit{p}, L & \textfrak{C} \\
@@ -218,7 +218,7 @@ At this point, the similarity between Turing machines and modern computers becom
 
 \medskip
 
-The first takes one pointer \textit{p}, finds the first free bit (\textit{p}-square) on the tape, writes the dummy value of \texttt{0} to it and marks it with \textit{p}. This method of appendng makes the assumption that no \textit{p}-squares are left empty across the used tape - in order to preserve this, we shall only append to \textit{p}-squares directly at the end of the used tape, and we shall never erase \textit{p}-squares. The second very simply finds the bit at pointer \textit{r}, and branches to write either \texttt{0} or \texttt{1} at the bit at the pointer \textit{w}.
+The first takes one pointer \textit{p}, finds the first free bit (value square) on the tape, writes the dummy value of \texttt{0} to it and marks it with \textit{p}. This method of appending makes the assumption that no value squares are left empty across the used tape - in order to preserve this, we shall only append to value squares directly at the end of the used tape, and we shall never erase (only overwrite fully) value squares. The second very simply finds the bit at pointer \textit{r}, and branches to write either \texttt{0} or \texttt{1} at the bit at the pointer \textit{w}.
 
 \subsubsection{Boolean Operations}
 
@@ -258,10 +258,10 @@ This is almost identical to the copying function, but inverting the written symb
 \end{tabu}
 
 \medskip
-In each of these, the first argument \textit{a} is observed, and an action which either writes a \texttt{1} or \texttt{0}, or copies or negates from \textit{b} depending on the truth tables, in a very similar manner to $\lambda$-calculus. Gradually, the cryptic and simplified language of Finite State Machines is yielding results similar to that of a computer.
+In each of these, the first argument \textit{a} is observed, and an action which either writes a \texttt{1} or \texttt{0}, or copies or negates from \textit{b} depending on the truth tables, in a very similar manner to $\lambda$-calculus. Gradually, the cryptic and simplified language of Turing machines is yielding results similar to that of a computer.
 
 \subsection{Scripted Configurations}
-As we have moved into more and more complex FSM functions, it can be noted that the middle two columns of the FSM are becoming gradually more scarce - this is due to the fact that their operation can be entirely represented within \textit{m}-functions. We have started doing so with the functions $\mathbb{l}$, $\mathbb{r}$, $\mathbb{p0}$, and $\mathbb{p1}$ - furthermore, it is not difficult to create conditional functions to replicate the operation of the second column.
+As we have moved into more and more complex Turing machine functions, it can be noted that the middle two columns of the description are becoming gradually more scarce - this is due to the fact that their operation can be entirely represented within \textit{m}-functions. We have started doing so with the functions $\mathbb{l}$, $\mathbb{r}$, $\mathbb{p0}$, and $\mathbb{p1}$ - furthermore, it is not difficult to create conditional functions to replicate the operation of the second column.
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multirow{2}{*}{$\mathbb{if}$(\textit{c}, \textfrak{I}, \textfrak{O})} 
@@ -279,7 +279,7 @@ ifp(r, c, I, O, E) = fl(r,
     if(c, I, O), E
 )
 \end{lstlisting}
-While this syntax is more concise, it is still somewhat obfuscated. Therefore, we will use our function method to define what is effectively a list of commands for the machine which will be executed in order. The main difference in this system is that, as the \textfrak{C} argument is always the function that must be run when that function is completed (except in the case of the conditional function), on interpretation of the language the entire operation of the machine after that point must be passed as the \textfrak{C} argument to that function in order for the functions to be called sequentially. The following function main() defines variables \textit{var1} and \textit{var2}, and sets \textit{var2} to be not \textit{var1}, or \texttt{1}.
+While this syntax is more concise, it is still somewhat obfuscated. Therefore, we will use our function method to define what is effectively a list of commands for the machine which will be executed in order. The main difference in this system is that, as the \textfrak{C} argument is always the function that must be run when that function is completed (except in the case of the conditional function), on interpretation of the language the entire operation of the machine after that point must be passed as the \textfrak{C} argument to that function in order for the functions to be called sequentially\footnote{For clarity, I have ignored error handling (i.e. omitted the E argument).}. The following function main() defines variables \textit{var1} and \textit{var2}, and sets \textit{var2} to be \textit{var1} negated, or \texttt{1}.
 
 \begin{lstlisting}
 function main() {
@@ -288,7 +288,7 @@ function main() {
 	bneg(var1, var2)
 }
 \end{lstlisting}
-For clarity, I have ignored error handling (i.e. omitted the E argument). This is equivalent to:
+This is equivalent to:
 
 \begin{lstlisting}
 
@@ -300,10 +300,10 @@ main(C, E) = bdef(var1,
 
 
 \end{lstlisting}
-with arguments for continuity and simple error correction. This, in turn, can be simplified into a table.
+with arguments for continuity and simple error correction. This, in turn, can be simplified into a description table.
 
-%Furthermore, we can simplify certain functions to have their own specific syntax. In the case of definitions, "\lstinline{bdef(var)}" shall be abbreviated to "\lstinline{bool var}";
+\subsection{Conclusion}
 
-\textit{TODO: Integers, integer addition, loops. Maybe more explicitly state how m-functions can be expanded to full configurations}
+Turing machines are truly remarkable entities. While $\lambda$-calculus was able to mimic the operation of a modern computer (behaving like a purely functional programming language such as Haskell), its beginnings were completely abstract - the mathematical operations of abstraction and application, while being probably more useful than Turing machines in yielding results, were unlike anything which could actually be created in the real world. However, Turing machines are completely grounded in physical reality, and it is totally conceivable how one could create such a machine - despite this, they are able to produce results very similar to that of an imperative programming language such as Java - data storage, typed and referenceable variables, and boolean logic, all performed as a sequence of commands. From these building blocks, integers and more complex concepts can be produced. This is the truly remarkable thing about Turing machines - they illustrate clearly how mechanisms can in fact solve computable problems. As such, it is most useful to define a computer as something which is able to behave like a Turing machine - in effect, a computer is distinguished by the fact that it can simulate a Turing machine. A machine with this ability shall be called 'Turing-complete'
 
 \end{document}

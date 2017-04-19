@@ -6,7 +6,6 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage{biblatex}
 \usepackage{blindtext}
 \usepackage{bm}
 \usepackage{cleveref}
@@ -21,7 +20,7 @@
 \title{Did WW2 Produce an Equivalent to a Modern Computer?}
 \date{February 23, 2017}
 \author{Max Penrose}
-\addbibresource{bibliography.bib}
+
 
 \crefname{section}{§}{§§}
 \Crefname{section}{§}{§§}
@@ -33,7 +32,7 @@
 \clearpage
 \textit{TODO: introduction - stating aim of checking whether computers produced during and after WW2 were 'computers'}
 
-In order to achieve this, I must first describe the fundamental attributes a machine must have for it to be called a 'computer'. Prior to the war and the development of electronic computation, any human who performed a calculation would  frequently be called a 'computer'. However, this specific attribute of computation is difficult to define - to do so, I will be looking at the minimalist  $\lambda$-Calculus developed by Mathematician and Logician Alonzo Church, the famous concept of the Universal Turing Machine created by English Mathematician Alan Turing, and the similarities and differences between these two definitions.
+In the process of defining computability, we shall study the set of problems known as `computable functions' - how to describe them, and how to evaluate them. 
 
 \section{Church's $\lambda$-Calculus}
 
@@ -46,5 +45,6 @@ In order to achieve this, I must first describe the fundamental attributes a mac
 \section{Universality}
 
 \subfile{"Section 3 - Universality"}
-\printbibliography
+\bibliography{bibliography}
+\bibliographystyle{unsrt}
 \end{document}
