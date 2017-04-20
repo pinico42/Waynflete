@@ -9,7 +9,7 @@ So far, we have explored how our two methods of computation can perform many com
 
 \subsection{Standard Turing Description Form}
 
-First, we must define what we actually mean by a description table - we shall do this by describing a standard form for these tables. Looking at the first table described, we can see that any transition function follows a similar format: E; [E, R]; [E, L]; P\textit{a}; [ P\textit{a}, R]; [ P\textit{a}, L] or no entry at all. More complex transition functions such as those found in later tables can always be put into one of these forms through the addition of intermediary states which are called in sequence.
+First, we must define what we actually mean by a description table - we shall do this by describing a standard form for these tables, as shown by Turing in \cite{turing1936computablenumbers}. Looking at the first table described, we can see that any transition function follows a similar format: E; [E, R]; [E, L]; P\textit{a}; [ P\textit{a}, R]; [ P\textit{a}, L] or no entry at all. More complex transition functions such as those found in later tables can always be put into one of these forms through the addition of intermediary states which are called in sequence.
 
 Next, let us rename the states as $q_0$, $q_1$, $q_2$, $...$, $q_n$ for clarity (the initial state shall always be called $q_0$, the second $q_1$ and so on). Furthermore, the symbols shall be renamed $S_0$, $S_1$, $S_2$, $...$, $S_n$ - in this case, $S_0$ will represent the blank square, $S_1$ will represent \texttt{0} and $S_2$ will represent \texttt{1}. The movement operations L and R will be renamed $M_L$, $M_R$, and the operation to keep the tape stationary is simply $M_S$. Our tables are now of form:
 
