@@ -1,0 +1,49 @@
+\documentclass[Master.tex]{subfiles}
+
+
+\begin{document}
+\appendix
+\appendixpage
+\section{Further Arithmetic in $\lambda$-Calculus}
+Multiplication can also be calculated by defining the function \textbf{M}:
+\cite{rojas2015lambdatutorial}
+\begin{equation*}
+\bm{\mathrm{M}} = \lambda wyx.w(yx)
+\end{equation*}  
+\begin{gather*}
+\begin{aligned}
+\bm{\mathrm{M22}} &= (\lambda wyx.w(yx))(\lambda ab.a(a(b)))(\lambda sz.s(s(z)))\\
+&= \lambda x.(\lambda ab.a(a(b)))[(\lambda sz.s(s(z)))x]\\
+&= \lambda x.(\lambda ab.a(a(b)))[\lambda z.x(x(z))]\\
+&= \lambda x.(\lambda b.[\lambda z.x(x(z))]([\lambda z.x(x(z))]b))\\
+&= \lambda x.(\lambda b.[\lambda z.x(x(z))][x(x(b))])\\
+&= \lambda x.(\lambda b.x(x(x(x(b)))))\\
+&= \lambda xb.x(x(x(x(b))))\\
+&= \bm{\mathrm{4}}
+\end{aligned}
+\end{gather*}
+We should rearrange our earlier addition method into an `addition' function of the same format which takes two arguments:
+\begin{equation*}
+\bm{\mathrm{A}} = \lambda ab.b\bm{\mathrm{S}}a
+\end{equation*}
+
+An `exponent' function to find $a^b$can also be defined, of astonishing simplicity:
+\cite{penrose1991emperor}
+\begin{equation*}
+\bm{\mathrm{E}} = \lambda ba.ab
+\end{equation*}
+\begin{gather*}
+\begin{aligned}
+\bm{\mathrm{E23}} &= (\lambda ab.ab)(\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
+&= (\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
+&= (\lambda z.[\lambda ty.t(t(t(y)))]([\lambda ux.u(u(u(x)))]z))\\
+&= (\lambda z.[\lambda ty.t(t(t(y))][\lambda x.z(z(z(x)))])\\
+&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x)))]([\lambda x.z(z(z(x)))]([\lambda x.z(z(z(x)))]y))])\\
+&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x))]([\lambda x.z(z(z(x)))][z(z(z(y)))])])\\
+&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x))]([z(z(z(z(z(z(y))))))])])\\
+&= (\lambda z.[\lambda y.[z(z(z(z(z(z(z(z(z(y)))))))))]])\\
+&= \lambda zy.z(z(z(z(z(z(z(z(z(y)))))))))\\
+&= \bm{\mathrm{9}} = \bm{\mathrm{3^2}}
+\end{aligned}
+\end{gather*}
+\end{document}
