@@ -2,11 +2,49 @@
 
 \begin{document}
 
+At this point, we have an almost complete definition of 'computer' - a machine which is able to fully implement the concept of effective computability. This can be done most simply through the implementation of an effectively computable method of computation, such as Turing Machines. However, in order to address the question of whether this was achieved during WW1 we must apply this test to the physical instruments created within this time.
+
+\textit{TODO: Colossus}
+
+However, a few years later on 
 
 \subsection{The Architecture of the Z3}
 
 \subsection{Universality in the Z3}
 
-\subsubsection{}
+The first thing that must be considered when looking for universality in a potentially Turing-complete machine is the fact that, by the strict definition of a Turing machine, it must require infinite memory due to the nature of its tape. Unfortunately, this is impossible in the physical world as memory is always finite. As such, we must revise our definition of Turing-completeness to require only a finite tape.
+
+At first glance, it is unclear that the Z3 can be made into a universal machine due to the fact that it allows for neither conditional branching\footnote{The ability to perform different operations depending on the state of a stored value} nor indirect addressing\footnote{The ability to refer to values stored in memory when the address of that memory is not specifically referred to in the program but is rather obtained from the value of some variable currently in memory}. However, 
+
+\subsubsection{Conditional Branching}
+
+\begin{gather*}
+\begin{aligned}
+u &= b\ \{op\}\ c \\
+v &= a \cdot t \\
+w &= 1 - t \\
+u &= w \cdot u \\
+a &= v + u
+\end{aligned}
+\end{gather*}
+
+\begin{equation*}
+\mathrm{if\ (}z = i\mathrm{)\ then\ } t = 0 \mathrm{\ else\ } t = 1
+\end{equation*}
+
+\begin{gather*}
+\begin{aligned}
+d &= z - i \\
+d &= d \cdot d \\
+f &= d - e \\
+g &= d\ /\ f \\ \\
+t &= 2^{16} + g \\
+t &= t - 2^{16} \\
+\end{aligned}
+\end{gather*}
+
+\subsubsection{Indirect Addressing}
+
+\subsubsection{State Storage \& Access}
 
 \end{document}
