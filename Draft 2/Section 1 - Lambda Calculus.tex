@@ -3,7 +3,7 @@
 
 \begin{document}
 
-The simplest, and in my opinion the most beautiful definition of effective calculability was introduced by the American mathematician Alonzo Church in the 1930s, as a purely mathematical and abstract definition of computability, far from the very real and mechanical world of Turing. It deals with a set of objects - for our purposes denoted with singl  e symbolic characters - which define what school mathematics or common computer science would call `functions'. These functions take as their arguments (other objects which the functions act upon) functions alone, and can also output only functions. Take, for example the function $f$:
+The simplest, and in my opinion the most beautiful definition of effective calculability was introduced by the American mathematician Alonzo Church in the 1930s, as a purely mathematical and abstract definition of computability, far from the very real and mechanical world of Turing. It deals with a set of objects - for our purposes denoted with single symbolic characters - which define what school mathematics or common computer science would call `functions'. These functions take as their arguments (other objects which the functions act upon) functions alone, and can also output only functions. Take, for example the function $f$:
 \begin{equation*}
 f = ab
 \end{equation*}
@@ -71,48 +71,6 @@ Let us test this by summing \textbf{2} and \textbf{3}:
 &= \bm{\mathrm{S}} (\bm{\mathrm{S}} (\bm{\mathrm{3}}))\\
 &= \bm{\mathrm{S}} (\bm{\mathrm{4}})\\
 &= \bm{\mathrm{5}}
-\end{aligned}
-\end{gather*}
-
-Multiplication can also be calculated by defining the function \textbf{M}:
-\cite{rojas2015lambdatutorial}
-\begin{equation*}
-\bm{\mathrm{M}} = \lambda wyx.w(yx)
-\end{equation*}
-\begin{gather*}
-\begin{aligned}
-\bm{\mathrm{M22}} &= (\lambda wyx.w(yx))(\lambda ab.a(a(b)))(\lambda sz.s(s(z)))\\
-&= \lambda x.(\lambda ab.a(a(b)))[(\lambda sz.s(s(z)))x]\\
-&= \lambda x.(\lambda ab.a(a(b)))[\lambda z.x(x(z))]\\
-&= \lambda x.(\lambda b.[\lambda z.x(x(z))]([\lambda z.x(x(z))]b))\\
-&= \lambda x.(\lambda b.[\lambda z.x(x(z))][x(x(b))])\\
-&= \lambda x.(\lambda b.x(x(x(x(b)))))\\
-&= \lambda xb.x(x(x(x(b))))\\
-&= \bm{\mathrm{4}}
-\end{aligned}
-\end{gather*}
-We should rearrange our earlier addition method into an `addition' function of the same format which takes two arguments:
-\begin{equation*}
-\bm{\mathrm{A}} = \lambda ab.b\bm{\mathrm{S}}a
-\end{equation*}
-
-An `exponent' function to find $a^b$can also be defined, of astonishing simplicity:
-\cite{penrose1991emperor}
-\begin{equation*}
-\bm{\mathrm{E}} = \lambda ba.ab
-\end{equation*}
-\begin{gather*}
-\begin{aligned}
-\bm{\mathrm{E23}} &= (\lambda ab.ab)(\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
-&= (\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
-&= (\lambda z.[\lambda ty.t(t(t(y)))]([\lambda ux.u(u(u(x)))]z))\\
-&= (\lambda z.[\lambda ty.t(t(t(y))][\lambda x.z(z(z(x)))])\\
-&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x)))]([\lambda x.z(z(z(x)))]([\lambda x.z(z(z(x)))]y))])\\
-&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x))]([\lambda x.z(z(z(x)))][z(z(z(y)))])])\\
-&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x))]([z(z(z(z(z(z(y))))))])])\\
-&= (\lambda z.[\lambda y.[z(z(z(z(z(z(z(z(z(y)))))))))]])\\
-&= \lambda zy.z(z(z(z(z(z(z(z(z(y)))))))))\\
-&= \bm{\mathrm{9}} = \bm{\mathrm{3^2}}
 \end{aligned}
 \end{gather*}
 
@@ -297,4 +255,5 @@ The \textbf{Y} combinator allows for \textbf{Y}$\bm{\xi}$ to be applied as the f
 \subsection{Conclusion}
 
 Our brief stroll through the key aspects of $\lambda$-Calculus is complete. We have shown that many basic necessary concepts in a common programming language can be defined through the use of two simple axioms - that of the concept of functions, and the operation of substitution. $\lambda$-Calculus was described by Church as an `effectively calculable' system, in that it could perform any calculable calculation. In more popular terms, it is Turing-complete - we will look at what this is and why this is the case later on in the project. However, it is clear to see that the Calculus is able to simulate many functions of the computer - data storage with pairs (pairs of pairs can be used for storing more than two items of data as shown in \cref{sec:LambdaUnivTape}), conditionals and booleans, integers and arithmetic and, finally, the ability to be continuous (circular) from a finite configuration. $\lambda$-calculus is our first attempt to clarify the attributes of a computer, and does so both fundamentally and aesthetically.
+
 \end{document}
