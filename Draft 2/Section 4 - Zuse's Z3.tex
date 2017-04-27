@@ -6,9 +6,36 @@ At this point, we have an almost complete definition of 'computer' - a machine w
 
 \textit{TODO: Colossus}
 
-However, a few years later on 
+\textit{TODO: Context of Z3}
 
 \subsection{The Architecture of the Z3}
+
+In this section I shall give a broad functional overview of the Z3. I shall explore primarily the function and usage of the machine, the aspects that would be visible to the programmer. I shall not go into detail about the operation of the machine itself unless it directly influences the machine's usage. All of the description of the machine was derived from \cite{rojas1997z3architecture}.
+
+The Z3 was primarily purposed towards performing simple arithmetical calculations - addition, subtraction, multiplication, division, and the square root operation. The operands would be read from memory or from input from a keyboard, and the results would be written to memory or shown on a display. Programs would be written as sequences of 8-bit instructions on punched tape, and would be performed as they are read by the machine.
+
+\subsubsection{Data Storage}
+
+
+
+\subsubsection{Programming Model}
+
+The instruction set for the Z3 consisted of three types of operation - I/O, memory and arithmetic. These instructions would be performed with respect to two floating-point registers, $R_1$ and $R_2$, which act as the two arguments for any arithmetical operation, and could be written to and read from by the non-arithmetical operations. 
+
+The two memory instructions, \textbf{Pr} \textit{z} and \textbf{Ps} \textit{z}, load and store respectively the value of registers from and to memory. Pr \textit{z} will transfer the data stored at address \textit{z} to $R_1$ if it is clear, otherwise it will be written to $R_2$, overwriting any previous data. \textbf{Ps} \textit{z} transfers the value of $R_1$ only to address \textit{z}, and clears both $R_1$ and $R_2$ (such that the next \textbf{Pr} \textit{z} operation will write to $R_1$). 
+
+The I/O instructions \textbf{Lu} and \textbf{Ld} respectively store and output values to and from $R_1$. \textbf{Lu} halts the machine and stores keyboard input in $R_1$ (clearing $R_2$), while \textbf{Ld} halts the machine and displays $R_1$ on an array of lamps, clearing both registers. Both operations require the machine to be restarted in order to continue execution, allowing time for the programmer to input data or write down output.
+
+The arithmetical operations perform as follows:
+\begin{gather*}
+\begin{aligned}
+&Ls_1:\quad	&R_1 &= R_1 \times R_2 \\
+&Ls_2:\quad	&R_1 &= R_1 \div R_2 \\
+&Lm:\quad	&R_1 &= R_1 + R_2 \\
+&Li:\quad	&R_1 &= R_1 - R_2 \\
+&Lw:\quad	&R_1 &= \sqrt{R_1} \\
+\end{aligned}
+\end{gather*}
 
 \subsection{Universality in the Z3}
 
@@ -35,11 +62,10 @@ a &= v + u
 \begin{gather*}
 \begin{aligned}
 d &= z - i \\
-d &= d \cdot d \\
+f &= d \cdot d \\
 f &= d - e \\
 g &= d\ /\ f \\ \\
-t &= 2^{16} + g \\
-t &= t - 2^{16} \\
+t &= (2^{16} + g) - 2^{16} \\
 \end{aligned}
 \end{gather*}
 
