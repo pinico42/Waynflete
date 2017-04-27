@@ -139,7 +139,7 @@ It is clear from this example that the operation of the Turing Machine is very d
 
 \subsection{\textit{M}-functions}\label{sec:mfunctions}
 
-\textit{M}-functions are effectively an extension of states described by Turing in \cite{turing1936computablenumbers}. They are denoted by a lowercase letter and a set of arguments contained in brackets - arguments in gothic script refer to states (or other \textit{m}-functions), and arguments in italics refer to symbols. When an \textit{m}-function is triggered, the italic and gothic symbols in the description are substituted by the supplied arguments (similar to application in $\lambda$-calculus). An example of an \textit{m}-function would be the function $\mathbb{f}$ below: \cite{turing1936computablenumbers}
+\textit{M}-functions are effectively an extension of states described by Turing in \cite{turing1936computablenumbers}. They are denoted by a lowercase letter and a set of arguments contained in brackets - arguments in gothic script refer to states (or other \textit{m}-functions), and arguments in italics refer to symbols. When an \textit{m}-function is triggered, the italic and gothic symbols in the description are substituted by the supplied arguments (similar to application in $\lambda$-Calculus). An example of an \textit{m}-function would be the function $\mathbb{f}$ below: \cite{turing1936computablenumbers}
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
@@ -222,7 +222,7 @@ The first takes one pointer \textit{p}, finds the first free bit (value square) 
 
 \subsubsection{Boolean Operations}
 
-As we did in $\lambda$-calculus, we shall define boolean operations. Every operation will take one or many pointers as arguments, and write the evaluated result to another given pointer. The simplest of these we can create is the negator:
+As we did in $\lambda$-Calculus, we shall define boolean operations. Every operation will take one or many pointers as arguments, and write the evaluated result to another given pointer. The simplest of these we can create is the negator:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     $\mathbb{\mathbf{b}not}$(\textit{r}, \textit{w}, \textfrak{C}, \textfrak{E})   & - & - & $\mathbb{fl}$(\textit{r}, $\mathbb{\mathbf{b}not}_1$(\textit{w}, \textfrak{C}, \textfrak{E}), \textfrak{E}) \\
@@ -258,7 +258,7 @@ This is almost identical to the copying function, but inverting the written symb
 \end{tabu}
 
 \medskip
-In each of these, the first argument \textit{a} is observed, and an action which either writes a \texttt{1} or \texttt{0}, or copies or negates from \textit{b} depending on the truth tables, in a very similar manner to $\lambda$-calculus. Gradually, the cryptic and simplified language of Turing machines is yielding results similar to that of a computer.
+In each of these, the first argument \textit{a} is observed, and an action which either writes a \texttt{1} or \texttt{0}, or copies or negates from \textit{b} depending on the truth tables, in a very similar manner to $\lambda$-Calculus. Gradually, the cryptic and simplified language of Turing machines is yielding results similar to that of a computer.
 
 \subsection{Scripted Configurations}
 As we have moved into more and more complex Turing machine functions, it can be noted that the middle two columns of the description are becoming gradually more scarce - this is due to the fact that their operation can be entirely represented within \textit{m}-functions. We have started doing so with the functions $\mathbb{l}$, $\mathbb{r}$, $\mathbb{p0}$, and $\mathbb{p1}$ - furthermore, it is not difficult to create conditional functions to replicate the operation of the second column.
@@ -304,6 +304,6 @@ with arguments for continuity and simple error correction. This, in turn, can be
 
 \subsection{Conclusion}
 
-Turing machines are truly remarkable entities. While $\lambda$-calculus was able to mimic the operation of a modern computer (behaving like a purely functional programming language such as Haskell), its beginnings were completely abstract - the mathematical operations of abstraction and application, while being probably more useful than Turing machines in yielding results, were unlike anything which could actually be created in the real world. However, Turing machines are completely grounded in physical reality, and it is totally conceivable how one could create such a machine - despite this, they are able to produce results very similar to that of an imperative programming language such as Java - data storage, typed and referenceable variables, and boolean logic, all performed as a sequence of commands. From these building blocks, integers and more complex concepts can be produced. This is the truly remarkable thing about Turing machines - they illustrate clearly how mechanisms can in fact solve computable problems. As such, it is most useful to define a computer as something which is able to behave like a Turing machine - in effect, a computer is distinguished by the fact that it can simulate a Turing machine. A machine with this ability shall be called 'Turing-complete'
+Turing machines are truly remarkable entities. While $\lambda$-Calculus was able to mimic the operation of a modern computer (behaving like a purely functional programming language such as Haskell), its beginnings were completely abstract - the mathematical operations of abstraction and application, while being probably more useful than Turing machines in yielding results, were unlike anything which could actually be created in the real world. However, Turing machines are completely grounded in physical reality, and it is totally conceivable how one could create such a machine - despite this, they are able to produce results very similar to that of an imperative programming language such as Java - data storage, typed and referenceable variables, and boolean logic, all performed as a sequence of commands. From these building blocks, integers and more complex concepts can be produced. This is the truly remarkable thing about Turing machines - they illustrate clearly how mechanisms can in fact solve computable problems. As such, it is most useful to define a computer as something which is able to behave like a Turing machine - in effect, a computer is distinguished by the fact that it can simulate a Turing machine. A machine with this ability shall be called 'Turing-complete'
 
 \end{document}

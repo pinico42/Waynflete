@@ -10,7 +10,7 @@ At this point, we have an almost complete definition of 'computer' - a machine w
 
 \subsection{The Architecture of the Z3}
 
-In this section I shall give a broad functional overview of the Z3. I shall explore primarily the function and usage of the machine, the aspects that would be visible to the programmer. I shall not go into detail about the operation of the machine itself unless it directly influences the machine's usage. All of the description of the machine was derived from \cite{rojas1997z3architecture}.
+In this section I shall give a broad functional overview of the Z3. I shall explore primarily the function and usage of the machine, the aspects that would be visible to the programmer. I shall not go into detail about the operation of the machine itself unless it directly influences the machine's usage. The description of the machine was derived from \cite{rojas1997z3architecture}.
 
 The Z3 was primarily purposed towards performing simple arithmetical calculations - addition, subtraction, multiplication, division, and the square root operation. The operands would be read from memory or from input from a keyboard, and the results would be written to memory or shown on a display. Programs would be written as sequences of 8-bit instructions on punched tape, and would be performed as they are read by the machine.
 
@@ -36,7 +36,7 @@ The arithmetical operations perform as follows:
 &Lw:\quad	&R_1 &= \sqrt{R_1} \\
 \end{aligned}
 \end{gather*}
-
+For each operation, the 
 \subsection{Universality in the Z3}
 
 The first thing that must be considered when looking for universality in a potentially Turing-complete machine is the fact that, by the strict definition of a Turing machine, it must require infinite memory due to the nature of its tape. Unfortunately, this is impossible in the physical world as memory is always finite. As such, we must revise our definition of Turing-completeness to require only a finite tape.
