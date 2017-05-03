@@ -41,11 +41,11 @@ For each operation, the
 
 The first thing that must be considered when looking for universality in a potentially Turing-complete machine is the fact that, by the strict definition of a Turing machine, it must require infinite memory due to the nature of its tape. Unfortunately, this is impossible in the physical world as memory is always finite. As such, we must revise our definition of Turing-completeness to require only a finite tape.
 
-At first glance, it is unclear that the Z3 can be made into a universal machine due to the fact that it allows for neither conditional branching\footnote{The ability to perform different operations depending on the state of a stored value} nor indirect addressing\footnote{The ability to refer to values stored in memory when the address of that memory is not specifically referred to in the program but is rather obtained from the value of some variable currently in memory}. However, through use of the tool available to the programmer these features can be emulated, and a Turing Machine can be simulated.
+At first glance, it is unclear that the Z3 can be made into a universal machine due to the fact that it allows for neither conditional branching\footnote{The ability to perform different operations depending on the state of a stored value} nor indirect addressing\footnote{The ability to refer to values stored in memory when the address of that memory is not specifically referred to in the program but is rather obtained from the value of some variable currently in memory}. However, through use of the tools available to the programmer these features can be emulated, and a Turing Machine can be simulated. This uses many tecniques explained in \cite{rojas1998z3universal}.
 
 \subsubsection{Conditional Branching}
 
-Firstly and fundamentally we shall construct conditional branches using a technique shown in \cite{ibarra1983intdivision} \textit{TODO: Check this ref} which allows the implementation of a form of case statement as found in modern programming languages such as JavaScript. Such an operation performs one of a set of different operations depending on the value of a given variable.
+Firstly and fundamentally we shall construct conditional branches using a technique shown in \cite{ibarra1983control} which allows the implementation of a form of case statement as found in modern programming languages such as JavaScript. Such an operation performs one of a set of different operations depending on the value of a given variable.
 
 Given a positive integer variable $z$, the variable on which the outcome of the statement depends and the set of operations to be performed depending on the value of $z$, $P_1, ... , P_n$, we can produce a sequence of operations that will allow only the operation $P_z$ to perform. Due to the nature of the Z3 requiring a full sequence of commands to be executed without exception, every one of these operations will be evaluated; however, only operation $P_z$ will be allowed to actually affect memory.
 
@@ -74,12 +74,12 @@ This is done using the following piece of code, where $e$ has been pre-set to a 
 d &= z - i \\
 d &= d \cdot d \\
 f &= d - e \\
-g &= d\ /\ f \\ \\
+g &= d\ /\ f \\[1ex]
 t &= (2^{16} + g) - 2^{16} \\
 \end{aligned}
 \end{gather*}
 
-The variable $d$ is only zero if $z = i$. If not, $d$ is set to a positive value, and $g$ is set to the ratio of $d$ and a value slightly smaller than $d$ - $1$ plus a small fractional part.
+The variable $d$ is only zero if $z = i$. If not, $d$ is set to a positive value, and $g$ is set to the ratio of $d$ and a value slightly smaller than $d$ - $1$ plus a small fractional part. This value is then rounded down to $1$ by shifting it 16 places to the right such that all but the value in the desired bit are eradicated, before it is shifted back to its correct value.
 
 \subsubsection{Indirect Addressing}
 
