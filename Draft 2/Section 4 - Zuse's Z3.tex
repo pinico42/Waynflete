@@ -1,5 +1,25 @@
 \documentclass[Master.tex]{subfiles}
 
+\lstdefinelanguage{Zuselang}
+{
+  morekeywords={
+    Pr,
+    Ps,
+    Lu,
+    Ld,
+    Ls,
+    Lm,
+    Li,
+    Lw,
+    case
+  },
+  sensitive=true, % keywords are not case-sensitive
+  morecomment=[l]{//}, % l is for line comment
+  morecomment=[s]{.}{.}, % s is for start and end delimiter
+  morestring=[b]" % defines that strings are enclosed in double quotes
+}
+\lstset{language=Zuselang}
+
 \begin{document}
 
 At this point, we have an almost complete definition of 'computer' - a machine which is able to fully implement the concept of effective computability. This can be done most simply through the implementation of an effectively computable method of computation, such as Turing Machines. However, in order to address the question of whether this was achieved during WW1 we must apply this test to the physical instruments created within this time.
@@ -29,19 +49,29 @@ The I/O instructions \textbf{Lu} and \textbf{Ld} respectively store and output v
 The arithmetical operations perform as follows:
 \begin{gather*}
 \begin{aligned}
-&Ls_1:\quad	&R_1 &= R_1 \times R_2 \\
+&Ls_1:\quad	&R_1 &= R_1 \cdot R_2 \\
 &Ls_2:\quad	&R_1 &= R_1 \div R_2 \\
 &Lm:\quad	&R_1 &= R_1 + R_2 \\
 &Li:\quad	&R_1 &= R_1 - R_2 \\
 &Lw:\quad	&R_1 &= \sqrt{R_1} \\
 \end{aligned}
 \end{gather*}
-For each operation, the 
+For each operation, the operation is performed on $R_1$ and $R_2$, and the result is written to $R_1$. 
 \subsection{Universality in the Z3}
 
 The first thing that must be considered when looking for universality in a potentially Turing-complete machine is the fact that, by the strict definition of a Turing machine, it must require infinite memory due to the nature of its tape. Unfortunately, this is impossible in the physical world as memory is always finite. As such, we must revise our definition of Turing-completeness to require only a finite tape.
 
 At first glance, it is unclear that the Z3 can be made into a universal machine due to the fact that it allows for neither conditional branching\footnote{The ability to perform different operations depending on the state of a stored value} nor indirect addressing\footnote{The ability to refer to values stored in memory when the address of that memory is not specifically referred to in the program but is rather obtained from the value of some variable currently in memory}. However, through use of the tools available to the programmer these features can be emulated, and a Turing Machine can be simulated. This uses many tecniques explained in \cite{rojas1998z3universal}.
+
+For the sake of simplicity, in this section we shall use a more intuitive form to express instructions for the machine. We shall write $a = b\ \mathrm{op}\ c$ to simplify statements of the form:s
+\begin{gather*}
+\begin{aligned}
+&\bm{\mathrm{Pr}}\ b\\
+&\bm{\mathrm{Pr}}\ c\\
+&\textrm{op}\\ 
+&\bm{\mathrm{Ps}}\ a\\
+\end{aligned}
+\end{gather*}
 
 \subsubsection{Conditional Branching}
 
@@ -50,11 +80,11 @@ Firstly and fundamentally we shall construct conditional branches using a techni
 Given a positive integer variable $z$, the variable on which the outcome of the statement depends and the set of operations to be performed depending on the value of $z$, $P_1, ... , P_n$, we can produce a sequence of operations that will allow only the operation $P_z$ to perform. Due to the nature of the Z3 requiring a full sequence of commands to be executed without exception, every one of these operations will be evaluated; however, only operation $P_z$ will be allowed to actually affect memory.
 
 
-At the start of the switch statement, a sequence of commands check if $z = j$ - if so the flag variable $t$ is set to $0$ (otherwise it is set to $1$). Next, for each operation $P_j$ (which will be of the form $a = b\ \{op\}\ c$), we will write in the program a sequence of commands that, if $t$ is $0$, write the value of $b\ \{op\}\ c$ to $a$. These statements are shown below:
+At the start of the switch statement, a sequence of commands check if $z = j$ - if so the flag variable $t$ is set to $0$ (otherwise it is set to $1$). Next, for each operation $P_j$ (which will be of the form $a = b\ \mathrm{op}\ c$), we will write in the program a sequence of commands that, if $t$ is $0$, write the value of $b\ \mathrm{op}\ c$ to $a$. These statements are shown below:
 
 \begin{gather*}
 \begin{aligned}
-u &= b\ \{op\}\ c \\
+u &= b\ \mathrm{op}\ c \\
 v &= a \cdot t \\
 w &= 1 - t \\
 u &= w \cdot u \\
@@ -62,7 +92,7 @@ a &= v + u
 \end{aligned}
 \end{gather*}
 
-Or, for clarity, $a = (a \cdot t) + (1 - t)(b\ \{op\}\ c)$. If $t = 1$, $v$ is set to $t$; otherwise it is set to $0$. Furthermore, if $t = 0$, $u$ is set to the outcome of the operation; otherwise it is set to $0$ again. Therefore, if $t = 0$, $a$ is set to the outcome of the operation; otherwise it is set back to its original value. As such, after this transformation has been put in place for every $P$ operation, and a method to set $t$ at the start of the case statement has been implemented, every new command in this program can be executed - most superfluously - in order to only use the $z$-th command. Next we must produce a set of operations that will perform the computation
+Or, for clarity, $a = (a \cdot t) + (1 - t)(b\ \mathrm{op}\ c)$. If $t = 1$, $v$ is set to $t$; otherwise it is set to $0$. Furthermore, if $t = 0$, $u$ is set to the outcome of the operation; otherwise it is set to $0$ again. Therefore, if $t = 0$, $a$ is set to the outcome of the operation; otherwise it is set back to its original value. As such, after this transformation has been put in place for every $P$ operation, and a method to set $t$ at the start of the case statement has been implemented, every new command in this program can be executed - most superfluously - in order to only use the $z$-th command. Next we must produce a set of operations that will perform the computation
 \begin{equation*}
 \mathrm{if\ (}z = i\mathrm{)\ then\ } t = 0 \mathrm{\ else\ } t = 1
 \end{equation*}
@@ -84,5 +114,28 @@ The variable $d$ is only zero if $z = i$. If not, $d$ is set to a positive value
 \subsubsection{Indirect Addressing}
 
 \subsubsection{State Storage \& Access}
+
+With the Z3's two new-found tools, production of a universal machine is incredibly simple. The machine would first be prepared with the initial state (an integer) at the address $s$, and the initial index of the cursor (also an integer, $0$ by default) at the address $h$. Then the following program would be run repeatedly with the ends of the tape attached to each other.
+\begin{lstlisting}
+r = (h)
+
+case(s) {
+	...,
+	.n.: .w. = [symbol],
+	...
+}
+case(s) {
+	...,
+	.n.: .t. = [-1/0/1],
+	...
+}
+h = h + t
+
+case(s) {
+	...,
+	.n.: .s. = [new state]
+	...
+}
+\end{lstlisting}
 
 \end{document}
