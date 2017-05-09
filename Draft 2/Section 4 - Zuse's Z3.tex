@@ -42,18 +42,18 @@ The Z3 was primarily purposed towards performing simple arithmetical calculation
 
 The instruction set for the Z3 consisted of three types of operation - I/O, memory and arithmetic. These instructions would be performed with respect to two floating-point registers, $R_1$ and $R_2$, which act as the two arguments for any arithmetical operation, and could be written to and read from by the non-arithmetical operations. 
 
-The two memory instructions, \textbf{Pr} \textit{z} and \textbf{Ps} \textit{z}, load and store respectively the value of registers from and to memory. Pr \textit{z} will transfer the data stored at address \textit{z} to $R_1$ if it is clear, otherwise it will be written to $R_2$, overwriting any previous data. \textbf{Ps} \textit{z} transfers the value of $R_1$ only to address \textit{z}, and clears both $R_1$ and $R_2$ (such that the next \textbf{Pr} \textit{z} operation will write to $R_1$). 
+The two memory instructions, Pr \textit{z} and Ps \textit{z}, load and store respectively the value of registers from and to memory. Pr \textit{z} will transfer the data stored at address \textit{z} to $R_1$ if it is clear, otherwise it will be written to $R_2$, overwriting any previous data. Ps \textit{z} transfers the value of $R_1$ only to address \textit{z}, and clears both $R_1$ and $R_2$ (such that the next Pr \textit{z} operation will write to $R_1$). 
 
-The I/O instructions \textbf{Lu} and \textbf{Ld} respectively store and output values to and from $R_1$. \textbf{Lu} halts the machine and stores keyboard input in $R_1$ (clearing $R_2$), while \textbf{Ld} halts the machine and displays $R_1$ on an array of lamps, clearing both registers. Both operations require the machine to be restarted in order to continue execution, allowing time for the programmer to input data or write down output.
+The I/O instructions Lu and Ld respectively store and output values to and from $R_1$. Lu halts the machine and stores keyboard input in $R_1$ (clearing $R_2$), while Ld halts the machine and displays $R_1$ on an array of lamps, clearing both registers. Both operations require the machine to be restarted in order to continue execution, allowing time for the programmer to input data or write down output.
 
 The arithmetical operations perform as follows:
 \begin{gather*}
 \begin{aligned}
-&Ls_1:\quad	&R_1 &= R_1 \cdot R_2 \\
-&Ls_2:\quad	&R_1 &= R_1 \div R_2 \\
-&Lm:\quad	&R_1 &= R_1 + R_2 \\
-&Li:\quad	&R_1 &= R_1 - R_2 \\
-&Lw:\quad	&R_1 &= \sqrt{R_1} \\
+&\mathrm{Ls_1}:\quad	&R_1 &= R_1 \cdot R_2 \\
+&\mathrm{Ls_2}:\quad	&R_1 &= R_1 \div R_2 \\
+&\mathrm{Lm}:\quad	&R_1 &= R_1 + R_2 \\
+&\mathrm{Li}:\quad	&R_1 &= R_1 - R_2 \\
+&\mathrm{Lw}:\quad	&R_1 &= \sqrt{R_1} \\
 \end{aligned}
 \end{gather*}
 For each operation, the operation is performed on $R_1$ and $R_2$, and the result is written to $R_1$. 
@@ -66,10 +66,10 @@ At first glance, it is unclear that the Z3 can be made into a universal machine 
 For the sake of simplicity, in this section we shall use a more intuitive form to express instructions for the machine. We shall write $a = b\ \mathrm{op}\ c$ to simplify statements of the form:s
 \begin{gather*}
 \begin{aligned}
-&\bm{\mathrm{Pr}}\ b\\
-&\bm{\mathrm{Pr}}\ c\\
+&\mathrm{Pr}\ b\\
+&\mathrm{Pr}\ c\\
 &\textrm{op}\\ 
-&\bm{\mathrm{Ps}}\ a\\
+&\mathrm{Ps}\ a\\
 \end{aligned}
 \end{gather*}
 
@@ -113,29 +113,31 @@ The variable $d$ is only zero if $z = i$. If not, $d$ is set to a positive value
 
 \subsubsection{Indirect Addressing}
 
+Using this method to produce case statements, we can produce an equivalent to an indirect addressing operation. This operation is of form $n = (x)$, which sets $n$ to the value at address location $x$, where $x$ is an integer $n_a \leq x \leq n_b$, $n_a$ and $n_b$ being integer constants representing the limits of the region of memory that can be addressed by this function. This function is equivalent to:
+
 \subsubsection{State Storage \& Access}
 
-With the Z3's two new-found tools, production of a universal machine is incredibly simple. The machine would first be prepared with the initial state (an integer) at the address $s$, and the initial index of the cursor (also an integer, $0$ by default) at the address $h$. Then the following program would be run repeatedly with the ends of the tape attached to each other.
-\begin{lstlisting}
-r = (h)
-
-case(s) {
-	...,
-	.n.: .w. = [symbol],
-	...
-}
-case(s) {
-	...,
-	.n.: .t. = [-1/0/1],
-	...
-}
-h = h + t
-
-case(s) {
-	...,
-	.n.: .s. = [new state]
-	...
-}
-\end{lstlisting}
+With the Z3's two new-found tools, production of a universal machine is incredibly simple. The machine would first be prepared with the initial state (an integer) at the address $s$, and the initial index of the cursor (also an integer, $a$ by default) at the address $h$. Then the following program would be run repeatedly with the ends of the tape attached to each other.
+\begin{gather*}
+\begin{aligned}
+&r = (h)						\\
+&p = k 							\\
+&\mathrm{case}\ (s)\ \{			\\
+&\qquad	... ,					\\
+&\qquad	n:\ w = [symbol],		\\
+&\qquad	...						\\
+&\}								\\
+&\mathrm{case}\ (s)\ \{			\\
+&\qquad	...,					\\
+&\qquad	n:\ t = [-1/0/1],		\\
+&\qquad	...						\\
+&\}								\\
+&h = h + t						\\
+&\mathrm{case}\ (s)\ \{			\\
+&\qquad ...,					\\
+&\qquad	n:\ s = [new\ state],	\\
+&\qquad	...						\\
+&\}								\\
+\end{aligned}
 
 \end{document}
