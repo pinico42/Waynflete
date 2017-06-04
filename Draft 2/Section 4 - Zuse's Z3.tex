@@ -22,17 +22,16 @@
 
 \begin{document}
 
-At this point, we have an almost complete definition of 'computer' - a machine which is able to fully implement the concept of effective computability. This can be done most simply through the implementation of an effectively computable method of computation, such as Turing Machines. However, in order to address the question of whether this was achieved during WW1 we must apply this test to the physical instruments created within this time.
-
+At this point, we have an almost complete definition of 'computer' - a machine which is able to fully implement the concept of effective computability. This can be done most simply through the implementation of an effectively computable method of computation, such as a Turing Machine. In order to address the question of whether this was achieved during WW1 we must apply this test to the physical instruments created during this period.
 \textit{TODO: Colossus}
 
 \textit{TODO: Context of Z3}
 
 \subsection{The Architecture of the Z3}
 
-In this section I shall give a broad functional overview of the Z3. I shall explore primarily the function and usage of the machine, the aspects that would be visible to the programmer. I shall not go into detail about the operation of the machine itself unless it directly influences the machine's usage. The description of the machine was derived from \cite{rojas1997z3architecture}.
+In this section I shall give a broad functional overview of the Z3. I shall explore primarily the function and usage of the machine, i.e. the aspects that would be visible to the programmer. I shall not go into detail about the operation of the machine itself unless it directly influences the machine's usage. The description of the machine was derived from \cite{rojas1997z3architecture}.
 
-The Z3 was primarily purposed towards performing simple arithmetical calculations - addition, subtraction, multiplication, division, and the square root operation. The operands would be read from memory or from input from a keyboard, and the results would be written to memory or shown on a display. Programs would be written as sequences of 8-bit instructions on punched tape, and would be performed as they are read by the machine.
+The Z3 was primarily purposed towards performing simple arithmetical calculations - addition, subtraction, multiplication, division, and square root. The operands would be read from memory or from input from a keyboard, and the results would be written to memory or shown on a display. Programs could be written as sequences of 8-bit instructions on punched tape, and would be performed as they are read by the machine.
 
 \subsubsection{Data Storage}
 
@@ -42,7 +41,7 @@ The Z3 was primarily purposed towards performing simple arithmetical calculation
 
 The instruction set for the Z3 consisted of three types of operation - I/O, memory and arithmetic. These instructions would be performed with respect to two floating-point registers, $R_1$ and $R_2$, which act as the two arguments for any arithmetical operation, and could be written to and read from by the non-arithmetical operations. 
 
-The two memory instructions, Pr \textit{z} and Ps \textit{z}, load and store respectively the value of registers from and to memory. Pr \textit{z} will transfer the data stored at address \textit{z} to $R_1$ if it is clear, otherwise it will be written to $R_2$, overwriting any previous data. Ps \textit{z} transfers the value of $R_1$ only to address \textit{z}, and clears both $R_1$ and $R_2$ (such that the next Pr \textit{z} operation will write to $R_1$). 
+The two memory instructions Pr \textit{z} and Ps \textit{z} load and store respectively the value of registers from and to memory. Pr \textit{z} transfers the data stored at address \textit{z} to $R_1$ if $R_1$ is clear; otherwise it is written to $R_2$, overwriting any previous data. Ps \textit{z} transfers the value of $R_1$ only to address \textit{z}, and clears both $R_1$ and $R_2$ (such that the next Pr \textit{z} operation will write to $R_1$). 
 
 The I/O instructions Lu and Ld respectively store and output values to and from $R_1$. Lu halts the machine and stores keyboard input in $R_1$ (clearing $R_2$), while Ld halts the machine and displays $R_1$ on an array of lamps, clearing both registers. Both operations require the machine to be restarted in order to continue execution, allowing time for the programmer to input data or write down output.
 
@@ -63,7 +62,7 @@ The first thing that must be considered when looking for universality in a poten
 
 At first glance, it is unclear that the Z3 can be made into a universal machine due to the fact that it allows for neither conditional branching\footnote{The ability to perform different operations depending on the state of a stored value} nor indirect addressing\footnote{The ability to refer to values stored in memory when the address of that memory is not specifically referred to in the program but is rather obtained from the value of some variable currently in memory}. However, through use of the tools available to the programmer these features can be emulated, and a Turing Machine can be simulated. This uses many tecniques explained in \cite{rojas1998z3universal}.
 
-For the sake of simplicity, in this section we shall use a more intuitive form to express instructions for the machine. We shall write $a = b\ \mathrm{op}\ c$ to simplify statements of the form:s
+For the sake of simplicity, in this section we shall use a more intuitive form to express instructions for the machine. We shall write $a = b\ \mathrm{op}\ c$ to simplify statements of the form:
 \begin{gather*}
 \begin{aligned}
 &\mathrm{Pr}\ b\\
@@ -75,9 +74,9 @@ For the sake of simplicity, in this section we shall use a more intuitive form t
 
 \subsubsection{Conditional Branching}
 
-Firstly and fundamentally we shall construct conditional branches using a technique shown in \cite{ibarra1983control} which allows the implementation of a form of case statement as found in modern programming languages such as JavaScript. Such an operation performs one of a set of different operations depending on the value of a given variable.
+Firstly and fundamentally we shall construct conditional branches using a technique shown in \cite{ibarra1983control} which allows the implementation of a form of switch statement as found in many modern C-like programming languages. Such an operation performs one of a set of different operations depending on the value of a given variable.
 
-Given a positive integer variable $z$, the variable on which the outcome of the statement depends and the set of operations to be performed depending on the value of $z$, $P_1, ... , P_n$, we can produce a sequence of operations that will allow only the operation $P_z$ to perform. Due to the nature of the Z3 requiring a full sequence of commands to be executed without exception, every one of these operations will be evaluated; however, only operation $P_z$ will be allowed to actually affect memory.
+Given a positive integer variable $z$ on which the outcome of the statement depends and the set of operations to be performed depending on the value of $z$, $P_1, ... , P_n$, we can produce a sequence of commands that will allow only the operation $P_z$ to perform. Due to the nature of the Z3 requiring a full sequence of commands to be executed without exception, every one of these operations will be evaluated; however, only operation $P_z$ will be allowed to actually affect memory.
 
 
 At the start of the switch statement, a sequence of commands check if $z = j$ - if so the flag variable $t$ is set to $0$ (otherwise it is set to $1$). Next, for each operation $P_j$ (which will be of the form $a = b\ \mathrm{op}\ c$), we will write in the program a sequence of commands that, if $t$ is $0$, write the value of $b\ \mathrm{op}\ c$ to $a$. These statements are shown below:
@@ -92,7 +91,7 @@ a &= v + u
 \end{aligned}
 \end{gather*}
 
-Or, for clarity, $a = (a \cdot t) + (1 - t)(b\ \mathrm{op}\ c)$. If $t = 1$, $v$ is set to $t$; otherwise it is set to $0$. Furthermore, if $t = 0$, $u$ is set to the outcome of the operation; otherwise it is set to $0$ again. Therefore, if $t = 0$, $a$ is set to the outcome of the operation; otherwise it is set back to its original value. As such, after this transformation has been put in place for every $P$ operation, and a method to set $t$ at the start of the case statement has been implemented, every new command in this program can be executed - most superfluously - in order to only use the $z$-th command. Next we must produce a set of operations that will perform the computation
+Or, for clarity, $a = (a \cdot t) + (1 - t)(b\ \mathrm{op}\ c)$. If $t = 1$, $v$ is set to $t$; otherwise it is set to $0$. Furthermore, if $t = 0$, $u$ is set to the outcome of the operation; otherwise it is set to $0$ again. Therefore, if $t = 0$, $a$ is set to the outcome of the operation; otherwise it is set back to its original value. As such, after this transformation has been put in place for every $P$ operation, and a method to set $t$ at the start of the switch statement has been implemented, every new command in this program can be executed - most superfluously - in order to only use the $z$-th command. Next we must produce a set of operations that will perform the computation
 \begin{equation*}
 \mathrm{if\ (}z = i\mathrm{)\ then\ } t = 0 \mathrm{\ else\ } t = 1
 \end{equation*}
@@ -113,31 +112,17 @@ The variable $d$ is only zero if $z = i$. If not, $d$ is set to a positive value
 
 \subsubsection{Indirect Addressing}
 
-Using this method to produce case statements, we can produce an equivalent to an indirect addressing operation. This operation is of form $n = (x)$, which sets $n$ to the value at address location $x$, where $x$ is an integer $n_a \leq x \leq n_b$, $n_a$ and $n_b$ being integer constants representing the limits of the region of memory that can be addressed by this function. This function is equivalent to:
-
-\subsubsection{State Storage \& Access}
-
-With the Z3's two new-found tools, production of a universal machine is incredibly simple. The machine would first be prepared with the initial state (an integer) at the address $s$, and the initial index of the cursor (also an integer, $a$ by default) at the address $h$. Then the following program would be run repeatedly with the ends of the tape attached to each other.
+Using this method to emulate switch statements, we can produce an equivalent to an indirect addressing operation. This operation is of form $y = (x)$, which sets $n$ to the value at address location $x$, where $x$ is an integer $n_a \leq x \leq n_b$, $n_a$ and $n_b$ being integer constants representing the limits of the region of memory that can be addressed by this function. $x$ could potentially be the output from a previous arithmetical operation. Relying on the fact that this region is finite (and furthermore that the tape length is also finite), this can be done using a switch statement with a case for every address $z$ between $n_a$ and $n_b$ as shown.
 \begin{gather*}
 \begin{aligned}
-&r = (h)						\\
-&p = k 							\\
-&\mathrm{case}\ (s)\ \{			\\
-&\qquad	... ,					\\
-&\qquad	n:\ w = [symbol],		\\
-&\qquad	...						\\
-&\}								\\
-&\mathrm{case}\ (s)\ \{			\\
-&\qquad	...,					\\
-&\qquad	n:\ t = [-1/0/1],		\\
-&\qquad	...						\\
-&\}								\\
-&h = h + t						\\
-&\mathrm{case}\ (s)\ \{			\\
-&\qquad ...,					\\
-&\qquad	n:\ s = [new\ state],	\\
-&\qquad	...						\\
+&\bm{\mathrm{switch}}\ (x)\ \{	\\
+&\qquad ... ,					\\
+&\qquad z:\	\mathrm{Pr}\ z;\ \mathrm{Ps}\ a			\\
+&\qquad ... 					\\
 &\}								\\
 \end{aligned}
+\end{gather*}
+At this point, it becomes very clear the extent to which the Z3 is not suited to universal computation. When every single applicable memory address must be specified individually, with five operations per address to implement the case, each operation consisting of four instructions, it is obvious that the Z3 is in no way a \textit{practical} universal machine. 
 
+To emulate a Turing machine using these new tools, one considers the tape to be the region of memory between $n_a$ and $n_b$, and 
 \end{document}
