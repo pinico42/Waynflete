@@ -15,6 +15,7 @@
 \usepackage[bb=boondox]{mathalfa}
 \usepackage{multirow, bigdelim}
 \usepackage{tabu}
+\usepackage{url}
 \usepackage{yfonts}
 
 
@@ -22,24 +23,31 @@
 \date{February 23, 2017}
 \author{Max Penrose}
 
-
 \crefname{section}{§}{§§}
 \Crefname{section}{§}{§§}
+
+\renewcommand{\arraystretch}{1.5}
 
 \begin{document}
 \pagenumbering{roman}
 \maketitle
-\tableofcontents
-\clearpage
+%\tableofcontents
+\medskip
+
+\begin{abstract}
+Computability, or the potential for a device to solve any solvable problem given to it, is an informal notion. Its definition can be refined with use of the $\lambda$-Calculus or Turing machines, theoretical computational devices which while having simple definitions have functionality similar to that of a computer. Hence, a computer can be defined as a machine which emulates either of these devices fully. It will then be shown that the Z3 computer built by Konrad Zuse implements computability with some success.
+\end{abstract}
 
 \section*{Introduction}
-Computation rules the modern world - from the internet to the rise of automated labour, today's humanity puts colossal value in the hands of the remarkable machines that are computers. However, the fundamental ideas of computation and calculation lying alongside the transistors and silicon at the heart of this revolution are no less remarkable in themselves, primarily down to their simplicity. Furthermore, unlikely that any modern computer user understands remotely how basic electronics can operate the tasks a computer can perform. Therefore, I feel the natural way to shed light on this question is to look at the earliest and simplest computers, what they could do and what was distinctive about them.
+Computation rules the modern world - from the internet to the rise of automated labour, today's humanity puts colossal value in the hands of the remarkable machines that are computers. However, the fundamental ideas of computation and calculation lying alongside the transistors and silicon at the heart of this revolution are no less remarkable in themselves, primarily down to their simplicity. Furthermore, few modern computer users understand remotely how basic electronics can operate the complex tasks a computer can perform. Therefore, I feel the natural way to shed light on this question is to look at the earliest and simplest computers, what they could do and what was distinctive about them.
 
 The most significant problem in answering this question is the actual definition of `computer'. In the early 20th Century, prior to developments in this field, any human which evaluated statements through computation was known, logically, as a `computer'. As such, we will explore the qualities that an entity - human, machine or other - must have for it to be able to perform computation.
 
-\textit{(Leibniz's ideas of computation, all effectively computable statements could be expressed in terms of a simple language \& a method to evaluate these statements - highlighting ideas of solving problems)}
+The 18th Century German polymanth Gottfreid Leibniz proposed the ideal of a `Characteristica Universalis', a universal language in which any possible problem can be expressed, and a decision method which could evaluate any problem in this language \cite{barendregt1984introduction}. This idea neatly defines what a computer is - a machine which when given a statement in this universal language is able to evaluate it\footnote{In fact, it can be shown that there are problems in a universal language which cannot be solved. This was proven indipendently by Alan Turing \cite{turing1936computablenumbers} \& Alonzo Church in 1936, and is known as the Entscheidungsproblem.}. The ideal of producing a simple system which can evaluate any `effectively computable' statment is the main challenge of computation.
+% * <mxpen26@gmail.com> 09:38:23 07 Jun 2017 UTC+0100:
+% Footnote to Godel's Incompleteness theorum?
 
-Therefore, in order for a machine to be called a `computer', it must be able to evaluate any member of a set of computable functions. However, this is an abstract notion - to clarify it, we must define a simple language in which we can express computable functions, and find a simple method to evaluate them. We shall explore the two most common methods, the $\lambda$-Calculus and the Turing Machine, and evaluate them in terms of their similarities and differences, before exploring how well this definition is fulfilled by early computers.
+Therefore, in order for a machine to be called a `computer', it must be able to evaluate any member of a set of `computable functions' (problems expressed in the universal tongue). However, this is an abstract notion - to clarify it, a simple language in which we can express computable functions must be defined, and a simple method to evaluate them must be found. The two most common methods, $\lambda$-Calculus and the Turing Machine, shall be explored and evaluated in terms of their similarities and differences, before applying this understanding to the early computers.
 
 
 
@@ -50,10 +58,6 @@ Therefore, in order for a machine to be called a `computer', it must be able to 
 \section{Turing Machines}
 
 \subfile{"Section 2 - Turing Machines"}
-
-\section{Universality}
-
-\subfile{"Section 3 - Universality"}
 
 \section{Zuse's Z3}
 

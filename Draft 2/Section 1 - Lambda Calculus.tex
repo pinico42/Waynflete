@@ -3,15 +3,15 @@
 
 \begin{document}
 
-The simplest, and in my opinion the most beautiful definition of effective calculability was introduced by the American mathematician Alonzo Church in the 1930s, as a purely mathematical and abstract definition of computability, far from the very real and mechanical world of Turing. It deals with a set of objects - for our purposes denoted with single symbolic characters - which define what school mathematics or common computer science would call `functions'. These functions take as their arguments (other objects which the functions act upon) functions alone, and can also output only functions. Take, for example the function $f$:
+The simplest, and in my opinion the most beautiful definition of effective calculability was introduced by the American mathematician Alonzo Church in the 1930s, as a purely mathematical and abstract definition of computability. It deals with a set of objects - for our purposes denoted by single symbolic characters - which define what school mathematics or common computer science would call `functions'. These functions take as their arguments (other objects which the functions act upon) functions alone, and can also output only functions. Take, for example the function $f$:
 \begin{equation*}
 f = ab
 \end{equation*}
-This particular function $f$ applies the function $a$ to the function $b$. Note that while commonly we would use the syntax $a(b)$ to express the same thing, it greatly simplifies expression to use this format. Church defines these functions through the method of `abstraction' - let us look at a different function to illustrate:
+This particular function $f$ `applies' the function $a$ to the function $b$. Note that while the syntax $a(b)$ would normally be used, it greatly simplifies expression if the brackets are omitted. Church defines these functions through the method of `abstraction' - to illustrate:
 \begin{equation*}
 \lambda u.tu
 \end{equation*}
-This function takes one single argument, which it names the abstract name $u$. It then applies the function $t$ to $u$ and outputs the result. For example, if we were to apply this function to the function $a$:
+This function takes one single argument, which it names the abstract name $u$. It then applies the function $t$ to $u$ and outputs the result. For example, if this was to be applied to the function $a$:
 \begin{equation*}
 (\lambda u.tu) a = ta	
 \end{equation*}
@@ -26,7 +26,7 @@ Functions can take multiple arguments through the use of nesting:
 
 \subsection{Arithmetical definitions}
 
-Church uses this medium to define a variety of concepts we are already familiar with - firstly, that of positive integers.
+The most basic entities that can be defined in this medium are the natural numbers:
 \cite{church1941lambda}
 \begin{equation*}
 \begin{aligned}
@@ -41,12 +41,15 @@ Church uses this medium to define a variety of concepts we are already familiar 
 etc.
 \end{aligned}
 \end{equation*}
-Here it can be seen that for each number \textit{n} the argument $s$ is applied to the argument $z$ \textit{n} times - the $s$ functions representing \textit{n} successors to zero ($z$).
+Here it can be seen that for each number \textit{n} the argument $s$ is applied to the argument $z$, \textit{n} times - the $s$ functions representing \textit{n} successors to zero ($z$).
 
-From this, it is not difficult to define an operation that takes a number as input and increments it by 1 - such a function would take three arguments (the first being the number, and the second two being the arguments $s$ and $z$ for the number) and would apply the argument $s$ to the number:
+From this, it is not difficult to define an operation that increments a given number by 1. Such a function takes an argument $w$, representing the number to be incremented, and returns a number which is equal to $w$ with the $s$ argument (here represented by $y$) applied to it once.
 \cite{rojas2015lambdatutorial}
 \begin{equation*}
-\bm{\mathrm{S}} = \lambda wyx.y(wyx)
+\begin{aligned}
+\bm{\mathrm{S}} &= \lambda w.\lambda yx.y(wyx)\\
+&= \lambda wyx.y(wyx)
+\end{aligned}
 \end{equation*}
 Let us test our new successor function by applying it to \textbf{2}:
 \begin{gather*}
@@ -59,12 +62,12 @@ Let us test our new successor function by applying it to \textbf{2}:
 \end{aligned}
 \end{gather*}
 
-From this concept, we are not far from the nursery-school concept of addition. Remembering that each number applies the function $s$ to $z$ \textit{n} times, and that addition is simply incrementing \textit{a} \textit{b} times, addition is as simple as:
+Observing that each number applies the function $s$ to $z$ \textit{n} times, and that addition is simply incrementing \textit{a} \textit{b} times, addition is as simple as:
 \cite{rojas2015lambdatutorial}
 \begin{equation*}
 a\bm{\mathrm{S}}b	
 \end{equation*}
-Let us test this by summing \textbf{2} and \textbf{3}:
+This can be tested by summing \textbf{2} and \textbf{3}:
 \begin{gather*}
 \begin{aligned}
 \bm{\mathrm{2S3}} &= (\lambda sz.s(s(z))) \bm{\mathrm{S}} \bm{\textrm{3}}\\
@@ -76,12 +79,12 @@ Let us test this by summing \textbf{2} and \textbf{3}:
 
 \subsection{Boolean Logic}
 
-Church defines functions to operate boolean logic, most significantly defining True and False:
+Church defines functions to operate boolean logic, fundamentally defining True and False to be:
 \cite{rojas2015lambdatutorial}
     
 \begin{equation*}
 \begin{aligned}
-\bm{\mathrm{T}} &= \lambda ab.a,
+\bm{\mathrm{T}} &= \lambda ab.a
   & % seperation
 \bm{\mathrm{F}} &= \lambda ab.b
 \end{aligned}
@@ -193,7 +196,7 @@ Of course now the subtraction function can be found (using \textbf{D} for differ
 \begin{equation*}
 \bm{\mathrm{D}} = \lambda ab.b\bm{\mathrm{P}}a
 \end{equation*}
-Bearing in mind the predeces sor of \textbf{0} is \textbf{0}, this will produce \textbf{0} if $b\geq a$.
+Bearing in mind the predecessor of \textbf{0} is \textbf{0}, this will produce \textbf{0} if $b\geq a$.
 \subsection{Further Conditional Logic}
 
 With this useful quirk of the \textbf{D} function, we can produce comparative logical operators:
@@ -217,19 +220,19 @@ and through combination of these, we can create the equivalence and inequivalenc
 \end{equation*}
 \subsection{Recursion}
 
-So far, Church's $\lambda$-Calculus is very close to the operation of a modern programming language. It has representation for boolean values, for conditional statements, for positive integers (signed integers can be expressed as a pair of positive integers where the difference is the value to be represented) and arithmetic, as well as set operations for booleans and comparators for integers - In fact, we are very close to our definition of computability, save one thing. Continuity and repetition is one of the most significant aspects of computers, the power of this being the ability to transform a finite configuration into a potentially infinite result. This is done through one of the most remarkable functions in $\lambda$-Calculus, the \textbf{Y} combinator:
+Continuity is one of the most significant aspects of computation, the power of this being the ability to transform a finite configuration into a potentially infinite result. This is done in $\lambda$-Calculus through the use of one of the most remarkable functions, the \textbf{Y} combinator:
 \cite{rojas2015lambdatutorial}
 \begin{equation*}
-\bm{\mathrm{Y}} = \lambda y.(\lambda x.y(xx))(\lambda x.y(xx))
+\bm{\mathrm{Y}} = \lambda y.(\lambda x.y[xx])\ (\lambda x.y[xx])
 \end{equation*}
 \begin{equation*}
 \begin{aligned}
-\bm{\mathrm{Y}}a &= (\lambda x.a(xx))[\lambda x.a(xx)]\\
-&= a([\lambda x.a(xx)][\lambda x.a(xx)])\\
-&= a(\bm{\mathrm{Y}}a)
+\bm{\mathrm{Y}}a &= (\lambda x.a[xx])\ (\lambda x.a[xx])\\
+&= a\ [(\lambda x.a[xx])\ (\lambda x.a[xx])]\\
+&= a\ [\bm{\mathrm{Y}}a]
 \end{aligned}
 \end{equation*}
-This function is remarkable as it is a `fixpoint operator' - it is able to easily generate a `fixpoint' of any given function (a value $x$ is a fixpoint of the function $f$ if and only if $fx = x$) by applying the function as the first parameter of the \textbf{Y} combinator.
+This function is remarkable because it is a `fixpoint operator' - it is able to easily generate a `fixpoint' of any given function (a value $x$ is a fixpoint of the function $f$ if and only if $fx = x$) by applying the function as the first parameter of the \textbf{Y} combinator.
 
 Therefore, the \textbf{Y} combinator applied to any function $a$ applies the function $a$ to the function \textbf{Y} applied to $a$ - if substitution continues, an infinite series of nested $a$ functions is created; an infinite result is produced from a finite configuration. Of course we can create finites as well by halting the function - an example of this would be the factorial function, where \textbf{!}a = \textbf{M}a(\textbf{!}[\textbf{P}a]) and \textbf{!0} = \textbf{1}. Firstly, a recursive definition:
 \begin{equation*}
@@ -242,7 +245,7 @@ i.e. the factorial function is the $\bm{\xi}$ function with itself as the argume
 \begin{equation*}
 \begin{aligned}
 \bm{\mathrm{Y\xi 3}} &= \bm{\mathrm{\xi}}(\bm{\mathrm{Y\xi}})\bm{\mathrm{3}}\\
-&= \bm{\mathrm{Z31}}[\bm{\mathrm{M3}}([\bm{\mathrm{Y\xi}}][\bm{\mathrm{P3}}])]\\
+&= \bm{\mathrm{Z3}}\ [\bm{\mathrm{1}}]\ [\bm{\mathrm{M3}}([\bm{\mathrm{Y\xi}}][\bm{\mathrm{P3}}])]\\
 &= \bm{\mathrm{M3}}(\bm{\mathrm{Y\xi}}\bm{2})\\
 &= \bm{\mathrm{M3}}(\bm{\mathrm{M2}}(\bm{\mathrm{M11}}))\\
 &= \bm{\mathrm{6}}
@@ -254,6 +257,6 @@ The \textbf{Y} combinator allows for \textbf{Y}$\bm{\xi}$ to be applied as the f
 \end{equation*}
 \subsection{Conclusion}
 
-Our brief stroll through the key aspects of $\lambda$-Calculus is complete. We have shown that many basic necessary concepts in a common programming language can be defined through the use of two simple axioms - that of the concept of functions, and the operation of substitution. $\lambda$-Calculus was described by Church as an `effectively calculable' system, in that it could perform any calculable calculation. In more popular terms, it is Turing-complete - we will look at what this is and why this is the case later on in the project. However, it is clear to see that the Calculus is able to simulate many functions of the computer - data storage with pairs (pairs of pairs can be used for storing more than two items of data as shown in \cref{sec:LambdaUnivTape}), conditionals and booleans, integers and arithmetic and, finally, the ability to be continuous (circular) from a finite configuration. $\lambda$-Calculus is our first attempt to clarify the attributes of a computer, and does so both fundamentally and aesthetically.
+Our brief stroll through the key aspects of $\lambda$-Calculus is complete. We have shown that many basic necessary concepts in a common programming language can be defined through the use of two simple axioms - that of the concept of functions, and the operation of substitution. $\lambda$-Calculus was described by Church as an `effectively calculable' system, in that it could perform any calculable calculation. In more common terms, it is Turing-complete - we will look at what this is and why this is the case later on. However, it is clear to see that the Calculus is able to simulate many functions of the computer - data storage with pairs (pairs of pairs can be used for storing more than two items of data as shown in \cref{sec:LambdaUnivTape}), conditionals and booleans, integers and arithmetic and, finally, the ability to be continuous (circular) from a finite configuration. $\lambda$-Calculus is our first attempt to clarify the attributes of a computer, and does so both simply and aesthetically.
 
 \end{document}

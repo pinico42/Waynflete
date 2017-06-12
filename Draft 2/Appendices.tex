@@ -22,13 +22,9 @@ Multiplication can also be calculated by defining the function \textbf{M}:
 &= \bm{\mathrm{4}}
 \end{aligned}
 \end{gather*}
-We should rearrange our earlier addition method into an `addition' function of the same format which takes two arguments:
-\begin{equation*}
-\bm{\mathrm{A}} = \lambda ab.b\bm{\mathrm{S}}a
-\end{equation*}
 
 An `exponent' function to find $a^b$can also be defined, of astonishing simplicity:
-\cite{penrose1991emperor}
+\cite{barendregt1984introduction}
 \begin{equation*}
 \bm{\mathrm{E}} = \lambda ba.ab
 \end{equation*}
@@ -46,4 +42,240 @@ An `exponent' function to find $a^b$can also be defined, of astonishing simplici
 &= \bm{\mathrm{9}} = \bm{\mathrm{3^2}}
 \end{aligned}
 \end{gather*}
+
+\section{Explanation of Example Turing Machine}\label{appendix:turingexampleexp}
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
+    \hhline{====}
+    \multirow{1}{*}{$\mathbb{Q}$} & Any        & P\texttt{e}, R P\texttt{e}, R,  P\texttt{0}, R, R, P\texttt{0}, L, L & $\mathbb{A}$ \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{A}$} & \texttt{0} & R, P\texttt{x}, L, L, L                   & $\mathbb{A}$ \\
+                                  & \texttt{1} &                                  & $\mathbb{B}$ \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{B}$} & Any        & R, R                             & $\mathbb{B}$ \\
+                                  & None       & P\texttt{1}, L                            & $\mathbb{C}$ \\
+    \hhline{----}
+    \multirow{3}{*}{$\mathbb{C}$} & \texttt{x} & E, R                             & $\mathbb{B}$ \\
+                                  & \texttt{e} & R                                & $\mathbb{D}$ \\
+                                  & None       & L, L                             & $\mathbb{C}$ \\
+    \hhline{----}
+    \multirow{2}{*}{$\mathbb{D}$} & Any        & R, R                             & $\mathbb{D}$ \\
+                                  & None       & P\texttt{0}, L, L                         & $\mathbb{A}$ \\
+\end{tabu}
+
+\noindent $\Rightarrow \mathbb{Q}$
+
+
+\medskip
+
+Producing the sequence \texttt{010110111011110111110...}, this machine operates by first printing the symbols \texttt{e e 0} at the start of the tape, before printing the first \texttt{0} of the sequence on the fifth cell, finishing on the third cell and moving to state $\mathbb{A}$.
+
+If $\mathbb{A}$ is triggered, every \texttt{1} consecutively to the left of the cursor inclusively will be marked with \texttt{x}, $\rightarrow \mathbb{B}$.
+
+If $\mathbb{B}$ is triggered, the symbol \texttt{1} is appended to the output sequence, $\rightarrow \mathbb{C}$.
+
+If $\mathbb{C}$ is triggered, the cursor moves leftwards through the labels: if an \texttt{x} is found it is erased and $\rightarrow \mathbb{B}$; if the cursor reaches the beginning (an \texttt{e} is found) $\rightarrow \mathbb{D}$.
+
+If $\mathbb{D}$ is triggered, the symbol \texttt{0} is appended to the output sequence, the cursor moves to the previous value cell and $\rightarrow \mathbb{A}$.
+
+The workings of this algorithm are mostly in states $\mathbb{A}$ and $\mathbb{C}$: after the \texttt{0} is drawn $\mathbb{A}$ draws a number of \texttt{x} symbols equal to the previous number of \texttt{1} symbols drawn. $\mathbb{C}$ triggers $\mathbb{B}$ a number of times equal to the number of found \texttt{x} symbols before drawing a \texttt{0} - as $\mathbb{B}$ has already been triggered once, a number of \texttt{1} symbols will be drawn which is one more than the previous number drawn. For clarity in the comprehension of this somewhat abstract algorithm, some of the early states have been listed on the next page. Empty squares are represented by dots ($\cdot$) and the tape states continue in columns. An ellipsis marks the omission of a set of states which are implied or trivial.
+
+\begin{equation*}
+\begin{aligned}
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{A}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{A}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{A}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 1\ x\ 0} & \rightarrow \mathbb{A}\\
+&\mathtt{e\ e\ 0\ \underset{\uparrow}{\cdot}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 1\ x\ 0} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ \underset{\uparrow}{e}\ 0\ \cdot\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0\ \cdot\ 1} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ x\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ x\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \underset{\uparrow}{x}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{A}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{A}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1\ x\ 0} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ x\ 1\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}\ x\ 0} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ \underset{\uparrow}{0}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{x}\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ 0\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ x\ 0\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{x}\ 0\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{0}\ \cdot\ 1} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ \underset{\uparrow}{1}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & ...&\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{B}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ \underset{\uparrow}{e}\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{C}\\
+&\mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \underset{\uparrow}{\cdot}\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{D}\\
+&...& &...&\\
+&\mathtt{e\ \underset{\uparrow}{e}\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{C}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{\cdot}} & \rightarrow \mathbb{D}\\
+&\mathtt{e\ e\ \underset{\uparrow}{0}\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1} & \rightarrow \mathbb{D}\ \ \ \ \ \ \ \ \ \ & \mathtt{e\ e\ 0\ \cdot\ 0\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ 0\ \cdot\ 1\ \cdot\ 1\ \cdot\ \underset{\uparrow}{1}\ \cdot\ 0} & \rightarrow \mathbb{D}\\
+\end{aligned}
+\end{equation*}
+
+\clearpage
+
+
+\section{Detailed Demonstration of the Universality of $\lambda$-Calculus}\label{appendix:lambdauniversaldemo}
+
+\subsection{Standard Turing Description Form}
+
+First, the description table shall be formally defined, as shown by Turing in \cite{turing1936computablenumbers}. Looking at the first table described, one can see that any transition function follows a similar format: E; [E, R]; [E, L]; P\textit{a}; [P\textit{a}, R]; [P\textit{a}, L] or no entry at all. More complex transition functions such as those found in later tables can always be put into one of these forms through the addition of intermediary states which are called in sequence.
+
+Next, let us rename the states as $q_0$, $q_1$, $q_2$, $...$, $q_n$ (the initial state shall always be called $q_0$). Furthermore, the symbols shall be renamed $S_0$, $S_1$, $S_2$, $...$, $S_n$ - in this case, $S_0$ will represent the blank square, $S_1$ will represent \texttt{0} and $S_2$ will represent \texttt{1}. The movement operations L and R will be renamed $M_L$, $M_R$, and the operation to keep the tape stationary is simply $M_S$. Our tables are now of form:
+
+\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
+    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
+    \hhline{====}
+    $q_i$ & $S_i$ & P$S_k$, $M_{L/R/S}$ & $q_m$ \\
+    \hhline{----}
+\end{tabu}
+
+\medskip\medskip
+
+Lines such as 
+
+\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & E, $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+
+\noindent are to be written as
+
+\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & P$S_0$, $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+
+\noindent and lines such as 
+
+\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+
+\noindent are to be written as
+
+\noindent\begin{tabu} to \textwidth{XXXX}
+    $q_i$ & $S_i$ & P$S_i$, $M_{L/R/S}$ & $q_m$ \\
+\end{tabu}
+\medskip
+
+\noindent in order for all lines to be written in the first format. As the number of symbols used for a machine is always finite, it is possible to enumerate under every single state an action for every single symbol $S_i$ that the machine could be reading. As such, `All' and `Not \textit{a}' may be portrayed in this format. This idea also allows the last simplification shown in the table above to work.
+
+This expanded and generalised configuration is much more helpful to us, as while any Turing machine configuration (including using \textit{m}-functions) can be written in this format, it is very concise and regular. This allows it to be given as input to our universal machines.
+
+\subsection{Emulating the Tape}\label{sec:LambdaUnivTape}
+To allow for storage of large sequences of data in $\lambda$-Calculus, ordered lists must be defined. These will be used to store the content of the tape. These are defined as a sequence of nodes, where each node is a pair with the first element as the content of the node and the second element is the next node in the sequence (as shown in \cite{tromp2007binary}). The final node will have \textbf{0} as its first element to signify the end of the list - the second element will never be referred to; as such \textbf{0} will be used as a placeholder (of course this only works if the list is not designed to contain any values of zero or true, as they will be indistinguishable from the end marker - I shall use \textbf{1} to represent $S_0$, \textbf{2} to represent $S_1$ and so on). For example, the list [a,b,c,d,e] would be represented as:
+\begin{equation*}
+\lambda l.la(\lambda m.mb(\lambda n.nc(\lambda o.od(\lambda p.pe(\lambda z.z\bm{\mathrm{00}})))))
+\end{equation*}
+In order to obtain the first element (head), the argument \textbf{T} would be applied to the list; to get the remaining elements (tail) the \textbf{F} argument would be applied. 
+Furthermore, to prepend an element $x$ to the start of a list $l$:
+\begin{equation*}
+\bm{\mathrm{:}} = \lambda xlf.f[x][l]
+\end{equation*}
+ 
+The tape of the machine extends infinitely in both directions either side of the cursor. This shal be represented as a pair of lists: $T_p$ as the list of all the predecessors to the cursor and $T_s$ as the list of all the successors to the cursor. The predecessors shall be listed in reverse order, such that the head of $T_p$ is the symbol directly to the left of the cursor. The head of $T_s$ is the symbol considered to be `under' the cursor, the next element is the symbol to the right of that, and so on.
+\begin{equation*}
+T_a = \lambda f.f T_p T_s
+\end{equation*}
+
+\subsection{Movement Operations}
+To emulate cursor movement, transformation functions shall be defined for the tape. These operations will shift the tape by moving the head of $T_s$ to the head of $T_p$ or vice versa.
+
+\begin{gather*}
+\begin{aligned}
+\bm{M}_L &= \lambda t_a f.f\ [(t_a\bm{\mathrm{T}})\bm{\mathrm{F}}]\ [\bm{\mathrm{:}}([t_a\bm{\mathrm{T}}]\bm{\mathrm{T}})\ (t_a\bm{\mathrm{F}})]\\
+\bm{M}_R &= \lambda t_a f.f\ [\bm{\mathrm{:}}([t_a\bm{\mathrm{F}}]\bm{\mathrm{T}})\ (t_a\bm{\mathrm{T}})]\ [(t_a\bm{\mathrm{F}})\bm{\mathrm{F}}]\\
+\bm{M}_S &= \lambda t_a.t_a\\
+\end{aligned}
+\end{gather*}
+The $\bm{M}_L$ function produces a new tape pair, after taking the original tape pair as parameter $t_a$. The first element of this new pair is simply the tail of $T_p$ ($T_p$ being found at $T_a\bm{\mathrm{T}})$. The second element is the head of $T_p$ prepended to the entirety of $T_s$ (found at $T_a\bm{\mathrm{T}})$. $\bm{M}_R$ will do the effective opposite, prepending the head of $T_s$ to $T_p$ and producing the tail of $T_s$. $\bm{M}_S$ will keep the tape in its current state.
+
+\subsection{Infinite-Length Tape}
+
+Unfortunately, the tape which that is currently being dealt with is unlike that of a Turing machine, due to the fact that it is of finite length - one cannot write a single list in $\lambda$-Calculus which expresses the entire tape. As such, when the machine moves left or right onto the node with \textbf{0} as the head signifying the end of the list, it shall be replaced with a node containing the blank square symbol $S_0$, represented by a \textbf{1}, as the head, and another end marker node as the tail. To do this, another transformation function shall be used which will check if either head element of the tape pair is \textbf{0}, and if so, will replace it with an empty square node $\bm{\epsilon}$ - otherwise it will simply be replaced with the original head:
+
+\begin{gather*}
+\begin{aligned}
+\bm{\epsilon} &= \lambda g.g\ [\bm{\textbf{1}}]\ [\lambda d.d\bm{\mathrm{0}}\bm{\mathrm{0}}] \\
+\bm{C} &= \lambda t_a g.g\ [\bm{\mathrm{Z}}(t_a\bm{\mathrm{T}}\bm{\mathrm{T}})\ (\bm{\epsilon})(t_a\bm{\mathrm{T}}\bm{\mathrm{T}})]\ [\bm{\mathrm{Z}}(t_a\bm{\mathrm{F}}\bm{\mathrm{T}})\ (\bm{\epsilon})(t_a\bm {\mathrm{F}}\bm{\mathrm{T}})]
+\end{aligned}
+\end{gather*}
+This transformation will be applied after every tape movement operation.
+
+\subsection{Printing to the Tape}
+
+The operation function that writes a given symbol to the square beneath the cursor is not a particularly complex transformation - it simply replaces the current head of $T_s$ with the given numeral $a$.
+
+\begin{equation*}
+\bm{W} = \lambda a t_a p.p\ [t_a\bm{\mathrm{T}}]\ [\mathrm{\bm{:}} a\  (t_a \bm{\mathrm{FF}})]
+\end{equation*}
+
+\subsection{Storing \& Accessing states}
+%\subsubsubwithchickenandmayopleasethanks{eating & fulfilling life goals #subwaydatesboiiiiis love man chllz peace wavey donss}
+Once again, in order to store the symbols, transition functions and final states associated with each state,  a list shall be used. The first element of the list shall represent $q_0$, the second $q_1$ and so on.
+Each element of the list will be a list in itself. Each element of this nested list shall refer to a single line described by the symbol aspect of the configuration. These elements are pairs: the first element being the symbol to be found (a numeral), the second being the action to be performed under this configuration.
+
+The action itself will be yet another pair. The first element is the transition function that should be executed on the tape - this will be of the form $(\bm{C})(\bm{M}_{L/R/S})(\bm{W}a)$, which applies first a write operation before a movement operation and the tape length correction operation. The second element is a function which, when given the description of the machine, finds the given state. These state references shall be described as shown, with the example of the reference to $q_3$:
+\begin{equation*}
+\bm{Q}_3 = \lambda l.l\bm{\textbf{FFFT}}
+% * <mxpen26@gmail.com> 10:30:46 06 Jun 2017 UTC+0100:
+% Checked up to here; TODO continue
+\end{equation*}
+This gets the fourth head of the given list, which refers to $q_3$.
+
+%As an example, here is the description for the first machine described, which generates the sequence \texttt{01010101...} (for simplicity, this version does not leave \textit{s}-squares blank). For reference, here is the enumerated table:
+%\medskip\noindent\begin{tabu} to \textwidth{XXXX}
+%    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
+%    \textit{m-config} & \textit{symbol} & \textit{operations} & \textit{final m-config} \\
+%    \hhline{====}
+%    $q_0$ & $S_0$ & PS_1       & $\mathbb{A}$ \\
+%    $q_0$ & $S_1$ & PS_2 & $\mathbb{A}$ \\ 
+%    $q_0$ & \texttt{1}    & R, R, P\texttt{0} & $\mathbb{A}$ \\ 
+%\end{tabu}
+%We shall represent this table as such:
+%\begin{gather*}
+%\begin{aligned}
+%\bm{d}
+%\end{aligned}
+%\end{gather*}
+
+%[I cba to do this now]
+
+In order to find which action should be performed given a certain configuration, one can use the following function which produces a pair of a list transition function and a state reference from a current state, the current symbol, and the description function. As part of this function, the recursive function $\bm{\rho}$ must be used in conjunction with the \textbf{Y} combinator, which returns the action aspect of the first pair under symbol $s$ in list $l$ (the $r$ argument is the argument which would represent the function as a whole, and is recursively called by the \textbf{Y} combinator)
+
+\begin{gather*}
+\begin{aligned}
+\bm{\rho} &= \lambda rls.(\bm{\doteq}(l\bm{\mathrm{TT}})s)(l\bm{\mathrm{TF}})(r(l\bm{\mathrm{F}})s)\\
+\bm{I} &= \lambda qsd.\bm{\mathrm{Y}\rho}(qd)s
+\end{aligned}
+\end{gather*}
+
+\subsection{Universal Machine State Change Operation}
+
+At last, all these functions to create a single operation which transforms a given machine configuration (state, $T_p$ \& $T_s$, and the description table) into the machine configuration for the next state. This configuration shall be represented as a pair, the first element being a pair of the state reference and the tape, and the second element as the description table. The $\bm{\nu}$ function gets the action function from the given machine configuration.
+
+\begin{gather*}
+\begin{aligned}
+\bm{\nu} &= \lambda c.\bm{I}(c\bm{\mathrm{TT}})([c\bm{\mathrm{TF}}]\bm{\mathrm{FT}})(c\bm{\mathrm{F}})\\
+\bm{X} &= \lambda cf.f[\lambda g.g[(\bm{\nu}c)\bm{\mathrm{F}}][((\bm{\nu}c)\bm{\mathrm{T}})(c\bm{\mathrm{TF}})]]c
+\end{aligned}
+\end{gather*}
+
+\subsection{Universal Machine State Generator}
+
+Finally, a single recursive function shall be defined, which produces every consecutive state by running $\bm{X}$ on itself repeatedly. When this is evaluated, each iteration of the machine shall be passed into the \textbf{Y} combinator, leading to each consecutive state being found during evaluation.
+
+\begin{gather*}
+\begin{aligned}
+\bm{\omega} &= \lambda uc.u(\bm{X}c) \\
+\bm{U} &= \lambda c.\bm{\mathrm{Y}}\bm{\omega}c
+\end{aligned}
+\end{gather*}
+
+%\section{Full description of a Turing Machine in the Z3}\label{appendix:z3turingcode}
+
 \end{document}
