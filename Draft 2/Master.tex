@@ -1,4 +1,4 @@
-\documentclass {article}
+   \documentclass {article}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -62,6 +62,12 @@ Therefore, in order for a machine to be called a `computer', it must be able to 
 \section{Zuse's Z3}
 
 \subfile{"Section 4 - Zuse's Z3"}
+
+\section*{The Limits of Computation}
+
+In our journey, we began with the abstract philosophical concept of computability, knowing nothing beyond roughly what we aim to achieve with it. Defining $\lambda$-Calculus, we were able to see that computation in all its power follows simply from the very natural concept of functions. Defining Turing machines, we saw that this abstract concept is not distant from a physical realisation; and exploring the functionality of Z3, that even relatively simplistic machines can demonstrate computation. It has become clear that the target of computability is not as difficicult to achive as it could appear, and that it was achived before the end of World War 2.
+
+The fact that we have been able to provide a unified definition of logical decision-making along the way is, in my opinion, the most remarkable result of this study. We must consider, however, that there are limits to computation - firstly, there is a set of so called 'undecideable' problems with solutions which cannot be solved algorithmically, including finding integer solutions to Diophantine equations \cite{matiyasevich1993hilbert} and the Halting problem, which would determine whether a given computer program runs indefinitely \cite{turing1936computablenumbers}. Furthermore, when the solution to a problem is probabalistic (e.g. in simulation of quantum processes - see \cite{feynman1982simulating}) as all computation produces the same solution given a problem. As such, despite effective computability being a simple, beautiful and practical theory, it does not achieve Leibniz's aim of a Universal Language; in truth, I believe that the existance of an algorithmic description of everything would be a surprising result. Of course, Mathematics is filled with surprises.
 
 \subfile{"Appendices"}
 
