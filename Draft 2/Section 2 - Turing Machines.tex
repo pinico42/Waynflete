@@ -61,36 +61,7 @@ In this case, it is not difficult to see that as the machine runs, it leaves a s
 
 It is again not difficult to see that this produces the same output as the previous machine, but this time using only one state.
 
-An example of a more complex Turing machine is shown below, which generates the sequence \texttt{010110111011110111110...} again on alternate cells, beginning at the fifth cell. \cite{turing1936computablenumbers}
-
-\medskip\noindent\begin{tabu} to \textwidth{XXXX}
-    \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
-    \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
-    \hhline{====}
-    \multirow{1}{*}{$\mathbb{Q}$} & Any        & P\texttt{e}, R P\texttt{e}, R,  P\texttt{0}, R, R, P\texttt{0}, L, L & $\mathbb{A}$ \\
-    \hhline{----}
-    \multirow{2}{*}{$\mathbb{A}$} & \texttt{0} & R, P\texttt{x}, L, L, L                   & $\mathbb{A}$ \\
-                                  & \texttt{1} &                                  & $\mathbb{B}$ \\
-    \hhline{----}
-    \multirow{2}{*}{$\mathbb{B}$} & Any        & R, R                             & $\mathbb{B}$ \\
-                                  & None       & P\texttt{1}, L                            & $\mathbb{C}$ \\
-    \hhline{----}
-    \multirow{3}{*}{$\mathbb{C}$} & \texttt{x} & E, R                             & $\mathbb{B}$ \\
-                                  & \texttt{e} & R                                & $\mathbb{D}$ \\
-                                  & None       & L, L                             & $\mathbb{C}$ \\
-    \hhline{----}
-    \multirow{2}{*}{$\mathbb{D}$} & Any        & R, R                             & $\mathbb{D}$ \\
-                                  & None       & P\texttt{0}, L, L                         & $\mathbb{A}$ \\
-\end{tabu}
-
-\noindent $\Rightarrow \mathbb{Q}$
-
-
-\medskip
-
-The operation of such a machine is significantly more complex than the earlier one - a full explanation of its operation can be found in appendix \ref{appendix:turingexampleexp}. Key to the operation is the fact that the tape begins with the sequence \texttt{e e 0} at the start of the tape (this method shall be used in future), and that cells are seperated into value cells and marker cells. On value cells (odd-numbered cells) the symbols of the output sequence are printed. Only the symbols \texttt{0} and \texttt{1} will ever be printed on these cells. To the right of each value cell is a label cell (an even-numbered cell). These cells will either be left empty or will contain a 'marker' symbol, which labels the symbol on the value cell to the left. These symbols can be erased and overwritten, and are not part of the output sequence. Only one label cell is needed to contain multiple markers, or more descriptive markers for a single value cell, as this can be achieved with a sufficiently rich variety of marker symbols. This method is frequently used by Alan Turing in \cite{turing1936computablenumbers}.
-
-It is clear from this example that the operation of the Turing Machine is very different from that of an ordinary computer. However, the core components are still mostly present - conditionals in the form of the symbol tests in the second column, variables in the form of labels, and continuity and looping when a state triggers itself - a form of recursion. The end result is the same - a solution is produced in the form of the computable sequence written on the value squares, and the machine can continue this sequence without halting indefinitely. Unfortunately, the operation of this machine is somewhat complex and obfuscated. To simplify this, we will introduce a type of function for the Turing machine.
+To aid the operation of Turing machines, the tape shall begin with the sequence \texttt{e e 0}, and cells shall be seperated into value cells and marker cells. On value cells (odd-numbered cells) the symbols of the output sequence are printed. Only the symbols \texttt{0} and \texttt{1} will ever be printed on these cells. To the right of each value cell is a label cell. These cells will either be left empty or will contain a 'marker' symbol, which labels the symbol on the value cell to the left; these are not part of the output sequence. This method is frequently used by Alan Turing in \cite{turing1936computablenumbers}, and an example machine can be found in appendix \ref{appendix:turingexampleexp}.
 
 \subsection{\textit{M}-functions}\label{sec:mfunctions}
 
@@ -116,11 +87,9 @@ It is clear from this example that the operation of the Turing Machine is very d
 
 The function $\mathbb{f}$ takes three arguments - the states \textfrak{C} and \textfrak{E} and the symbol \textit{a}. It is not difficult to see that if $\rightarrow \mathbb{f}$($\mathbb{A}$, $\mathbb{B}$, x) the cursor would trigger $\mathbb{A}$ at the first occurrence of \texttt{x}. If no symbols \texttt{x} were found, \textfrak{E} would be triggered on the marker of the first empty value square.
 
-The use of \textit{m}-functions greatly simplifies the table descriptions, as certain operations are common to many machines. Of course, any table description that includes or refers to \textit{m}-functions can be written as an ordinary table as described in \cref{sec:TMacIntro}. This is possible because of the finite nature of both states and symbols; simply by listing in separate rows under the same state every permutation of the finite symbols and states that the function could possibly take substituted in.
+The use of \textit{m}-functions greatly simplifies the table descriptions, as certain operations are common to many machines. Of course, any table description that includes or refers to \textit{m}-functions can be written as an ordinary table as described in \cref{sec:TMacIntro}. This is possible because of the finite nature of both states and symbols.
 
 \subsubsection{Common Operations}
-
-In this section a set of common and useful \textit{m}-functions are defined that will be used regularly in future.
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
@@ -155,7 +124,7 @@ In this section a set of common and useful \textit{m}-functions are defined that
 
 \subsection{Data Structures and Pointers}
 
-At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store information, from integers to strings of characters to images, as binary sequences of value square \texttt{0}s and \texttt{1}s - these shall be stored on the tape as memory. The first data structure we shall define is the simple boolean - only 1 bit (1 value square) long. In order to identify these sequences on the tape as booleans, we shall label the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define some \textit{m}-functions to define and assign values to variables of the boolean type:
+At this point, the similarity between Turing machines and modern computers becomes very clear. The machine is able to store information, from integers to strings of characters to images, as binary sequences of value square \texttt{0}s and \texttt{1}s. The first data structure we shall define is the simple boolean - only 1 bit (1 value square) long. In order to identify these sequences on the tape as booleans, we shall label the first character of the boolean with an identifier (we shall call these pointers) unique to that boolean variable - for example the symbol \texttt{\textbf{B}myvar} (bear in mind this is one symbol, not six) would mark a boolean named \textit{myvar}. Let us define some \textit{m}-functions to define and assign values to variables of the boolean type:
 
 \medskip\noindent\begin{tabu} to \textwidth{XXXX}
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
@@ -268,7 +237,7 @@ It is unseemly that the abstract notion of computability relies necessarily on t
 
 The main idea behind Universality is the concept of the Universal Machine, a machine which is able to entirely emulate another given system. As shown in \cite{turing1936computablenumbers}, a Turing machine can be configured in such a way that it emulates a Turing machine; this machine reads a description table from the start of the tape, and then produces the output that the machine described in the pre-written table would produce. Furthermore, $\lambda$-Calculus is also Turing-complete - this is demonstrated entirely in appendix \ref{appendix:lambdauniversaldemo}. This is done by producing a function that takes the current configuration of a Turing machine (in terms of the tape, state and description table) as input, and transforms it into the next configuration in sequence that a Turing machine would produce. This function would then be run repeatedly on the configuration using the \textbf{Y} combinator, hence emulating the action of Turing machines. Hence the $\lambda$-Calculus can produce a Universal Machine for Turing machines.
 
-Most remarkably, Turing machines are in fact able to also emulate $\lambda$-Caluculus. This shall not be demonstrated directly, but it seems intuitive that a Turing machine could carry out processes of abstraction and application since they are at heart simple algorithmic processes; a Turing macihne would evaluate $\lambda$-terms in a similar way to how the human mind would. This leads us onto the remarkable fact that since Turing machines and $\lambda$-Calculus can produce Universal Machines for each other, each has the potential to perform any task the other can perform, and hence they are equal in power. Furthermore, many other theoretical methods of computation such as Kurt G\"odel's General Recursive Functions also share this equivalence \cite{copeland2002ctt}.
+Most remarkably, Turing machines are in fact able to also emulate $\lambda$-Caluculus. This shall not be demonstrated directly, but it seems intuitive that a Turing machine could carry out processes of abstraction and application since they are at heart simple algorithmic processes; a Turing machine would evaluate $\lambda$-terms in a similar way to how the human mind would. This leads us onto the remarkable fact that since Turing machines and $\lambda$-Calculus can produce Universal Machines for each other, each has the potential to perform any task the other can perform, and hence they are equal in power. Furthermore, many other theoretical methods of computation such as Kurt G\"odel's General Recursive Functions also share this equivalence \cite{copeland2002ctt}.
 
 It therefore seems that the informal notion of computability can be formally defined with the use of one of these equivalent computational systems - this is a truly remarkable result, which produces a very strong basis for computability. With this test for computability in place, the question of whether World War 2 produced computing machines becomes apparently trivial.
 
