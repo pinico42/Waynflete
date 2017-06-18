@@ -4,44 +4,77 @@
 \begin{document}
 \appendix
 \appendixpage
-\section{Further Arithmetic in $\lambda$-Calculus}
-Multiplication can also be calculated by defining the function \textbf{M}:
-\cite{rojas2015lambdatutorial}
-\begin{equation*}
-\bm{\mathrm{M}} = \lambda wyx.w(yx)
-\end{equation*}  
-\begin{gather*}
-\begin{aligned}
-\bm{\mathrm{M22}} &= (\lambda wyx.w(yx))(\lambda ab.a(a(b)))(\lambda sz.s(s(z)))\\
-&= \lambda x.(\lambda ab.a(a(b)))[(\lambda sz.s(s(z)))x]\\
-&= \lambda x.(\lambda ab.a(a(b)))[\lambda z.x(x(z))]\\
-&= \lambda x.(\lambda b.[\lambda z.x(x(z))]([\lambda z.x(x(z))]b))\\
-&= \lambda x.(\lambda b.[\lambda z.x(x(z))][x(x(b))])\\
-&= \lambda x.(\lambda b.x(x(x(x(b)))))\\
-&= \lambda xb.x(x(x(x(b))))\\
-&= \bm{\mathrm{4}}
-\end{aligned}
-\end{gather*}
+\section{Further Arithmetic in $\lambda$-Calculus}\label{appendix:lambdaarithmetic}
 
-An `exponent' function to find $a^b$can also be defined, of astonishing simplicity:
+\subsection{Exponents}
+
+An `exponent' function to find $a^b$ of astonishing simplicity can be defined:
 \cite{barendregt1984introduction}
 \begin{equation*}
-\bm{\mathrm{E}} = \lambda ba.ab
+\bm{\mathrm{E}} = \lambda ab.ba
 \end{equation*}
 \begin{gather*}
 \begin{aligned}
-\bm{\mathrm{E23}} &= (\lambda ab.ab)(\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
-&= (\lambda sz.s(s(z)))(\lambda ty.t(t(t(y))))\\
-&= (\lambda z.[\lambda ty.t(t(t(y)))]([\lambda ux.u(u(u(x)))]z))\\
-&= (\lambda z.[\lambda ty.t(t(t(y))][\lambda x.z(z(z(x)))])\\
-&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x)))]([\lambda x.z(z(z(x)))]([\lambda x.z(z(z(x)))]y))])\\
-&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x))]([\lambda x.z(z(z(x)))][z(z(z(y)))])])\\
-&= (\lambda z.[\lambda y.[\lambda x.z(z(z(x))]([z(z(z(z(z(z(y))))))])])\\
-&= (\lambda z.[\lambda y.[z(z(z(z(z(z(z(z(z(y)))))))))]])\\
-&= \lambda zy.z(z(z(z(z(z(z(z(z(y)))))))))\\
+\bm{\mathrm{E32}} &= (\lambda ab.ba)\ (\lambda sz.s(s(s(z))))\ (\lambda ty.t(t(y)))\\
+&= \lambda ty.t(t(y)))\ (\lambda sz.s(s(s(z)))\\
+&= \lambda y.[\lambda sz.s(s(s(z)))]\ ([\lambda ux.u(u(u(x)))]\ y)\\
+&= \lambda y.[\lambda sz.s(s(s(z)))]\ [\lambda x.y(y(y(x)))]\\
+&= \lambda y.[\lambda z.[\lambda x.y(y(y(x)))]\ ([\lambda x.y(y(y(x)))]\ ([\lambda x.y(y(y(x)))]\ z))]\\
+&= \lambda y.[\lambda z.[\lambda x.y(y(y(x)))]\ ([\lambda x.y(y(y(x)))]\ [y(y(y(z)))])]\\
+&= \lambda y.[\lambda z.[\lambda x.y(y(y(x))]\ ([y(y(y(y(y(y(z))))))])]\\
+&= \lambda y.[\lambda z.[y(y(y(y(y(y(y(y(y(z)))))))))]]\\
+&= \lambda yz.y(y(y(y(y(y(y(y(y(z)))))))))\\
 &= \bm{\mathrm{9}} = \bm{\mathrm{3^2}}
 \end{aligned}
 \end{gather*}
+
+\subsection{Integers}
+
+Integers are defined as a pair of natural numbers, whose difference is the value of the integer (any function that outputs an integer shall be written with a bar):
+\begin{gather*}
+\begin{aligned}
+\lvari{-1} &= \lambda x.x\ \lvar{01} &= \lambda x.x\ \lvar{12}\\
+\lvari{-2} &= \lambda x.x\ \lvar{02} &= \lambda x.x\ \lvar{13}
+\end{aligned}    
+\end{gather*}
+
+\begin{gather*}
+\begin{aligned}
+\lvari{S} &= \lambda nx.x\ [\lvar{S}(n\lvar{T})][n\lvar{F}] \\
+\lvari{P} &= \lambda nx.x\ [n\lvar{T}][\lvar{S}(n\lvar{F})]
+\end{aligned}    
+\end{gather*}
+
+\begin{gather*}
+\begin{aligned}
+\lvari{A} &= \lambda abx.x\ [(a\lvar{T})\lvar{S}(b\lvar{T})]\ [(a\lvar{F})\lvar{S}(b\lvar{F})] \\
+\lvari{D} &= \lambda abx.x\ [(a\lvar{T})\lvar{S}(b\lvar{F})]\ [(a\lvar{F})\lvar{S}(b\lvar{T})] \\
+\lvari{M} &= \lambda abx.x\ [(\lvar{M}\ [a\lvar{T}][b\lvar{T}])\ \lvar{S}\ (\lvar{M}\ [a\lvar{F}][b\lvar{F}])]\ [(\lvar{M}\ [a\lvar{T}][b\lvar{F}])\ \lvar{S}\ (\lvar{M}\ [a\lvar{F}][b\lvar{T}])] \\
+\end{aligned}    
+\end{gather*}
+
+The \textbf{$\pm$} function outputs \textbf{T} for positive integers and \textbf{F} for negative integers ($\lvari{0}$ is considered to be positive), and the \textbf{$|$} function calculates the absolute value of the given integer.
+
+\begin{gather*}
+\begin{aligned}
+\lvar{\pm} &= \lambda i.(\lvar{\geq}\ [i\lvar{T}]\ [i\lvar{F}]) \\
+\lvar{|} &= \lambda i. (\lvar{\pm}i)\ [D\ (i\lvar{T}) (i\lvar{F})]\ [D\ (i\lvar{F}) (i\lvar{T})]
+\end{aligned}    
+\end{gather*}
+
+Rational numbers can be represented in a similar way as a fraction of two integers.
+
+\subsection{Division of Natural Numbers}
+
+The \textbf{Q} function (which of course stands for quotient) calculates the number of times $a$ is contained within $b$ recursively: \cite{allisonWEB17integers}
+
+\begin{gather*}
+\begin{aligned}
+\lvar{\delta} &= \lambda dpq.(\lvar{\geq}pq)\ [\lvar{S}\ (d\ [\lvar{D}pq]\ q)]\ [\lvar{0}] \\
+\lvar{Q} &= \lambda ab.\lvar{Y\delta}ab
+\end{aligned}    
+\end{gather*}
+
 
 \section{Turing Machine Demonstrating Value \& Marker Squares}\label{appendix:turingexampleexp}
 
@@ -70,7 +103,7 @@ An `exponent' function to find $a^b$can also be defined, of astonishing simplici
 
 \medskip
 
-Producing the sequence \texttt{010110111011110111110...} on primary squares, this machine operates by first printing the symbols \texttt{e e 0} at the start of the tape, before printing the first \texttt{0} of the sequence on the fifth cell, finishing on the third cell and moving to state $\mathbb{A}$.
+Producing the sequence \texttt{010110111011110111110...} on primary squares \cite{turing1936computablenumbers}, this machine operates by first printing the symbols \texttt{e e 0} at the start of the tape, before printing the first \texttt{0} of the sequence on the fifth cell, finishing on the third cell and moving to state $\mathbb{A}$.
 
 If $\mathbb{A}$ is triggered, every \texttt{1} consecutively to the left of the cursor inclusively will be marked with \texttt{x}, $\rightarrow \mathbb{B}$.
 
@@ -116,7 +149,7 @@ The workings of this algorithm are mostly in states $\mathbb{A}$ and $\mathbb{C}
 \clearpage
 
 
-\section{Detailed Demonstration of the Universality of $\lambda$-Calculus}\label{appendix:lambdauniversaldemo}
+\section{Demonstration of the Universality of $\lambda$-Calculus}\label{appendix:lambdauniversaldemo}
 
 \subsection{Standard Turing Description Form}
 
@@ -128,7 +161,7 @@ Next, let us rename the states as $q_0$, $q_1$, $q_2$, $...$, $q_n$ (the initial
     \multicolumn{2}{c}{\textit{Configuration}} & \multicolumn{2}{c}{\textit{Behavior}} \\
     \textit{state} & \textit{symbol} & \textit{transition function} & \textit{final state} \\
     \hhline{====}
-    $q_i$ & $S_i$ & P$S_k$, $M_{L/R/S}$ & $q_m$ \\
+    $q_i$ & $S_j$ & P$S_k$, $M_{L/R/S}$ & $q_m$ \\
     \hhline{----}
 \end{tabu}
 
@@ -137,47 +170,47 @@ Next, let us rename the states as $q_0$, $q_1$, $q_2$, $...$, $q_n$ (the initial
 Lines such as 
 
 \noindent\begin{tabu} to \textwidth{XXXX}
-    $q_i$ & $S_i$ & E, $M_{L/R/S}$ & $q_m$ \\
+    $q_i$ & $S_j$ & E, $M_{L/R/S}$ & $q_m$ \\
 \end{tabu}
 \medskip
 
 \noindent are to be written as
 
 \noindent\begin{tabu} to \textwidth{XXXX}
-    $q_i$ & $S_i$ & P$S_0$, $M_{L/R/S}$ & $q_m$ \\
+    $q_i$ & $S_j$ & P$S_0$, $M_{L/R/S}$ & $q_m$ \\
 \end{tabu}
 \medskip
 
 \noindent and lines such as 
 
 \noindent\begin{tabu} to \textwidth{XXXX}
-    $q_i$ & $S_i$ & $M_{L/R/S}$ & $q_m$ \\
+    $q_i$ & $S_j$ & $M_{L/R/S}$ & $q_m$ \\
 \end{tabu}
 \medskip
 
 \noindent are to be written as
 
 \noindent\begin{tabu} to \textwidth{XXXX}
-    $q_i$ & $S_i$ & P$S_i$, $M_{L/R/S}$ & $q_m$ \\
+    $q_i$ & $S_j$ & P$S_j$, $M_{L/R/S}$ & $q_m$ \\
 \end{tabu}
 \medskip
 
-\noindent in order for all lines to be written in the first format. As the number of symbols used for a machine is always finite, it is possible to enumerate under every single state an action for every single symbol $S_i$ that the machine could be reading. As such, `All' and `Not \textit{a}' may be portrayed in this format. This idea also allows the last simplification shown in the table above to work.
+\noindent in order for all lines to be written in the first format. As the number of symbols used for a machine is always finite, it is possible to enumerate under every single state an action for every single symbol $S_j$ that the machine could be reading. As such, `All' and `Not \textit{a}' may be portrayed in this format. This idea also allows the last simplification shown in the table above to work.
 
 This expanded and generalised configuration is much more helpful to us, as while any Turing machine configuration (including using \textit{m}-functions) can be written in this format, it is very concise and regular. This allows it to be given as input to our universal machines.
 
 \subsection{Emulating the Tape}\label{sec:LambdaUnivTape}
-To allow for storage of large sequences of data in $\lambda$-Calculus, ordered lists must be defined. These will be used to store the content of the tape. These are defined as a sequence of nodes, where each node is a pair with the first element as the content of the node and the second element is the next node in the sequence (as shown in \cite{tromp2007binary}). The final node will have \textbf{0} as its first element to signify the end of the list - the second element will never be referred to; as such \textbf{0} will be used as a placeholder (of course this only works if the list is not designed to contain any values of zero or true, as they will be indistinguishable from the end marker - I shall use \textbf{1} to represent $S_0$, \textbf{2} to represent $S_1$ and so on). For example, the list [a,b,c,d,e] would be represented as:
+To allow for storage of large sequences of data in $\lambda$-calculus, ordered lists must be defined. These will be used to store the content of the tape. These are defined as a sequence of nodes, where each node is a pair with the first element as the content of the node and the second element is the next node in the sequence (as shown in \cite{tromp2007binary}). The final node will have \textbf{0} as its first element to signify the end of the list - the second element will never be referred to; as such \textbf{0} will be used as a placeholder (of course this only works if the list is not designed to contain any values of zero or true, as they will be indistinguishable from the end marker - I shall use \textbf{1} to represent $S_0$, \textbf{2} to represent $S_1$ and so on). For example, the list [a,b,c,d,e] would be represented as:
 \begin{equation*}
 \lambda l.la(\lambda m.mb(\lambda n.nc(\lambda o.od(\lambda p.pe(\lambda z.z\bm{\mathrm{00}})))))
-\end{equation*}
+\end{equation*}   
 In order to obtain the first element (head), the argument \textbf{T} would be applied to the list; to get the remaining elements (tail) the \textbf{F} argument would be applied. 
 Furthermore, to prepend an element $x$ to the start of a list $l$:
 \begin{equation*}
 \bm{\mathrm{:}} = \lambda xlf.f[x][l]
 \end{equation*}
  
-The tape of the machine extends infinitely in both directions either side of the cursor. This shal be represented as a pair of lists: $T_p$ as the list of all the predecessors to the cursor and $T_s$ as the list of all the successors to the cursor. The predecessors shall be listed in reverse order, such that the head of $T_p$ is the symbol directly to the left of the cursor. The head of $T_s$ is the symbol considered to be `under' the cursor, the next element is the symbol to the right of that, and so on.
+The tape of the machine extends infinitely in both directions either side of the cursor. This shall be represented as a pair of lists: $T_p$ as the list of all the predecessors to the cursor and $T_s$ as the list of all the successors to the cursor. The predecessors shall be listed in reverse order, such that the head of $T_p$ is the symbol directly to the left of the cursor. The head of $T_s$ is the symbol considered to be `under' the cursor, the next element is the symbol to the right of that, and so on.
 \begin{equation*}
 T_a = \lambda f.f T_p T_s
 \end{equation*}
@@ -196,7 +229,7 @@ The $\bm{M}_L$ function produces a new tape pair, after taking the original tape
 
 \subsection{Infinite-Length Tape}
 
-Unfortunately, the tape which that is currently being dealt with is unlike that of a Turing machine, due to the fact that it is of finite length - one cannot write a single list in $\lambda$-Calculus which expresses the entire tape. As such, when the machine moves left or right onto the node with \textbf{0} as the head signifying the end of the list, it shall be replaced with a node containing the blank square symbol $S_0$, represented by a \textbf{1}, as the head, and another end marker node as the tail. To do this, another transformation function shall be used which will check if either head element of the tape pair is \textbf{0}, and if so, will replace it with an empty square node $\bm{\epsilon}$ - otherwise it will simply be replaced with the original head:
+Unfortunately, the tape which that is currently being dealt with is unlike that of a Turing machine, due to the fact that it is of finite length - one cannot write a single list in $\lambda$-calculus which expresses the entire tape. As such, when the machine moves left or right onto the node with \textbf{0} as the head signifying the end of the list, it shall be replaced with a node containing the blank square symbol $S_0$, represented by a \textbf{1}, as the head, and another end marker node as the tail. To do this, another transformation function shall be used which will check if either head element of the tape pair is \textbf{0}, and if so, will replace it with an empty square node $\bm{\epsilon}$ - otherwise it will simply be replaced with the original head:
 
 \begin{gather*}
 \begin{aligned}
@@ -245,7 +278,8 @@ This gets the fourth head of the given list, which refers to $q_3$.
 
 %[I cba to do this now]
 
-In order to find which action should be performed given a certain configuration, one can use the following function which produces a pair of a list transition function and a state reference from a current state, the current symbol, and the description function. As part of this function, the recursive function $\bm{\rho}$ must be used in conjunction with the \textbf{Y} combinator, which returns the action aspect of the first pair under symbol $s$ in list $l$ (the $r$ argument is the argument which would represent the function as a whole, and is recursively called by the \textbf{Y} combinator)
+In order to find which action should be performed given a certain configuration, one can use the following function which produces a pair of a list transition function and a state reference from a current state $q$, the current symbol $s$, and the description function $d$
+. As part of this function, the recursive function $\bm{\rho}$ must be used in conjunction with the \textbf{Y} combinator, which returns the action aspect of the first pair under symbol $s$ in list $l$ (the $r$ argument is the argument which would represent the function as a whole, and is recursively called by the \textbf{Y} combinator).
 
 \begin{gather*}
 \begin{aligned}

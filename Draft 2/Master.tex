@@ -1,5 +1,5 @@
-   \documentclass {article}
-\usepackage[a4paper, total={6in, 8in}]{geometry}
+\documentclass {article}
+\usepackage[a4paper, total={6in, 8in}, top=1.3in, bottom=1.5in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{subfiles}
@@ -26,27 +26,33 @@
 \Crefname{section}{§}{§§}
 
 \renewcommand{\arraystretch}{1.5}
+\newcommand*\lvar[1]{\bm{\mathrm{#1}}}
+\newcommand*\lvari[1]{\overline{\bm{\mathrm{#1}}}}
 
 \begin{document}
 \pagenumbering{roman}
 \maketitle
 %\tableofcontents
 \medskip
+\medskip
 
 \begin{abstract}
-Computability, or the potential for a device to solve any solvable problem given to it, is an informal notion. Its definition can be refined with use of the $\lambda$-Calculus or Turing machines, theoretical computational devices which while having simple definitions produce functionality similar to that of a computer. Hence, a computer can be defined as a machine which emulates either of these devices fully. It will then be shown that the Z3 computer built by Konrad Zuse implements computability with some success.
+Computability, or the potential for a device to solve any solvable problem given to it, is an informal notion. Its definition can be refined with use of the $\lambda$-calculus or Turing machines, theoretical computational devices which while having simple definitions produce functionality similar to that of a computer. Hence, a computer can be defined as a machine which emulates either of these devices fully. It will then be shown that the Z3 computer built by Konrad Zuse during World War 2 implements computability with some success.
 \end{abstract}
 
-\section*{Introduction}
+\section*{Introduction} 
 Computation rules the modern world - from the internet to the rise of automated labour, today's humanity puts colossal value in the hands of these remarkable machines. However, the fundamental ideas of computation and calculation lying alongside the transistors and silicon at the heart of this revolution are no less remarkable in themselves, primarily down to their simplicity. Furthermore, few modern computer users understand remotely how basic electronics can operate the complex tasks a computer can perform. Therefore, I feel the natural way to shed light on this question is to look at the earliest and simplest computers, what they could do and what was distinctive about them.
 
-The most significant problem in answering this question is the actual definition of `computer'. In the early 20th Century, prior to developments in this field, any human which evaluated statements through computation was known, as a `computer'. We will therefore explore the qualities that an entity - human, machine or other - must have for it to be able to perform computation.
+The most significant problem in answering this question is the actual definition of `computer'. In the early 20th Century, prior to developments in this field, any human who evaluated statements through computation was known as a `computer'. We will therefore explore the qualities that an entity - human, machine or other - must have for it to be able to perform computation.
 
-The 18th Century German polymanth Gottfreid Leibniz proposed the ideal of a `Characteristica Universalis', a universal language in which any possible problem can be expressed, and a decision method which could evaluate any problem in this language \cite{barendregt1984introduction}. This idea is a final aim for computation - a system which when given a statement in this universal language is able to evaluate it. The ideal of producing a simple system which can evaluate any `effectively computable' statment is the main challenge of computation.
+The 18th Century German polymath Gottfreid Leibniz proposed the ideal of a `Characteristica Universalis', a universal language in which any possible problem can be expressed, and a decision method which could evaluate any problem in this language \cite{barendregt1984introduction}. This idea is a final aim for computation - a system which when given a statement in this universal language is able to evaluate it. The ideal of producing a simple system which can evaluate any `effectively computable' statement is the main challenge of computation.
 
-Therefore, in order for a machine to be called a `computer', it must be able to evaluate any member of a set of `computable functions' (problems expressed in the universal tongue). However, this is an abstract notion - to clarify it, a simple language in which we can express computable functions must be defined, and a simple method to evaluate them must be found. The two most common methods, $\lambda$-Calculus and the Turing Machine, shall be explored and evaluated in terms of their similarities and differences, before they are used to evaluate early computers.
+Therefore in order for a machine to be called a `computer' it must be able to evaluate any member of a set of `computable functions' (problems expressed in the universal tongue). However, this is an abstract notion - to clarify it, a simple language in which we can express computable functions must be defined, and a simple method to evaluate them must be found. The two most common methods, $\lambda$-
+and the Turing machine, shall be explored, before they are used to evaluate early computers.
 
+Throughout this paper any equation, table or code listing which is not clearly cited can be considered my own work.
 
+\clearpage
 
 \section{Church's $\lambda$-Calculus}
 
@@ -62,12 +68,12 @@ Therefore, in order for a machine to be called a `computer', it must be able to 
 
 \section*{Epilogue: Limitations of Computation}
 
-In our journey, we began with the abstract philosophical concept of computability, knowing nothing beyond roughly what we aim to achieve with it. Defining $\lambda$-Calculus, we were able to see that computation in all its power follows simply from the very natural concept of functions. Defining Turing machines, we saw that this abstract concept is not distant from a physical realisation; and exploring the functionality of Z3, that even relatively simplistic machines can demonstrate computation. It has become clear that the target of computability is not as difficicult to achive as it could appear, and that it was achived before the end of World War 2.
+In our journey, we began with the abstract philosophical concept of computability, knowing nothing beyond roughly what we aim to achieve with it. Defining $\lambda$-calculus, we were able to see that computation in all its power follows simply from the very natural concept of functions. Defining Turing machines, we saw that this abstract concept is not distant from a physical realisation; and exploring the functionality of Z3 we found that even relatively simplistic machines can demonstrate computation. It has become clear that the target of computability is not as difficult to achieve as it could appear, and that it was achieved before the end of World War 2.
 
-The fact that we have been able to provide a unified definition of logical decision-making along the way is, in my opinion, the most remarkable result of this study. We must consider, however, that there are limits to computation - firstly, there is a set of so called 'undecideable' problems with solutions which cannot be solved algorithmically, including finding integer solutions to Diophantine equations \cite{matiyasevich1993hilbert} and the Halting problem, which would determine whether a given computer program runs indefinitely \cite{turing1936computablenumbers}. Furthermore, when the solution to a problem is probabalistic (e.g. in simulation of quantum processes - see \cite{feynman1982simulating}) as all computation produces the same solution given a problem. As such, despite effective computability being a simple, beautiful and practical theory, it does not achieve Leibniz's aim of a Universal Language; in truth, I believe that the existance of an algorithmic description of everything would be a surprising result. Of course, Mathematics is filled with surprises.
+The fact that we have been able to provide a unified definition of logical decision-making along the way is, in my opinion, the most remarkable result of this study. We must consider, however, that there are limits to computation - firstly, there is a set of so called `undecideable' problems with solutions which cannot be solved algorithmically, including finding integer solutions to Diophantine equations \cite{matiyasevich1993hilbert} and the Halting problem, which would determine whether a given computer program runs indefinitely \cite{turing1936computablenumbers}. Furthermore, computation fails when the solution to a problem is probabilistic (e.g. in simulation of quantum processes - see \cite{feynman1982simulating}) as all algorithms produce the same solution given a problem. As such, despite effective computability being a simple, beautiful and practical theory, it does not achieve Leibniz's aim of a Universal Language; in truth, I believe that the existence of an algorithmic description of everything would be a surprising result. Of course, Mathematics is filled with surprises.
 
 \subfile{"Appendices"}
-
+\clearpage
 \bibliography{bibliography}
 \bibliographystyle{unsrt}
 \end{document}

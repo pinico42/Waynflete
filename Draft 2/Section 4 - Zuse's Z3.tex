@@ -23,7 +23,7 @@
 
 \begin{document}
 
-In order to address the question of whether this was achieved during WW1 we must explore how well this concept was implemented in the machines of this period. Z3, completed in Berlin in 1941 by Konrad Zuse, was arguably the first programmable computer ever built. A far more reliable version of its predecessors, Z1 and Z2, Z3 was advanced because of its ability to carry out long sequences of calculations written as instructions on punched tape, on top of its ability to store values in memory. While still very simplistic, and not directly intended for universal computation, Z3 was structurally far closer to achieving this aim than other machines of the time. In this section I shall therefore attempt to implement a Universal machine in Z3 in order to determine its nature as a computing machine.
+In order to address the question of whether this was achieved during WW1 we must explore how well this concept was implemented in the machines of this period. Z3, completed in Berlin in 1941 by Konrad Zuse, was arguably the first programmable computer ever built. A far more reliable version of its predecessors, Z1 and Z2, Z3 was advanced because of its ability to carry out long sequences of calculations written as instructions on punched tape, on top of its ability to store values in memory. While still very simplistic, and not directly intended for universal computation, Z3 was structurally far closer to achieving this aim than other machines of the time. I shall therefore attempt to implement a Universal machine in Z3 in order to determine its nature as a computing machine.
 
 \subsection{The Architecture of Z3}
 
@@ -31,11 +31,11 @@ In this section I shall give a broad functional overview of Z3. I shall explore 
 
 Z3 was primarily purposed towards performing simple arithmetical calculations - addition, subtraction, multiplication, division, and square root. The operands would be read from memory or from input from a keyboard, and the results would be written to memory or shown on a display. Programs could be written as sequences of 8-bit instructions on punched tape, and would be performed as they are read by the machine.
 
-Z3 was able to store floating-point decimals in its memory\footnote{Each 22-bit floating-point number was stored through the use of metal rods which could be in one of two states to represent bits. In  something similar to standard form, each number was composed of an `exponent' representing the order of magnitude of the number, and a `significand' that represented the digits of the number; see \cite{rojas1997z3architecture} for details.}, which could be referred to by the programmer through the use of a numeric address of a particular data slot. For the sake of clarity, we shall use single lowercase letters to represent addresses rather than the 6-bit unisgned integers of Z3.
+Z3 was able to store floating-point decimals in its memory\footnote{Each 22-bit floating-point number was stored through the use of metal rods which could be in one of two states to represent bits. In  something similar to standard form, each number was composed of an `exponent' representing the order of magnitude of the number, and a `significand' that represented the digits of the number; see \cite{rojas1997z3architecture} for details.}, which could be referred to by the programmer through the use of a numeric address of a particular data slot. For the sake of clarity, we shall use single lowercase letters to represent addresses rather than the 6-bit unsigned integers of Z3.
 
 \subsubsection{Programming Model}
 
-The instruction set for Z3 consisted of three types of operation - I/O, memory and arithmetic. These instructions would be performed with respect to two floating-point registers, $R_1$ and $R_2$, which act as the two arguments for any arithmetical operation, and could be written to and read from by the non-arithmetical operations. 
+The instruction set for Z3 consisted of three types of operation - I/O, memory and arithmetic. These instructions would be performed with respect to two floating-point registers, $R_1$ and $R_2$, which act as the two arguments for any arithmetical operation and could be written to and read from by the non-arithmetical operations. 
 
 The two memory instructions Pr \textit{z} and Ps \textit{z} load and store respectively the value of registers from and to memory. Pr \textit{z} transfers the data stored at address \textit{z} to $R_1$ if $R_1$ is clear; otherwise it is written to $R_2$, overwriting any previous data. Ps \textit{z} transfers the value of $R_1$ only to address \textit{z}, and clears both $R_1$ and $R_2$ (such that the next Pr \textit{z} operation will write to $R_1$). 
 
@@ -54,9 +54,9 @@ The arithmetical operations perform as follows:
 For each operation, the operation is performed on $R_1$ and $R_2$, and the result is written to $R_1$. 
 \subsection{Universality in Z3}
 
-The first thing that must be considered when looking for universality in a potentially Turing-complete machine is the fact that, by the strict definition of a Turing machine, it must require infinite memory due to the nature of its tape. Unfortunately, this is impossible in the physical world as memory is always finite. As such, we must revise our definition of Turing-completeness to require only a finite tape.
+The first thing that must be considered when looking for universality in a potentially Turing-complete machine is the fact that, by the strict definition of a Turing machine, it must require infinite memory due to the nature of its tape. Unfortunately, this is impossible in the physical world, so we must revise our definition of Turing-completeness to require only a finite yet extendable tape.
 
-At first glance, it is unclear that Z3 can be made into a universal machine due to the fact that it allows for neither conditional branching\footnote{The ability to perform different operations depending on the state of a stored value} nor indirect addressing\footnote{The ability to refer to values stored in memory when the address of that memory is not specifically referred to in the program but is rather obtained from the value of some variable currently in memory}. However, through use of the tools available to the programmer these features can be emulated, and a Turing Machine can be simulated. This uses many tecniques explained in \cite{rojas1998z3universal}.
+At first glance, it is unclear that Z3 can be made into a universal machine due to the fact that it allows for neither conditional branching nor indirect addressing (the ability to retrieve a value from memory using an address whose numeric value is not directly specified in the program i.e. is read from memory or calculated). However, through use of the tools available to the programmer these features can be emulated, and a Turing machine can be simulated. This uses many techniques explained in \cite{rojas1998z3universal}.
 
 For the sake of simplicity, in this section we shall use a more intuitive form to express instructions for the machine. We shall write $a = b\ \mathrm{op}\ c$ to simplify statements of the form:
 \begin{gather*}
@@ -87,12 +87,12 @@ a &= v + u
 \end{aligned}
 \end{gather*}
 
-Or, for clarity, $a = (a \cdot t) + (1 - t)(b\ \mathrm{op}\ c)$. If $t = 1$, $v$ is set to $t$; otherwise it is set to $0$. Furthermore, if $t = 0$, $u$ is set to the outcome of the operation; otherwise it is set to $0$ again. Therefore, if $t = 0$, $a$ is set to the outcome of the operation; otherwise it is set back to its original value. As such, after this transformation has been put in place for every $P$ operation, and a method to set $t$ at the start of the switch statement has been implemented, every new command in this program can be executed - most superfluously - in order to only use the $z$-th command. Next we must produce a set of operations that will perform the computation
+Or, for clarity, $a = (a \cdot t) + (1 - t)(b\ \mathrm{op}\ c)$. If $t = 0$, $a$ is set to the outcome of the operation; if $t = 0$ $a$ is set to its original value. As such, after this transformation has been put in place for every $P$ operation, and a method to set $t$ at the start of the switch statement has been implemented, every new command in this program can be executed - most superfluously - in order to only use the $z$-th command. Next we must produce a set of operations that will perform the computation
 \begin{equation*}
 \mathrm{if\ (}z = i\mathrm{)\ then\ } t = 0 \mathrm{\ else\ } t = 1
 \end{equation*}
 
-This is done using the following piece of code, where $e$ has been pre-set to a value much less than 1 (e.g. 1/1000).
+This is done using the following piece of code, where $e$ has been preset to a value much less than 1 (e.g. 1/1000).
 
 \begin{gather*}
 \begin{aligned}
@@ -108,7 +108,7 @@ The variable $d$ is only zero if $z = i$. If not, $d$ is set to a positive value
 
 \subsubsection{Indirect Addressing}
 
-Using this method to emulate switch statements, we can produce an equivalent to an indirect addressing operation. This operation is of form $y = (x)$, which sets $y$ to the value at address location $x$, where $x$ is an integer $n_a \leq x \leq n_b$, $n_a$ and $n_b$ being integer constants representing the limits of the region of memory that can be addressed by this function. $x$ could potentially be the output from a previous arithmetical operation, which could be read from memory. Relying on the fact that this region is finite (and furthermore that the tape length is also finite), this can be done most simply with a switch statement with a case for every address $z$ between $n_a$ and $n_b$ as shown.
+Using this method to emulate switch statements, we can produce an equivalent to an indirect addressing operation. This operation is of form $y = (x)$, which sets $y$ to the value at address location $x$, where $x$ is an integer $n_a \leq x \leq n_b$, $n_a$ and $n_b$ being integer constants representing the limits of the region of memory that can be addressed by this function. $x$ could potentially be the output from a previous arithmetical operation, which could be read from memory. Relying on the fact that this region is finite (and furthermore that the tape length is also finite), this can be done most simply using a switch statement with a case for every address $z$ between $n_a$ and $n_b$ as shown.
 \begin{gather*}
 \begin{aligned}
 &\bm{\mathrm{switch}}\ (x)\ \{              	\\
@@ -119,19 +119,21 @@ Using this method to emulate switch statements, we can produce an equivalent to 
 \end{aligned}
 \end{gather*}
 These cases are enumerated within the switch for all $n_a \leq z \leq n_b$; hence, when the statement is executed, the only case where the contents of address $z$ will be written to $a$ is the case where $x=z$; hence, $a$ will be set to the contents of address $x$.
-At this point, it becomes very clear the extent to which  is not suited to universal computation. When every single applicable memory address must be specified individually, with five operations per address to implement the case, each operation consisting of four instructions, it is obvious that Z3 is in no way a \textit{practical} universal machine.
+
+
+At this point it becomes very clear the extent to which Z3 is not suited to universal computation. When every single applicable memory address must be specified individually, with five operations per address to implement the case, each operation consisting of four instructions, it is obvious that Z3 is in no way a \textit{practical} universal machine.
 
 \subsection{Z3 as a Turing Machine}
 
-With these new methods implemented in Z3, construction of a Universal machine seems trivial. As shown in \cite{harel1980folk}, a Turing machine can be produced using only a single continuous loop and the functionality of Z3. The ends of the instruction tape can be attached to each other as they are run through the machine, allowing for a continuous loop. The tape is represented as the memory region between $n_a$ and $n_b$, and the cursor index is stored as an integer that can be moved through incrementation or decrementation. The tape can be read through indirect addressing, and the transition can be derived from the state and read symbol through conditional branching.
+With these new methods implemented in Z3, construction of a Universal machine seems trivial. As shown in \cite{harel1980folk}, a Turing machine can be produced using only a single continuous loop and the functionality of Z3. The ends of the instruction tape can be attached to each other as they are run through the machine, allowing for a continuous loop. The tape is represented as the memory region between $n_a$ and $n_b$, and the cursor index is stored as an integer that can be moved through incrementation or decrementation. The tape can be read through indirect addressing, and the transition function can be derived from the state and read symbol through conditional branching.
 
 The result of this section, that arithmetic alone can produce universality, is surprising and counterintuitive. However, the fundamental concept behind this is that within each arithmetical operation are conditional branches that the processor performs; Turing-completeness is embedded within Z3's operation, albeit invisible to the programmer. These tools are intended to lift this branching to the surface level so they can control the program's flow.
 
-A clear criticism of this techique is that it slows down computation enormously. Running at roughly 5.33Hz with 3 cycles for addition, 4-5 for subtraction and 16 for multiplication (from \cite{rojas1997z3architecture}), to perform each case statement within a switch Z3 would take up to $\sim$7.5 seconds on top of the time for the operation itself; for the indirect addressing operation alone, when this occurs for every single addressable memory slot it is clear that for a single iteration of the Turing machine Z3 would take an unfeasably long time. From a purely theoretical point of view this is irrelevant - it is clear that this particular programming of Z3 is useless in the same way that using a Turing Machine to solve real-world problems would be totally impractical.
+A clear criticism of th  is technique is that it slows down computation enormously. Running at roughly 5.33Hz with 3 cycles for addition, 4-5 for subtraction and 16 for multiplication (from \cite{rojas1997z3architecture}), to perform each case statement within a switch Z3 would take up to $\sim$7.5 seconds on top of the time for the operation itself; for the indirect addressing operation alone, when this occurs for every single addressable memory slot it is clear that for a single iteration of the Turing machine Z3 would take an unfeasibly long time. From a purely theoretical point of view this is irrelevant - it is clear that this particular programming of Z3 is useless in the same way that using a Turing machine to solve real-world problems would be totally impractical.
 
 Therefore, we can say that from a totally abstract, totally theoretical perspective, World War 2 did in fact produce an equivalent to a modern computer. However, like many of the computers of this period, while effectively equivalent to a modern computer, Z3 was entirely unlike anything one would encounter today and as such would not be suited to perform anything beyond its simplistic intended use.
 
-The major breakthrough in computation which allowed for the first clearly universal machines was the implementation of a Von Neumann Architecture, which allowed computers to run programs from memory\footnote{Of course, because Turing Machines are themselves Universal machines (see \cite{turing1936computablenumbers}), this was theoretically achieved with Z3; Von Neumann machines were oriented towards performing in such a way.}. The first machine to implement this was the Manchester Small Scale Experimental Machine (SSEM), or `Baby' \cite{napperWEB17baby}, which stored data using the Williams-Kilburn Tube, a type of cathode ray tube. Its successor, the Manchester Mark 1 contained a more advanced instruction set, and was significantly more powerful.
+The major breakthrough in computation which allowed for the first clearly universal machines was the implementation of a Von Neumann Architecture, which allowed computers to run programs from memory\footnote{Of course, because Turing machines are themselves Universal machines (see \cite{turing1936computablenumbers}), this was theoretically achieved with Z3; Von Neumann machines were oriented towards performing in such a way.}. The first machine to implement this was the Manchester Small Scale Experimental Machine (SSEM), or `Baby' \cite{napperWEB17baby}, which stored data using the Williams-Kilburn Tube, a type of cathode ray tube. Its successor, the Manchester Mark 1 contained a more advanced instruction set, and was significantly more powerful.
 
 
 
